@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nuclear Science Explorer — Age 10</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #05080f;
+    --panel: #0b1220;
+    --border: #1a2d50;
+    --accent: #00e5ff;
+    --gold: #ffd600;
+    --green: #00e676;
+    --red: #ff1744;
+    --orange: #ff6d00;
+    --text: #cfe4ff;
+    --muted: #5a7a9f;
+    --radius: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Starfield background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 30% 40%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 55% 25%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 60%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 92% 10%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(2px 2px at 20% 80%, rgba(0,229,255,0.2) 0%, transparent 100%),
+      radial-gradient(2px 2px at 70% 90%, rgba(0,229,255,0.15) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  /* HEADER */
+  header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    padding: 2.5rem 1rem 2rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, #0b1a30 0%, #0d1f3c 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  header::after {
+    content: '⚛';
+    font-size: 8rem;
+    position: absolute;
+    right: -1rem;
+    top: -1rem;
+    opacity: 0.06;
+    animation: spin 20s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .badge {
+    display: inline-block;
+    background: var(--accent);
+    color: #000;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1.6rem, 5vw, 2.6rem);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+  }
+
+  .header-topic {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    font-weight: 400;
+    color: var(--accent);
+    letter-spacing: 2px;
+    margin-bottom: 0.6rem;
+  }
+  .header-topic span {
+    border-bottom: 2px solid rgba(0,229,255,0.35);
+    padding-bottom: 2px;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+  }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .progress-label {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+  .progress-bar-outer {
+    flex: 1;
+    height: 8px;
+    background: #1a2d50;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .progress-bar-inner {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent), var(--green));
+    border-radius: 4px;
+    transition: width 0.5s ease;
+  }
+  .progress-time {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.75rem;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+
+  /* SECTION CARDS */
+  .section-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .section-card:hover { border-color: var(--accent); }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.2rem 1.5rem;
+    cursor: pointer;
+    user-select: none;
+    background: linear-gradient(90deg, #0d1a30 0%, transparent 100%);
+  }
+  .section-num {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 2px;
+    min-width: 60px;
+  }
+  .section-title {
+    flex: 1;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #fff;
+  }
+  .section-time {
+    font-size: 0.78rem;
+    color: var(--gold);
+    font-weight: 600;
+  }
+  .chevron {
+    color: var(--muted);
+    transition: transform 0.3s;
+    font-size: 1.1rem;
+  }
+  .section-card.open .chevron { transform: rotate(180deg); }
+
+  .section-body {
+    display: none;
+    padding: 0 1.5rem 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .section-card.open .section-body { display: block; }
+
+  .section-intro {
+    margin: 1rem 0 1.2rem;
+    color: var(--text);
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  /* RESOURCES */
+  .resource-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 0.9rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .resource-card {
+    background: #0a1525;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: pointer;
+  }
+  .resource-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .resource-type {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    margin-bottom: 0.5rem;
+  }
+  .type-video { background: rgba(255,29,68,0.15); color: #ff6b8a; border: 1px solid rgba(255,29,68,0.3); }
+  .type-interactive { background: rgba(0,229,255,0.1); color: var(--accent); border: 1px solid rgba(0,229,255,0.3); }
+  .type-read { background: rgba(255,214,0,0.1); color: var(--gold); border: 1px solid rgba(255,214,0,0.3); }
+  .type-sim { background: rgba(0,230,118,0.1); color: var(--green); border: 1px solid rgba(0,230,118,0.3); }
+
+  .resource-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #fff;
+    margin-bottom: 0.3rem;
+    line-height: 1.3;
+  }
+  .resource-desc {
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .resource-link:hover { text-decoration: underline; }
+
+  /* KEY CONCEPTS */
+  .concepts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  .concept-tag {
+    background: rgba(0,229,255,0.07);
+    border: 1px solid rgba(0,229,255,0.2);
+    color: var(--accent);
+    font-size: 0.78rem;
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+
+  /* QUIZ */
+  .quiz-section {
+    background: linear-gradient(135deg, #08142a 0%, #0b1e38 100%);
+    border: 1px solid var(--gold);
+    border-radius: var(--radius);
+    padding: 2rem;
+    margin-top: 2rem;
+  }
+  .quiz-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .quiz-icon { font-size: 2rem; }
+  .quiz-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--gold);
+  }
+  .quiz-subtitle { font-size: 0.85rem; color: var(--muted); margin-top: 3px; }
+
+  .question-block {
+    background: #0a1525;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.3rem;
+    margin-bottom: 1.2rem;
+    transition: border-color 0.3s;
+  }
+  .question-block.correct { border-color: var(--green); }
+  .question-block.wrong { border-color: var(--red); }
+
+  .question-num {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+  }
+  .question-text {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+  }
+  @media(max-width: 500px) { .options { grid-template-columns: 1fr; } }
+
+  .option-btn {
+    background: #0d1a2e;
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Exo 2', sans-serif;
+    font-size: 0.85rem;
+    padding: 0.7rem 1rem;
+    border-radius: 7px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+    line-height: 1.4;
+  }
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--accent);
+    background: rgba(0,229,255,0.05);
+  }
+  .option-btn.selected-correct {
+    border-color: var(--green);
+    background: rgba(0,230,118,0.1);
+    color: var(--green);
+  }
+  .option-btn.selected-wrong {
+    border-color: var(--red);
+    background: rgba(255,23,68,0.1);
+    color: var(--red);
+  }
+  .option-btn.reveal-correct {
+    border-color: var(--green);
+    color: var(--green);
+  }
+  .option-btn:disabled { cursor: default; }
+
+  .feedback {
+    margin-top: 0.8rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.ok { color: var(--green); }
+  .feedback.bad { color: #ff8a80; }
+
+  /* SCORE */
+  .score-wrap {
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+  .score-wrap.show { display: block; }
+  .score-display {
+    font-family: 'Orbitron', monospace;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--gold);
+    margin-bottom: 0.3rem;
+  }
+  .score-label { color: var(--muted); font-size: 0.9rem; margin-bottom: 1rem; }
+  .score-bar-outer {
+    height: 12px;
+    background: #1a2d50;
+    border-radius: 6px;
+    overflow: hidden;
+    max-width: 400px;
+    margin: 0 auto 1rem;
+  }
+  .score-bar-inner {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--green));
+    border-radius: 6px;
+    transition: width 1s ease;
+    width: 0%;
+  }
+  .score-message {
+    font-size: 0.95rem;
+    color: var(--text);
+    max-width: 400px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .submit-btn {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 1.5rem auto 0;
+    background: linear-gradient(90deg, var(--gold), var(--orange));
+    color: #000;
+    border: none;
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    padding: 0.9rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .submit-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+  .submit-btn:disabled { opacity: 0.4; cursor: default; transform: none; }
+
+  /* TIMELINE */
+  .timeline {
+    position: relative;
+    padding-left: 1.5rem;
+    border-left: 2px solid var(--border);
+    margin: 1rem 0;
+  }
+  .timeline-item {
+    position: relative;
+    padding: 0.5rem 0 0.8rem 1rem;
+  }
+  .timeline-item::before {
+    content: '';
+    width: 10px; height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+    position: absolute;
+    left: -1.55rem;
+    top: 0.6rem;
+  }
+  .timeline-year {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.7rem;
+    color: var(--gold);
+    letter-spacing: 1px;
+  }
+  .timeline-text {
+    font-size: 0.88rem;
+    color: var(--text);
+    line-height: 1.5;
+    margin-top: 2px;
+  }
+
+  /* FUN FACT */
+  .fun-fact {
+    background: rgba(255,214,0,0.05);
+    border: 1px solid rgba(255,214,0,0.2);
+    border-radius: 8px;
+    padding: 0.9rem 1.1rem;
+    font-size: 0.85rem;
+    color: var(--gold);
+    margin-top: 1rem;
+    line-height: 1.5;
+  }
+  .fun-fact::before { content: '⭐ Fun Fact: '; font-weight: 700; }
+
+  footer {
+    text-align: center;
+    margin-top: 3rem;
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="badge">SCIENCE EXPLORER</div>
+    <h1>⚛ Curious Minds<br>Science Lab</h1>
+    <p class="header-topic"><span>Nuclear Science</span></p>
+    <p class="subtitle">A 1-hour guided curriculum · Age 10 · Beginner Friendly</p>
+  </header>
+
+  <!-- Progress -->
+  <div class="progress-wrap">
+    <span class="progress-label">PROGRESS</span>
+    <div class="progress-bar-outer"><div class="progress-bar-inner" id="progressBar"></div></div>
+    <span class="progress-time" id="progressTime">0 / 60 min</span>
+  </div>
+
+  <!-- ===== MODULE 1 ===== -->
+  <div class="section-card" onclick="toggleCard(this)">
+    <div class="section-header">
+      <span class="section-num">MODULE 01</span>
+      <span class="section-title">⚛ What Is an Atom?</span>
+      <span class="section-time">10 min</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <p class="section-intro">Everything around you — air, water, your body — is made of atoms. They're incredibly tiny, but they hold a <strong>huge</strong> amount of energy inside. This module introduces you to the atom's structure and the concept of nuclear energy.</p>
+
+      <div class="resource-grid">
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">What Is An Atom And How Do We Know?</div>
+          <div class="resource-desc">Engaging explainer on how scientists figured out what atoms look like — covering protons, neutrons, electrons, and the nucleus.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=LhveTGblGHY" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-interactive">◉ INTERACTIVE</span>
+          <div class="resource-name">PhET: Build an Atom</div>
+          <div class="resource-desc">Drag protons, neutrons & electrons to build real atoms. See how mass and charge change. Free, browser-based simulation.</div>
+          <a class="resource-link" href="https://phet.colorado.edu/en/simulations/build-an-atom" target="_blank">Play Simulation →</a>
+        </div>
+      </div>
+
+      <div class="concepts">
+        <span class="concept-tag">Proton</span>
+        <span class="concept-tag">Neutron</span>
+        <span class="concept-tag">Electron</span>
+        <span class="concept-tag">Nucleus</span>
+        <span class="concept-tag">Element</span>
+        <span class="concept-tag">Atomic Number</span>
+      </div>
+
+      <div class="fun-fact">Uranium, the fuel used in nuclear power plants, has 92 protons — that's why it's element number 92 on the periodic table!</div>
+    </div>
+  </div>
+
+  <!-- ===== MODULE 2 ===== -->
+  <div class="section-card" onclick="toggleCard(this)">
+    <div class="section-header">
+      <span class="section-num">MODULE 02</span>
+      <span class="section-title">💥 Fission & Fusion</span>
+      <span class="section-time">10 min</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <p class="section-intro">Nuclear energy comes from <strong>splitting atoms</strong> (fission) or <strong>joining atoms together</strong> (fusion). When heavy atoms like uranium split, they release enormous energy — that's what powers nuclear reactors and, at its most extreme, nuclear weapons.</p>
+
+      <div class="resource-grid">
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">TED-Ed: Nuclear Energy Explained</div>
+          <div class="resource-desc">Covers fission, chain reactions, and how reactors work. Excellent visuals, age-appropriate narration (~5 min).</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=rcOFV4y5z8c" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-interactive">◉ INTERACTIVE</span>
+          <div class="resource-name">PhET: Nuclear Fission Sim</div>
+          <div class="resource-desc">Fire neutrons at uranium atoms and watch the chain reaction unfold. See fission in action at your own pace.</div>
+          <a class="resource-link" href="https://phet.colorado.edu/en/simulations/nuclear-fission" target="_blank">Play Simulation →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Kurzgesagt: Fusion Power Explained</div>
+          <div class="resource-desc">Stunning animation explaining fusion — how stars work and why fusion could be the future of clean energy.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=mZsaaturR6E" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+      </div>
+
+      <div class="concepts">
+        <span class="concept-tag">Fission</span>
+        <span class="concept-tag">Fusion</span>
+        <span class="concept-tag">Chain Reaction</span>
+        <span class="concept-tag">Critical Mass</span>
+        <span class="concept-tag">E = mc²</span>
+        <span class="concept-tag">Uranium-235</span>
+      </div>
+
+      <div class="fun-fact">The Sun produces energy through fusion — merging hydrogen atoms into helium. It converts 4 million tonnes of matter into energy every single second!</div>
+    </div>
+  </div>
+
+  <!-- ===== MODULE 3 ===== -->
+  <div class="section-card" onclick="toggleCard(this)">
+    <div class="section-header">
+      <span class="section-num">MODULE 03</span>
+      <span class="section-title">🏭 How Nuclear Power Plants Work</span>
+      <span class="section-time">10 min</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <p class="section-intro">A nuclear power plant uses controlled fission reactions to heat water into steam, which spins turbines to generate electricity — the same principle as a coal plant, but with no carbon emissions during operation. About 10% of the world's electricity comes from nuclear power today.</p>
+
+      <div class="resource-grid">
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Nuclear Reactor — Understanding How It Works | Physics Elearnin</div>
+          <div class="resource-desc">Clear physics-focused walkthrough of how a nuclear reactor works — fuel, control rods, cooling, and electricity generation explained step by step.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=1U6Nzcv9Vws" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-read">📖 ARTICLE</span>
+          <div class="resource-name">Energy.gov: Nuclear 101 (Kids Edition)</div>
+          <div class="resource-desc">U.S. Department of Energy kid-friendly breakdown of how reactors generate electricity safely.</div>
+          <a class="resource-link" href="https://www.energy.gov/ne/articles/nuclear-101-how-does-nuclear-reactor-work" target="_blank">Read Article →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-sim">⚙ SIMULATION</span>
+          <div class="resource-name">NRC: Reactor Concepts Manual</div>
+          <div class="resource-desc">Illustrated guide from the U.S. Nuclear Regulatory Commission — diagrams of reactor types and safety systems.</div>
+          <a class="resource-link" href="https://www.nrc.gov/reading-rm/basic-ref/teachers/04.pdf" target="_blank">View PDF Guide →</a>
+        </div>
+      </div>
+
+      <div class="concepts">
+        <span class="concept-tag">Control Rods</span>
+        <span class="concept-tag">Coolant</span>
+        <span class="concept-tag">Steam Turbine</span>
+        <span class="concept-tag">Reactor Core</span>
+        <span class="concept-tag">Containment Building</span>
+        <span class="concept-tag">Fuel Rods</span>
+      </div>
+
+      <div class="fun-fact">France gets about 70% of its electricity from nuclear power — more than any other country in the world!</div>
+    </div>
+  </div>
+
+  <!-- ===== MODULE 4 ===== -->
+  <div class="section-card" onclick="toggleCard(this)">
+    <div class="section-header">
+      <span class="section-num">MODULE 04</span>
+      <span class="section-title">🕰 History: The Nuclear Age</span>
+      <span class="section-time">15 min</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <p class="section-intro">The discovery of nuclear fission in 1938 changed the world forever. From the Manhattan Project to the Cold War arms race, and eventually to international treaties reducing nuclear weapons — this module covers the history and why it matters today.</p>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-year">1938</div>
+          <div class="timeline-text">Otto Hahn and Lise Meitner discover nuclear fission in Berlin.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">1942</div>
+          <div class="timeline-text">Chicago Pile-1 — the world's first artificial nuclear reactor goes critical, led by Enrico Fermi.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">1945</div>
+          <div class="timeline-text">The United States uses atomic bombs on Hiroshima and Nagasaki, ending WWII. Around 200,000 lives are lost.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">1953</div>
+          <div class="timeline-text">President Eisenhower's "Atoms for Peace" speech proposes sharing nuclear technology for peaceful energy use.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">1968</div>
+          <div class="timeline-text">The Nuclear Non-Proliferation Treaty (NPT) is signed — countries agree not to spread nuclear weapons.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">1986</div>
+          <div class="timeline-text">Chernobyl nuclear power plant disaster in Ukraine — a reminder of the importance of reactor safety.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">Today</div>
+          <div class="timeline-text">~440 nuclear power plants operate worldwide. Scientists work on fusion energy that could power the planet cleanly.</div>
+        </div>
+      </div>
+
+      <div class="resource-grid">
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">The Atomic Bomb Simplified History</div>
+          <div class="resource-desc">A clear, simplified history of the atomic bomb — from the Manhattan Project to the bombings of Hiroshima and Nagasaki and their global impact.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=w4q1fG1vh5I" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-interactive">◉ INTERACTIVE</span>
+          <div class="resource-name">Atomic Heritage Foundation</div>
+          <div class="resource-desc">Interactive maps and timelines of the Manhattan Project and atomic age — educational and historically rich.</div>
+          <a class="resource-link" href="https://ahf.nuclearmuseum.org" target="_blank">Explore Website →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Nuclear Weapons: How Do They Work?</div>
+          <div class="resource-desc">Simple, factual animation explaining the basic physics behind nuclear weapons — no construction details, just the science.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=E1HD0T0mH8I" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+      </div>
+
+      <div class="fun-fact">After WWII, scientists who worked on the Manhattan Project (including Einstein and Oppenheimer) became some of the loudest voices calling for nuclear disarmament.</div>
+    </div>
+  </div>
+
+  <!-- ===== MODULE 5 ===== -->
+  <div class="section-card" onclick="toggleCard(this)">
+    <div class="section-header">
+      <span class="section-num">MODULE 05</span>
+      <span class="section-title">🌍 Safety, Radiation & the Future</span>
+      <span class="section-time">5 min</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <p class="section-intro">Radiation sounds scary, but we're exposed to small amounts of natural radiation every day — from the Sun, rocks, even bananas! This final module covers radiation safety, nuclear waste challenges, and exciting future technologies like fusion power.</p>
+
+      <div class="resource-grid">
+        <div class="resource-card">
+          <span class="resource-type type-interactive">◉ INTERACTIVE</span>
+          <div class="resource-name">Radiation Dose Chart (xkcd)</div>
+          <div class="resource-desc">A brilliant visual chart showing all kinds of radiation doses — from eating a banana to a chest X-ray to Chernobyl. Puts risk in perspective.</div>
+          <a class="resource-link" href="https://xkcd.com/radiation/" target="_blank">View Chart →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Kurzgesagt: Is Nuclear Energy Good?</div>
+          <div class="resource-desc">Balanced explainer on nuclear energy pros and cons — safety record, waste, climate change context. Highly recommended.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=EhAemz1v7dQ" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+      </div>
+
+      <div class="concepts">
+        <span class="concept-tag">Radiation</span>
+        <span class="concept-tag">Half-Life</span>
+        <span class="concept-tag">Nuclear Waste</span>
+        <span class="concept-tag">Sievert (Sv)</span>
+        <span class="concept-tag">Fusion Power</span>
+        <span class="concept-tag">ITER Project</span>
+      </div>
+
+      <div class="fun-fact">Bananas are naturally radioactive due to potassium-40. Scientists even have a unit called the "Banana Equivalent Dose" (BED) to explain tiny amounts of radiation!</div>
+    </div>
+  </div>
+
+  <!-- ===== QUIZ ===== -->
+  <div class="quiz-section">
+    <div class="quiz-header">
+      <div class="quiz-icon">🧪</div>
+      <div>
+        <div class="quiz-title">Knowledge Check</div>
+        <div class="quiz-subtitle">10 questions · See how much you've learned!</div>
+      </div>
+    </div>
+
+    <div id="quizContainer"></div>
+
+    <button class="submit-btn" id="submitBtn" onclick="submitQuiz()" disabled>Submit Answers</button>
+
+    <div class="score-wrap" id="scoreWrap">
+      <div class="score-display" id="scoreDisplay"></div>
+      <div class="score-label">correct answers</div>
+      <div class="score-bar-outer"><div class="score-bar-inner" id="scoreBar"></div></div>
+      <div class="score-message" id="scoreMsg"></div>
+    </div>
+  </div>
+
+  <footer>
+    Curriculum designed for curious minds · All linked resources are free and educational<br>
+    Videos: YouTube TED-Ed / Kurzgesagt · Simulations: PhET Interactive (University of Colorado) · History: Atomic Heritage Foundation
+  </footer>
+
+</div>
+
+<script>
+const questions = [
+  {
+    q: "What is the center of an atom called?",
+    options: ["The electron cloud", "The nucleus", "The ion", "The shell"],
+    answer: 1,
+    explanation: "Correct! The nucleus is at the center and contains protons and neutrons. Electrons orbit around it."
+  },
+  {
+    q: "What happens during nuclear fission?",
+    options: [
+      "Two small atoms join together",
+      "An atom loses an electron",
+      "A heavy atom splits into smaller pieces, releasing energy",
+      "An atom absorbs sunlight"
+    ],
+    answer: 2,
+    explanation: "That's right! Fission is when a heavy atom (like uranium) splits apart, releasing a huge amount of energy."
+  },
+  {
+    q: "What does E = mc² tell us?",
+    options: [
+      "Energy equals mass times the speed of light squared",
+      "Electricity equals mass times current",
+      "Energy equals motion times count",
+      "It's a recipe for a cake"
+    ],
+    answer: 0,
+    explanation: "Exactly! Einstein's famous equation shows that a tiny amount of mass can be converted into an enormous amount of energy. That's the secret behind nuclear power."
+  },
+  {
+    q: "What are control rods used for in a nuclear reactor?",
+    options: [
+      "To heat the water faster",
+      "To generate electricity directly",
+      "To absorb neutrons and slow down or stop the chain reaction",
+      "To cool the steam after it turns the turbine"
+    ],
+    answer: 2,
+    explanation: "Well done! Control rods absorb neutrons — inserting them slows the reaction down, and removing them speeds it up. They are the reactor's 'off switch'."
+  },
+  {
+    q: "Which country gets roughly 70% of its electricity from nuclear power?",
+    options: ["United States", "Japan", "France", "China"],
+    answer: 2,
+    explanation: "France! It has the largest share of nuclear power in the world, with about 56 reactors generating around 70% of its electricity."
+  },
+  {
+    q: "What is nuclear fusion?",
+    options: [
+      "Splitting a uranium atom in two",
+      "Merging light atoms together to release energy",
+      "Burning nuclear fuel like coal",
+      "Converting nuclear waste into electricity"
+    ],
+    answer: 1,
+    explanation: "Fusion is the opposite of fission — it joins light atoms (like hydrogen) together. This is what powers the Sun, and scientists are working on fusion reactors for clean energy."
+  },
+  {
+    q: "The Manhattan Project was the secret WWII program that built the first what?",
+    options: ["Nuclear power plant", "Nuclear submarine", "Atomic bomb", "Space rocket"],
+    answer: 2,
+    explanation: "The Manhattan Project, led by J. Robert Oppenheimer, developed the world's first atomic bombs, tested in 1945."
+  },
+  {
+    q: "Which treaty do countries sign to agree NOT to spread nuclear weapons?",
+    options: [
+      "The Geneva Convention",
+      "The Nuclear Non-Proliferation Treaty (NPT)",
+      "The Paris Climate Agreement",
+      "The Universal Declaration of Human Rights"
+    ],
+    answer: 1,
+    explanation: "The NPT (Nuclear Non-Proliferation Treaty), signed in 1968, commits countries to not spreading nuclear weapons technology and working toward eventual disarmament."
+  },
+  {
+    q: "Why are bananas slightly radioactive?",
+    options: [
+      "They absorb radiation from the Sun",
+      "They are grown near nuclear plants",
+      "They naturally contain a radioactive form of potassium",
+      "Their yellow color reflects radiation"
+    ],
+    answer: 2,
+    explanation: "Bananas contain potassium, and a small fraction of natural potassium is radioactive (potassium-40). The amount is harmless — you'd have to eat millions to feel any effect!"
+  },
+  {
+    q: "What is the main advantage of fusion energy over fission energy (if we can make it work)?",
+    options: [
+      "Fusion is cheaper to build",
+      "Fusion produces much less radioactive waste and uses abundant fuel",
+      "Fusion reactors are smaller",
+      "Fusion is faster to switch on and off"
+    ],
+    answer: 1,
+    explanation: "Fusion's big advantages are its fuel (hydrogen from water is virtually unlimited) and much less long-lived radioactive waste compared to fission reactors. That's why scientists worldwide are working on it!"
+  }
+];
+
+let answered = {};
+
+function buildQuiz() {
+  const container = document.getElementById('quizContainer');
+  questions.forEach((q, qi) => {
+    const block = document.createElement('div');
+    block.className = 'question-block';
+    block.id = `q${qi}`;
+
+    let optionsHtml = q.options.map((opt, oi) =>
+      `<button class="option-btn" id="q${qi}o${oi}" onclick="selectOption(${qi}, ${oi})">${opt}</button>`
+    ).join('');
+
+    block.innerHTML = `
+      <div class="question-num">QUESTION ${qi + 1} OF ${questions.length}</div>
+      <div class="question-text">${q.q}</div>
+      <div class="options">${optionsHtml}</div>
+      <div class="feedback" id="fb${qi}"></div>
+    `;
+    container.appendChild(block);
+  });
+}
+
+function selectOption(qi, oi) {
+  if (answered[qi] !== undefined) return;
+  answered[qi] = oi;
+
+  const correct = questions[qi].answer;
+  const block = document.getElementById(`q${qi}`);
+  const fb = document.getElementById(`fb${qi}`);
+
+  // Disable all options
+  questions[qi].options.forEach((_, i) => {
+    document.getElementById(`q${qi}o${i}`).disabled = true;
+  });
+
+  if (oi === correct) {
+    document.getElementById(`q${qi}o${oi}`).classList.add('selected-correct');
+    block.classList.add('correct');
+    fb.className = 'feedback show ok';
+    fb.textContent = '✓ ' + questions[qi].explanation;
+  } else {
+    document.getElementById(`q${qi}o${oi}`).classList.add('selected-wrong');
+    document.getElementById(`q${qi}o${correct}`).classList.add('reveal-correct');
+    block.classList.add('wrong');
+    fb.className = 'feedback show bad';
+    fb.textContent = '✗ Not quite. ' + questions[qi].explanation;
+  }
+
+  updateSubmitBtn();
+}
+
+function updateSubmitBtn() {
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = Object.keys(answered).length < questions.length;
+
+  // Update progress
+  const pct = Math.round((Object.keys(answered).length / questions.length) * 30 + 70);
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressTime').textContent = `~${Math.round(pct * 0.6)} / 60 min`;
+}
+
+function submitQuiz() {
+  const score = Object.entries(answered).filter(([qi, oi]) => questions[qi].answer === oi).length;
+  const total = questions.length;
+  const pct = Math.round((score / total) * 100);
+
+  document.getElementById('scoreDisplay').textContent = `${score} / ${total}`;
+  const scoreWrap = document.getElementById('scoreWrap');
+  scoreWrap.classList.add('show');
+  setTimeout(() => {
+    document.getElementById('scoreBar').style.width = pct + '%';
+  }, 100);
+
+  let msg;
+  if (pct === 100) msg = "🏆 Perfect score! You're a nuclear science superstar. Albert Einstein would be impressed!";
+  else if (pct >= 80) msg = "⭐ Excellent work! You clearly paid close attention. Review any questions you missed and you'll be an expert in no time.";
+  else if (pct >= 60) msg = "👍 Good effort! You've got the core ideas down. Try re-watching the videos for the topics you found tricky.";
+  else msg = "🔬 Keep exploring! Nuclear science can be tricky at first. Go back through the modules and try the simulations — hands-on learning makes it click!";
+
+  document.getElementById('scoreMsg').textContent = msg;
+  document.getElementById('submitBtn').disabled = true;
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('progressTime').textContent = '60 / 60 min ✓';
+}
+
+function toggleCard(card) {
+  card.classList.toggle('open');
+  updateProgress();
+}
+
+function updateProgress() {
+  const open = document.querySelectorAll('.section-card.open').length;
+  const total = document.querySelectorAll('.section-card').length;
+  const pct = Math.min(70, Math.round((open / total) * 70));
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressTime').textContent = `~${Math.round(pct * 0.6)} / 60 min`;
+}
+
+buildQuiz();
+</script>
+</body>
+</html>
