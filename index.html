@@ -1,540 +1,990 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Curious Minds Science Lab</title>
-<meta name="description" content="Free science curricula for curious young minds. Explore nuclear science, space, biology and more — one topic at a time.">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #05080f;
-    --panel: #0b1220;
-    --border: #1a2d50;
-    --accent: #00e5ff;
-    --gold: #ffd600;
-    --green: #00e676;
-    --muted: #5a7a9f;
-    --text: #cfe4ff;
-    --radius: 14px;
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>💡 Light Science Explorer — Curious Minds Science Lab</title>
+  <style>
+    /* ─── Reset & Base ─────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a12;
+      --surface: #12121e;
+      --surface2: #1a1a2e;
+      --border: rgba(255,255,255,0.08);
+      --accent: #f7c948;       /* golden yellow – light/photon colour */
+      --accent2: #60d0f0;      /* cyan – wave colour */
+      --accent3: #ff8c42;      /* warm orange – warm light */
+      --text: #e8e8f0;
+      --text-dim: #8888aa;
+      --tag-bg: rgba(247,201,72,0.12);
+      --radius: 12px;
+      --mono: 'Courier New', Courier, monospace;
+    }
 
-  html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+    }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Exo 2', sans-serif;
-    font-weight: 300;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+    a { color: var(--accent2); text-decoration: none; }
+    a:hover { text-decoration: underline; }
 
-  /* ── Animated starfield ── */
-  .stars {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    overflow: hidden;
-  }
-  .stars span {
-    position: absolute;
-    border-radius: 50%;
-    background: #fff;
-    animation: twinkle var(--d, 4s) ease-in-out infinite var(--delay, 0s);
-    opacity: 0;
-  }
-  @keyframes twinkle {
-    0%, 100% { opacity: 0; transform: scale(0.8); }
-    50% { opacity: var(--op, 0.5); transform: scale(1); }
-  }
+    /* ─── Header ─────────────────────────────────── */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo-link {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .logo-link:hover { text-decoration: none; opacity: 0.85; }
+    .header-badge {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 3px 8px;
+    }
 
-  /* ── Subtle grid overlay ── */
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(0,229,255,0.025) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,229,255,0.025) 1px, transparent 1px);
-    background-size: 60px 60px;
-    pointer-events: none;
-    z-index: 0;
-  }
+    /* ─── Hero ───────────────────────────────────── */
+    .hero {
+      text-align: center;
+      padding: 64px 24px 40px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .hero-emoji { font-size: 52px; display: block; margin-bottom: 16px; }
+    .hero h1 {
+      font-size: clamp(28px, 5vw, 44px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .hero-sub {
+      color: var(--text-dim);
+      font-size: 14px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+    .hero-tag {
+      font-size: 12px;
+      background: var(--tag-bg);
+      color: var(--accent);
+      border: 1px solid rgba(247,201,72,0.25);
+      border-radius: 20px;
+      padding: 4px 14px;
+      letter-spacing: 0.04em;
+    }
 
-  .page {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
+    /* ─── Progress Bar ──────────────────────────── */
+    .progress-bar-wrap {
+      max-width: 720px;
+      margin: 0 auto 40px;
+      padding: 0 24px;
+    }
+    .progress-label {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .progress-bar {
+      height: 4px;
+      background: var(--surface2);
+      border-radius: 2px;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      width: 0%;
+      transition: width 0.5s ease;
+    }
 
-  /* ── NAV ── */
-  nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1.2rem 2.5rem;
-    border-bottom: 1px solid var(--border);
-    backdrop-filter: blur(10px);
-    background: rgba(5,8,15,0.7);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  .nav-logo {
-    font-family: 'Orbitron', monospace;
-    font-weight: 900;
-    font-size: 0.85rem;
-    letter-spacing: 1px;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    text-decoration: none;
-  }
-  .nav-logo .atom { color: var(--accent); font-size: 1.1rem; }
-  .nav-tag {
-    font-size: 0.7rem;
-    font-family: 'Orbitron', monospace;
-    color: var(--muted);
-    letter-spacing: 2px;
-  }
+    /* ─── Modules ─────────────────────────────── */
+    .modules {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
 
-  /* ── HERO ── */
-  .hero {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 5rem 1.5rem 3rem;
-    position: relative;
-  }
+    .module {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
 
-  /* Glowing orb behind heading */
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: 10%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(ellipse, rgba(0,229,255,0.07) 0%, transparent 70%);
-    pointer-events: none;
-  }
+    .module-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 24px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s;
+    }
+    .module-header:hover { background: var(--surface2); }
 
-  .hero-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: rgba(0,229,255,0.08);
-    border: 1px solid rgba(0,229,255,0.25);
-    border-radius: 30px;
-    padding: 6px 16px;
-    font-family: 'Orbitron', monospace;
-    font-size: 0.62rem;
-    letter-spacing: 2.5px;
-    color: var(--accent);
-    margin-bottom: 1.8rem;
-    animation: fadeUp 0.6s ease both;
-  }
-  .eyebrow-dot {
-    width: 6px; height: 6px;
-    background: var(--accent);
-    border-radius: 50%;
-    animation: pulse 2s ease-in-out infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(0.7); }
-  }
+    .module-num {
+      font-size: 10px;
+      font-family: var(--mono);
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+      white-space: nowrap;
+    }
+    .module-emoji { font-size: 22px; }
+    .module-title-wrap { flex: 1; }
+    .module-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .module-time {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 2px;
+    }
+    .module-toggle {
+      font-size: 14px;
+      color: var(--text-dim);
+      transition: transform 0.25s;
+    }
+    .module.open .module-toggle { transform: rotate(180deg); }
 
-  .hero-title {
-    font-family: 'Orbitron', monospace;
-    font-size: clamp(2.2rem, 6vw, 4rem);
-    font-weight: 900;
-    color: #fff;
-    line-height: 1.1;
-    letter-spacing: -0.5px;
-    margin-bottom: 0.5rem;
-    animation: fadeUp 0.7s ease 0.1s both;
-  }
-  .hero-title .line2 {
-    display: block;
-    color: var(--accent);
-  }
+    .module-body {
+      display: none;
+      padding: 0 24px 24px;
+      border-top: 1px solid var(--border);
+    }
+    .module.open .module-body { display: block; }
 
-  .hero-sub {
-    font-family: 'Orbitron', monospace;
-    font-size: clamp(0.8rem, 2vw, 1rem);
-    font-weight: 400;
-    color: var(--muted);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    margin-bottom: 1.5rem;
-    animation: fadeUp 0.7s ease 0.2s both;
-  }
+    .module-intro {
+      padding: 20px 0 24px;
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.75;
+    }
+    .module-intro strong { color: var(--accent); }
 
-  .hero-desc {
-    max-width: 520px;
-    font-size: 1rem;
-    color: #7a9fc0;
-    line-height: 1.8;
-    margin-bottom: 3.5rem;
-    animation: fadeUp 0.7s ease 0.3s both;
-  }
+    /* ─── Content Cards ─────────────────────────── */
+    .card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin-bottom: 14px;
+    }
+    .card-type {
+      font-size: 10px;
+      font-family: var(--mono);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .card-type.video { color: #ff6b6b; }
+    .card-type.interactive { color: var(--accent2); }
+    .card-type.article { color: #a8e6cf; }
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .card-desc {
+      font-size: 13px;
+      color: var(--text-dim);
+      margin-bottom: 14px;
+      line-height: 1.6;
+    }
+    .card-link {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 8px 16px;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      color: var(--accent2);
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .card-link:hover {
+      background: rgba(96,208,240,0.1);
+      border-color: var(--accent2);
+      text-decoration: none;
+    }
+    .card-link.primary {
+      background: var(--accent);
+      color: #0a0a12;
+      border-color: var(--accent);
+    }
+    .card-link.primary:hover { opacity: 0.88; }
 
-  /* ── SECTION LABEL ── */
-  .section-label {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-    animation: fadeUp 0.7s ease 0.4s both;
-  }
-  .section-label-text {
-    font-family: 'Orbitron', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 3px;
-    color: var(--muted);
-  }
-  .section-label-line {
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, var(--border), transparent);
-    max-width: 200px;
-  }
+    /* ─── Vocab Chips ─────────────────────────── */
+    .vocab-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 18px 0 4px;
+    }
+    .vocab-chip {
+      font-size: 11px;
+      font-family: var(--mono);
+      letter-spacing: 0.04em;
+      background: var(--tag-bg);
+      color: var(--accent);
+      border: 1px solid rgba(247,201,72,0.2);
+      border-radius: 4px;
+      padding: 4px 10px;
+    }
 
-  /* ── COURSE GRID ── */
-  .course-grid {
-    width: 100%;
-    max-width: 900px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 1.2rem;
-    animation: fadeUp 0.7s ease 0.45s both;
-  }
+    /* ─── Fun Fact ─────────────────────────────── */
+    .fun-fact {
+      background: rgba(247,201,72,0.06);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      margin-top: 18px;
+      font-size: 13px;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+    .fun-fact strong { color: var(--accent); }
 
-  /* ── COURSE CARD ── */
-  .course-card {
-    position: relative;
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 2rem 1.8rem 1.6rem;
-    text-decoration: none;
-    color: inherit;
-    cursor: pointer;
-    overflow: hidden;
-    transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
-    display: flex;
-    flex-direction: column;
-    gap: 0.9rem;
-  }
-  .course-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(0,229,255,0.06) 0%, transparent 60%);
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  .course-card:hover {
-    border-color: var(--accent);
-    transform: translateY(-5px);
-    box-shadow: 0 20px 50px rgba(0,229,255,0.1);
-  }
-  .course-card:hover::before { opacity: 1; }
+    /* ─── Timeline (History module) ───────────── */
+    .timeline { margin: 20px 0; }
+    .tl-item {
+      display: flex;
+      gap: 20px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    .tl-item:last-child { border-bottom: none; }
+    .tl-year {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+      min-width: 50px;
+    }
+    .tl-text { color: var(--text-dim); line-height: 1.6; }
+    .tl-text strong { color: var(--text); }
 
-  /* Top glow line on hover */
-  .course-card::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    transform: scaleX(0);
-    transition: transform 0.4s ease;
-  }
-  .course-card:hover::after { transform: scaleX(1); }
+    /* ─── Quiz ─────────────────────────────────── */
+    .quiz-section {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px 100px;
+    }
+    .quiz-header {
+      text-align: center;
+      padding: 48px 0 32px;
+    }
+    .quiz-header h2 {
+      font-size: 24px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .quiz-header p { color: var(--text-dim); font-size: 14px; }
 
-  .card-icon {
-    font-size: 2.4rem;
-    line-height: 1;
-    filter: drop-shadow(0 0 12px rgba(0,229,255,0.4));
-  }
+    .quiz-q {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 14px;
+    }
+    .q-num {
+      font-size: 10px;
+      font-family: var(--mono);
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .q-text {
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 18px;
+    }
+    .q-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .q-option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--text);
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .q-option:hover { border-color: var(--accent2); background: rgba(96,208,240,0.05); }
+    .q-option input[type="radio"] { accent-color: var(--accent); }
+    .q-option.correct { border-color: #4caf50; background: rgba(76,175,80,0.1); color: #4caf50; }
+    .q-option.wrong { border-color: #f44336; background: rgba(244,67,54,0.1); color: #f44336; }
 
-  .card-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 0.62rem;
-    font-family: 'Orbitron', monospace;
-    letter-spacing: 1.5px;
-    padding: 4px 10px;
-    border-radius: 20px;
-    width: fit-content;
-  }
-  .tag-available {
-    background: rgba(0,230,118,0.1);
-    color: var(--green);
-    border: 1px solid rgba(0,230,118,0.3);
-  }
-  .tag-soon {
-    background: rgba(255,214,0,0.08);
-    color: var(--gold);
-    border: 1px solid rgba(255,214,0,0.25);
-  }
+    .quiz-submit {
+      display: block;
+      width: 100%;
+      margin-top: 28px;
+      padding: 16px;
+      background: var(--accent);
+      color: #0a0a12;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .quiz-submit:hover { opacity: 0.88; }
 
-  .card-title {
-    font-family: 'Orbitron', monospace;
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: #fff;
-    line-height: 1.3;
-  }
+    .quiz-result {
+      display: none;
+      text-align: center;
+      margin-top: 28px;
+      padding: 28px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+    .quiz-result.show { display: block; }
+    .result-score {
+      font-size: 52px;
+      font-weight: 900;
+      color: var(--accent);
+      font-family: var(--mono);
+    }
+    .result-label { color: var(--text-dim); margin-top: 8px; font-size: 15px; }
 
-  .card-desc {
-    font-size: 0.85rem;
-    color: var(--muted);
-    line-height: 1.65;
-    flex: 1;
-  }
+    /* ─── Footer ───────────────────────────────── */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 36px 24px;
+      font-size: 13px;
+      color: var(--text-dim);
+      line-height: 1.8;
+    }
+    footer a { color: var(--text-dim); }
+    footer a:hover { color: var(--accent); }
 
-  .card-meta {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-top: 0.8rem;
-    border-top: 1px solid var(--border);
-    font-size: 0.78rem;
-  }
-  .card-meta-item {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    color: var(--muted);
-  }
-  .card-meta-icon { font-size: 0.9rem; }
-
-  .card-cta {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-family: 'Orbitron', monospace;
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    color: var(--accent);
-    transition: gap 0.2s;
-  }
-  .course-card:hover .card-cta { gap: 10px; }
-
-  /* Disabled / coming soon card */
-  .course-card.coming-soon {
-    opacity: 0.55;
-    cursor: default;
-    pointer-events: none;
-  }
-
-  /* ── STATS ROW ── */
-  .stats-row {
-    display: flex;
-    gap: 2.5rem;
-    margin-top: 3.5rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--border);
-    animation: fadeUp 0.7s ease 0.55s both;
-  }
-  .stat {
-    text-align: center;
-  }
-  .stat-num {
-    font-family: 'Orbitron', monospace;
-    font-size: 1.6rem;
-    font-weight: 900;
-    color: var(--accent);
-    line-height: 1;
-    margin-bottom: 0.3rem;
-  }
-  .stat-label {
-    font-size: 0.72rem;
-    color: var(--muted);
-    letter-spacing: 1px;
-  }
-
-  /* ── FOOTER ── */
-  footer {
-    text-align: center;
-    padding: 1.5rem;
-    border-top: 1px solid var(--border);
-    font-size: 0.75rem;
-    color: var(--muted);
-    letter-spacing: 0.5px;
-    line-height: 1.8;
-  }
-  footer a { color: var(--accent); text-decoration: none; }
-  footer a:hover { text-decoration: underline; }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 600px) {
-    nav { padding: 1rem 1.2rem; }
-    .hero { padding: 3.5rem 1.2rem 2rem; }
-    .stats-row { gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
-    .hero-title { font-size: 2rem; }
-  }
-</style>
+    /* ─── Prism rainbow bar ─────────────────────── */
+    .rainbow-bar {
+      height: 3px;
+      background: linear-gradient(90deg,
+        #ff0000 0%, #ff7700 16%, #ffff00 33%,
+        #00ff00 50%, #0077ff 66%, #8800ff 83%, #ff00ff 100%);
+      width: 100%;
+    }
+  </style>
 </head>
 <body>
 
-<!-- Starfield -->
-<div class="stars" id="stars"></div>
+<!-- Rainbow light bar at very top -->
+<div class="rainbow-bar"></div>
 
-<div class="page">
+<!-- ─── Header ─────────────────────────────────── -->
+<header>
+  <a class="logo-link" href="https://curious-minds-science-lab.org/">
+    💡 CURIOUS MINDS SCIENCE LAB
+  </a>
+  <span class="header-badge">LEARNING PORTAL</span>
+</header>
 
-  <!-- NAV -->
-  <nav>
-    <a class="nav-logo" href="/">
-      <span class="atom">⚛</span>
-      CURIOUS MINDS SCIENCE LAB
-    </a>
-    <span class="nav-tag">LEARNING PORTAL</span>
-  </nav>
-
-  <!-- HERO -->
-  <main class="hero">
-
-    <div class="hero-eyebrow">
-      <span class="eyebrow-dot"></span>
-      FREE · INTERACTIVE · SELF-PACED
-    </div>
-
-    <h1 class="hero-title">
-      Curious Minds
-      <span class="line2">Science Lab</span>
-    </h1>
-
-    <p class="hero-sub">Explore · Discover · Learn</p>
-
-    <p class="hero-desc">
-      Hands-on science curricula for young explorers. Each topic is a one-hour journey packed with videos, simulations, and quizzes — built for curious minds aged 10 and up.
-    </p>
-
-    <!-- Section label -->
-    <div class="section-label">
-      <span class="section-label-text">AVAILABLE CURRICULA</span>
-      <span class="section-label-line"></span>
-    </div>
-
-    <!-- Course grid -->
-    <div class="course-grid">
-
-      <!-- ── NUCLEAR SCIENCE (live) ── -->
-      <a class="course-card" href="nuclear/index.html">
-        <div class="card-icon">⚛</div>
-        <span class="card-tag tag-available">● AVAILABLE NOW</span>
-        <div class="card-title">Nuclear Science</div>
-        <div class="card-desc">
-          From atoms and fission to power plants and the history of the nuclear age. Includes interactive simulations and a 10-question quiz.
-        </div>
-        <div class="card-meta">
-          <span class="card-meta-item"><span class="card-meta-icon">⏱</span> 1 hour</span>
-          <span class="card-meta-item"><span class="card-meta-icon">📚</span> 5 modules</span>
-          <span class="card-cta">START <span>→</span></span>
-        </div>
-      </a>
-
-      <!-- ── SPACE SCIENCE (coming soon) ── -->
-      <div class="course-card coming-soon">
-        <div class="card-icon">🚀</div>
-        <span class="card-tag tag-soon">◌ COMING SOON</span>
-        <div class="card-title">Space & the Universe</div>
-        <div class="card-desc">
-          Stars, galaxies, black holes, and the scale of the cosmos. Journey from our solar system to the edge of the observable universe.
-        </div>
-        <div class="card-meta">
-          <span class="card-meta-item"><span class="card-meta-icon">⏱</span> 1 hour</span>
-          <span class="card-meta-item"><span class="card-meta-icon">📚</span> 5 modules</span>
-          <span class="card-cta" style="color:var(--muted)">SOON</span>
-        </div>
-      </div>
-
-      <!-- ── BIOLOGY (coming soon) ── -->
-      <div class="course-card coming-soon">
-        <div class="card-icon">🧬</div>
-        <span class="card-tag tag-soon">◌ COMING SOON</span>
-        <div class="card-title">DNA & Life Sciences</div>
-        <div class="card-desc">
-          How living things are built, how DNA carries the code of life, and how modern biology is changing medicine and the world.
-        </div>
-        <div class="card-meta">
-          <span class="card-meta-item"><span class="card-meta-icon">⏱</span> 1 hour</span>
-          <span class="card-meta-item"><span class="card-meta-icon">📚</span> 5 modules</span>
-          <span class="card-cta" style="color:var(--muted)">SOON</span>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Stats -->
-    <div class="stats-row">
-      <div class="stat">
-        <div class="stat-num">1</div>
-        <div class="stat-label">CURRICULUM LIVE</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">5</div>
-        <div class="stat-label">MODULES</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">10</div>
-        <div class="stat-label">QUIZ QUESTIONS</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">100%</div>
-        <div class="stat-label">FREE</div>
-      </div>
-    </div>
-
-  </main>
-
-  <footer>
-    © 2025 Curious Minds Science Lab ·
-    <a href="https://curious-minds-science-lab.org">curious-minds-science-lab.org</a><br>
-    Free educational content for curious young minds everywhere.
-  </footer>
-
+<!-- ─── Hero ──────────────────────────────────── -->
+<div class="hero">
+  <span class="hero-emoji">💡</span>
+  <h1>Curious Minds Science Lab</h1>
+  <p class="hero-sub">Light Science · A 1-hour guided curriculum · Age 10 · Beginner Friendly</p>
+  <div class="hero-tags">
+    <span class="hero-tag">FREE</span>
+    <span class="hero-tag">INTERACTIVE</span>
+    <span class="hero-tag">SELF-PACED</span>
+  </div>
 </div>
 
+<!-- ─── Progress Bar ─────────────────────────── -->
+<div class="progress-bar-wrap">
+  <div class="progress-label">
+    <span>PROGRESS</span>
+    <span id="prog-label">0 / 60 min</span>
+  </div>
+  <div class="progress-bar">
+    <div class="progress-fill" id="prog-fill"></div>
+  </div>
+</div>
+
+<!-- ─── Modules ──────────────────────────────── -->
+<div class="modules">
+
+  <!-- MODULE 01 -->
+  <div class="module" data-minutes="10">
+    <div class="module-header" onclick="toggleModule(this)">
+      <span class="module-num">MODULE 01</span>
+      <span class="module-emoji">🌟</span>
+      <div class="module-title-wrap">
+        <div class="module-title">What Is Light?</div>
+        <div class="module-time">10 min</div>
+      </div>
+      <span class="module-toggle">▼</span>
+    </div>
+    <div class="module-body">
+      <div class="module-intro">
+        Light is one of the most mysterious things in the universe. It travels faster than anything else — about
+        <strong>300,000 kilometres every second</strong>. But what exactly <em>is</em> light? Is it a wave? Is it a particle?
+        The answer, as you'll discover, is both! This module covers the basics of light, how it travels, and why it is so special.
+      </div>
+
+      <div class="card">
+        <div class="card-type video">▶ VIDEO</div>
+        <div class="card-title">What is Light? — Veritasium</div>
+        <div class="card-desc">
+          One of the best science communicators on YouTube dives into what light really is — electromagnetic radiation, photons, and the speed of light — in an engaging, mind-bending way.
+        </div>
+        <a href="https://www.youtube.com/watch?v=IXxZRZxafEQ" target="_blank" rel="noopener" class="card-link">▶ Watch on YouTube →</a>
+      </div>
+
+      <div class="card">
+        <div class="card-type interactive">◉ INTERACTIVE</div>
+        <div class="card-title">PhET: Bending Light Simulation</div>
+        <div class="card-desc">
+          Shoot a laser beam and watch it travel, reflect, and bend as it moves between different materials. See how light behaves in glass, water and air.
+        </div>
+        <a href="https://phet.colorado.edu/en/simulations/bending-light" target="_blank" rel="noopener" class="card-link">Play Simulation →</a>
+      </div>
+
+      <div class="vocab-row">
+        <span class="vocab-chip">Photon</span>
+        <span class="vocab-chip">Electromagnetic Wave</span>
+        <span class="vocab-chip">Speed of Light (c)</span>
+        <span class="vocab-chip">Visible Light</span>
+        <span class="vocab-chip">Wavelength</span>
+        <span class="vocab-chip">Frequency</span>
+      </div>
+
+      <div class="fun-fact">
+        <strong>🤯 Mind-blowing fact:</strong> The light hitting your eyes right now left the Sun about <strong>8 minutes and 20 seconds ago</strong>. Light from the nearest star beyond the Sun took over 4 years to reach us!
+      </div>
+    </div>
+  </div>
+
+  <!-- MODULE 02 -->
+  <div class="module" data-minutes="12">
+    <div class="module-header" onclick="toggleModule(this)">
+      <span class="module-num">MODULE 02</span>
+      <span class="module-emoji">🌈</span>
+      <div class="module-title-wrap">
+        <div class="module-title">Properties of Light</div>
+        <div class="module-time">12 min</div>
+      </div>
+      <span class="module-toggle">▼</span>
+    </div>
+    <div class="module-body">
+      <div class="module-intro">
+        Light can do amazing things: it can <strong>reflect</strong> off mirrors, <strong>refract</strong> (bend) when it moves through water or glass,
+        <strong>diffract</strong> around corners, and even <strong>split into a rainbow</strong> of colours. These properties are what
+        make rainbows, lenses, fibre optics, and cameras possible.
+      </div>
+
+      <div class="card">
+        <div class="card-type video">▶ VIDEO</div>
+        <div class="card-title">TED-Ed: How do we see colour?</div>
+        <div class="card-desc">
+          Explores how light interacts with our eyes to create the experience of colour — and why the sky is blue but sunsets are red.
+        </div>
+        <a href="https://www.youtube.com/watch?v=l8_fZPHasdo" target="_blank" rel="noopener" class="card-link">▶ Watch on YouTube →</a>
+      </div>
+
+      <div class="card">
+        <div class="card-type interactive">◉ INTERACTIVE</div>
+        <div class="card-title">PhET: Wave on a String / Wave Interference</div>
+        <div class="card-desc">
+          Explore how waves work — adjust frequency and amplitude, and watch diffraction and interference patterns form. This is what light waves do too!
+        </div>
+        <a href="https://phet.colorado.edu/en/simulations/wave-interference" target="_blank" rel="noopener" class="card-link">Play Simulation →</a>
+      </div>
+
+      <div class="card">
+        <div class="card-type video">▶ VIDEO</div>
+        <div class="card-title">Why is the sky blue? — MinutePhysics</div>
+        <div class="card-desc">
+          A short, clever 2-minute explanation of Rayleigh scattering — why our sky is blue and not green or violet.
+        </div>
+        <a href="https://www.youtube.com/watch?v=ssEfeAhwjcM" target="_blank" rel="noopener" class="card-link">▶ Watch on YouTube →</a>
+      </div>
+
+      <div class="vocab-row">
+        <span class="vocab-chip">Reflection</span>
+        <span class="vocab-chip">Refraction</span>
+        <span class="vocab-chip">Diffraction</span>
+        <span class="vocab-chip">Dispersion</span>
+        <span class="vocab-chip">Spectrum</span>
+        <span class="vocab-chip">Rayleigh Scattering</span>
+      </div>
+
+      <div class="fun-fact">
+        <strong>🌈 Rainbow fact:</strong> You can never reach a rainbow — it moves with you! Each person sees their own <em>personal</em> rainbow because the light bouncing into your eyes comes from different raindrops than the ones someone else nearby is looking at.
+      </div>
+    </div>
+  </div>
+
+  <!-- MODULE 03 -->
+  <div class="module" data-minutes="13">
+    <div class="module-header" onclick="toggleModule(this)">
+      <span class="module-num">MODULE 03</span>
+      <span class="module-emoji">🕰️</span>
+      <div class="module-title-wrap">
+        <div class="module-title">History: How We Understood Light</div>
+        <div class="module-time">13 min</div>
+      </div>
+      <span class="module-toggle">▼</span>
+    </div>
+    <div class="module-body">
+      <div class="module-intro">
+        For thousands of years, humans debated: what <em>is</em> light? Ancient Greeks thought our eyes shot beams out to "see" objects.
+        It took centuries of brilliant experiments — by Newton, Young, Maxwell, and Einstein — to figure out the truth.
+        The story of light is one of the greatest detective stories in science.
+      </div>
+
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-year">~300 BC</div>
+          <div class="tl-text"><strong>Ancient Greeks</strong> — Euclid and Aristotle debate whether eyes emit rays or receive them. Euclid writes the first known text on optics.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1021</div>
+          <div class="tl-text"><strong>Ibn al-Haytham</strong> (Alhazen) — The first to prove that eyes <em>receive</em> light, not emit it. He invents the first pinhole camera and writes a landmark Book of Optics.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1666</div>
+          <div class="tl-text"><strong>Isaac Newton</strong> — Uses a prism to split white sunlight into a rainbow of colours, proving white light is made of all colours.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1801</div>
+          <div class="tl-text"><strong>Thomas Young</strong> — Double-slit experiment shows light behaves as a <em>wave</em>, creating interference patterns.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1865</div>
+          <div class="tl-text"><strong>James Clerk Maxwell</strong> — Proves light is an electromagnetic wave travelling at a fixed speed, unifying electricity, magnetism, and light.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1905</div>
+          <div class="tl-text"><strong>Albert Einstein</strong> — Explains the photoelectric effect by proposing light also acts as a particle (photon) — earning him the Nobel Prize.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">Today</div>
+          <div class="tl-text">We know light is a <strong>wave AND a particle</strong> — called wave-particle duality. This is one of the strangest and most fascinating facts in all of physics!</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-type video">▶ VIDEO</div>
+        <div class="card-title">The Double Slit Experiment — Kurzgesagt</div>
+        <div class="card-desc">
+          Probably the most mind-bending video in science. The double-slit experiment shows that light (and even matter) does something that seems totally impossible.
+        </div>
+        <a href="https://www.youtube.com/watch?v=p-MNSLsjjdo" target="_blank" rel="noopener" class="card-link">▶ Watch on YouTube →</a>
+      </div>
+
+      <div class="card">
+        <div class="card-type article">📖 ARTICLE</div>
+        <div class="card-title">Ibn al-Haytham — Father of Modern Optics</div>
+        <div class="card-desc">
+          Learn about the 11th century scientist who figured out how vision really works, 600 years before Europe caught up. A fascinating story from the Golden Age of Islamic science.
+        </div>
+        <a href="https://www.1001inventions.com/ibn-al-haytham/" target="_blank" rel="noopener" class="card-link">Read Article →</a>
+      </div>
+
+      <div class="vocab-row">
+        <span class="vocab-chip">Optics</span>
+        <span class="vocab-chip">Prism</span>
+        <span class="vocab-chip">Wave-Particle Duality</span>
+        <span class="vocab-chip">Photoelectric Effect</span>
+        <span class="vocab-chip">Double-Slit Experiment</span>
+        <span class="vocab-chip">Electromagnetic Spectrum</span>
+      </div>
+
+      <div class="fun-fact">
+        <strong>🏆 Nobel Prize fact:</strong> Einstein won his 1921 Nobel Prize NOT for his famous E=mc² or relativity — but for explaining the photoelectric effect (how light knocks electrons off metal). It was this work that proved light comes in packets called photons.
+      </div>
+    </div>
+  </div>
+
+  <!-- MODULE 04 -->
+  <div class="module" data-minutes="12">
+    <div class="module-header" onclick="toggleModule(this)">
+      <span class="module-num">MODULE 04</span>
+      <span class="module-emoji">🔭</span>
+      <div class="module-title-wrap">
+        <div class="module-title">Light in Action: How We Use It</div>
+        <div class="module-time">12 min</div>
+      </div>
+      <span class="module-toggle">▼</span>
+    </div>
+    <div class="module-body">
+      <div class="module-intro">
+        Light isn't just for seeing — humans have turned it into an incredible tool. From
+        <strong>lasers</strong> that cut through steel and read Blu-rays, to <strong>fibre optic cables</strong>
+        that carry the internet around the world, to <strong>telescopes</strong> that reveal galaxies
+        billions of light-years away. Even <strong>solar panels</strong> work by turning photons directly into electricity!
+      </div>
+
+      <div class="card">
+        <div class="card-type video">▶ VIDEO</div>
+        <div class="card-title">How Lasers Work — SciShow</div>
+        <div class="card-desc">
+          An engaging explainer on what a laser actually is — stimulated emission, coherent light, and why lasers are used in medicine, engineering, and your TV remote.
+        </div>
+        <a href="https://www.youtube.com/watch?v=RQUFOA_8LZg" target="_blank" rel="noopener" class="card-link">▶ Watch on YouTube →</a>
+      </div>
+
+      <div class="card">
+        <div class="card-type video">▶ VIDEO</div>
+        <div class="card-title">How Does Fibre Optic Internet Work? — TED-Ed</div>
+        <div class="card-desc">
+          Explains total internal reflection — how light bounces along a glass fibre to carry billions of bits of data across oceans every second.
+        </div>
+        <a href="https://www.youtube.com/watch?v=zAVsTubdd_Q" target="_blank" rel="noopener" class="card-link">▶ Watch on YouTube →</a>
+      </div>
+
+      <div class="card">
+        <div class="card-type interactive">◉ INTERACTIVE</div>
+        <div class="card-title">NASA: Electromagnetic Spectrum Explorer</div>
+        <div class="card-desc">
+          Explore the full electromagnetic spectrum — from radio waves to gamma rays. See which telescopes observe which wavelengths and what they reveal about the universe.
+        </div>
+        <a href="https://science.nasa.gov/ems/" target="_blank" rel="noopener" class="card-link">Explore →</a>
+      </div>
+
+      <div class="vocab-row">
+        <span class="vocab-chip">Laser</span>
+        <span class="vocab-chip">Fibre Optics</span>
+        <span class="vocab-chip">Total Internal Reflection</span>
+        <span class="vocab-chip">Solar Cell</span>
+        <span class="vocab-chip">Infrared</span>
+        <span class="vocab-chip">Ultraviolet</span>
+        <span class="vocab-chip">X-Ray</span>
+      </div>
+
+      <div class="fun-fact">
+        <strong>⚡ Solar power fact:</strong> Every hour, more solar energy hits the Earth than all of humanity uses in an <em>entire year</em>. Solar panels — which work using the same photoelectric effect Einstein discovered — could theoretically power the whole planet.
+      </div>
+    </div>
+  </div>
+
+  <!-- MODULE 05 -->
+  <div class="module" data-minutes="13">
+    <div class="module-header" onclick="toggleModule(this)">
+      <span class="module-num">MODULE 05</span>
+      <span class="module-emoji">🚀</span>
+      <div class="module-title-wrap">
+        <div class="module-title">Weird & Wonderful Light Facts</div>
+        <div class="module-time">13 min</div>
+      </div>
+      <span class="module-toggle">▼</span>
+    </div>
+    <div class="module-body">
+      <div class="module-intro">
+        The universe has some seriously <strong>strange tricks</strong> involving light. Black holes trap it forever.
+        Some animals can see colours we can't. Light can be slowed down to a stop — or even <em>twisted</em>.
+        And one of the most shocking discoveries ever: nothing can travel faster than light, which means
+        <strong>the past, present, and future aren't the same for everyone</strong>. Welcome to the weird frontier of light science!
+      </div>
+
+      <div class="card">
+        <div class="card-type video">▶ VIDEO</div>
+        <div class="card-title">Why We Cannot Go Faster Than Light — BBC Reel</div>
+        <div class="card-desc">
+          Explains special relativity and why the speed of light is the ultimate cosmic speed limit — and what incredibly strange things happen when you get close to it.
+        </div>
+        <a href="https://www.youtube.com/watch?v=Fv3R8WuWIqk&t=188s" target="_blank" rel="noopener" class="card-link">▶ Watch on YouTube →</a>
+      </div>
+
+      <div class="card">
+        <div class="card-type video">▶ VIDEO</div>
+        <div class="card-title">What Does a Black Hole Actually Look Like? — Veritasium</div>
+        <div class="card-desc">
+          A stunning deep dive into the Event Horizon Telescope and what it took to photograph a black hole — a place where even light cannot escape.
+        </div>
+        <a href="https://www.youtube.com/watch?v=zUyH3XhpLTo" target="_blank" rel="noopener" class="card-link">▶ Watch on YouTube →</a>
+      </div>
+
+      <div class="card">
+        <div class="card-type interactive">◉ INTERACTIVE</div>
+        <div class="card-title">Exploratorium: Light &amp; Colour Activities</div>
+        <div class="card-desc">
+          Hands-on experiments you can do at home about colour mixing, shadows, and optical illusions. Perfect for exploring light with everyday objects.
+        </div>
+        <a href="https://www.exploratorium.edu/light-color" target="_blank" rel="noopener" class="card-link">Explore →</a>
+      </div>
+
+      <div class="vocab-row">
+        <span class="vocab-chip">Special Relativity</span>
+        <span class="vocab-chip">Event Horizon</span>
+        <span class="vocab-chip">Black Hole</span>
+        <span class="vocab-chip">Time Dilation</span>
+        <span class="vocab-chip">Bioluminescence</span>
+        <span class="vocab-chip">Optical Illusion</span>
+      </div>
+
+      <div class="fun-fact">
+        <strong>🦑 Animal superpower fact:</strong> Mantis shrimps have 16 types of colour receptors — humans only have 3! They can see colours completely invisible to us, including ultraviolet and infrared light. They essentially see a whole dimension of colour we can't imagine.
+      </div>
+    </div>
+  </div>
+
+</div><!-- /modules -->
+
+<!-- ─── Quiz ──────────────────────────────────── -->
+<div class="quiz-section">
+  <div class="quiz-header">
+    <div style="font-size:36px; margin-bottom:12px;">🧪</div>
+    <h2>Knowledge Check</h2>
+    <p>10 questions · See how much you've learned!</p>
+  </div>
+
+  <div id="quiz-form">
+
+    <div class="quiz-q">
+      <div class="q-num">QUESTION 1 / 10</div>
+      <div class="q-text">How fast does light travel in a vacuum?</div>
+      <div class="q-options">
+        <label class="q-option"><input type="radio" name="q1" value="a"> About 300,000 kilometres per second</label>
+        <label class="q-option"><input type="radio" name="q1" value="b"> About 3,000 kilometres per second</label>
+        <label class="q-option"><input type="radio" name="q1" value="c"> About 300 kilometres per second</label>
+        <label class="q-option"><input type="radio" name="q1" value="d"> It depends on the colour of light</label>
+      </div>
+    </div>
+
+    <div class="quiz-q">
+      <div class="q-num">QUESTION 2 / 10</div>
+      <div class="q-text">What is a photon?</div>
+      <div class="q-options">
+        <label class="q-option"><input type="radio" name="q2" value="a"> A type of atom</label>
+        <label class="q-option"><input type="radio" name="q2" value="b"> A particle of light</label>
+        <label class="q-option"><input type="radio" name="q2" value="c"> A type of sound wave</label>
+        <label class="q-option"><input type="radio" name="q2" value="d"> A proton from the Sun</label>
+      </div>
+    </div>
+
+    <div class="quiz-q">
+      <div class="q-num">QUESTION 3 / 10</div>
+      <div class="q-text">What happens to light when it moves from air into water or glass?</div>
+      <div class="q-options">
+        <label class="q-option"><input type="radio" name="q3" value="a"> It speeds up</label>
+        <label class="q-option"><input type="radio" name="q3" value="b"> It disappears</label>
+        <label class="q-option"><input type="radio" name="q3" value="c"> It bends — this is called refraction</label>
+        <label class="q-option"><input type="radio" name="q3" value="d"> Its colour changes permanently</label>
+      </div>
+    </div>
+
+    <div class="quiz-q">
+      <div class="q-num">QUESTION 4 / 10</div>
+      <div class="q-text">Which scientist first split white light into a rainbow using a prism?</div>
+      <div class="q-options">
+        <label class="q-option"><input type="radio" name="q4" value="a"> Albert Einstein</label>
+        <label class="q-option"><input type="radio" name="q4" value="b"> Isaac Newton</label>
+        <label class="q-option"><input type="radio" name="q4" value="c"> Thomas Young</label>
+        <label class="q-option"><input type="radio" name="q4" value="d"> Ibn al-Haytham</label>
+      </div>
+    </div>
+
+    <div class="quiz-q">
+      <div class="q-num">QUESTION 5 / 10</div>
+      <div class="q-text">Why is the sky blue?</div>
+      <div class="q-options">
+        <label class="q-option"><input type="radio" name="q5" value="a"> The oceans reflect blue light upwards</label>
+        <label class="q-option"><input type="radio" name="q5" value="b"> The atmosphere contains blue gas</label>
+        <label class="q-option"><input type="radio" name="q5" value="c"> Blue light scatters more than other colours in the atmosphere (Rayleigh scattering)</label>
+        <label class="q-option"><input type="radio" name="q5" value="d"> The Sun emits mostly blue light</label>
+      </div>
+    </div>
+
+    <div class="quiz-q">
+      <div class="q-num">QUESTION 6 / 10</div>
+      <div class="q-text">What does fibre optic cable use to carry information?</div>
+      <div class="q-options">
+        <label class="q-option"><input type="radio" name="q6" value="a"> Electrical signals in copper wire</label>
+        <label class="q-option"><input type="radio" name="q6" value="b"> Pulses of light bouncing inside a glass fibre</label>
+        <label class="q-option"><input type="radio" name="q6" value="c"> Radio waves</label>
+        <label class="q-option"><input type="radio" name="q6" value="d"> Water flowing through a tube</label>
+      </div>
+    </div>
+
+    <div class="quiz-q">
+      <div class="q-num">QUESTION 7 / 10</div>
+      <div class="q-text">Which scientist proved that light is an electromagnetic wave and calculated its speed?</div>
+      <div class="q-options">
+        <label class="q-option"><input type="radio" name="q7" value="a"> Michael Faraday</label>
+        <label class="q-option"><input type="radio" name="q7" value="b"> Isaac Newton</label>
+        <label class="q-option"><input type="radio" name="q7" value="c"> James Clerk Maxwell</label>
+        <label class="q-option"><input type="radio" name="q7" value="d"> Nikola Tesla</label>
+      </div>
+    </div>
+
+    <div class="quiz-q">
+      <div class="q-num">QUESTION 8 / 10</div>
+      <div class="q-text">What strange property does light have that was proven by the double-slit experiment?</div>
+      <div class="q-options">
+        <label class="q-option"><input type="radio" name="q8" value="a"> It can travel backwards through time</label>
+        <label class="q-option"><input type="radio" name="q8" value="b"> It behaves as both a wave AND a particle (wave-particle duality)</label>
+        <label class="q-option"><input type="radio" name="q8" value="c"> It slows down near Earth</label>
+        <label class="q-option"><input type="radio" name="q8" value="d"> It has mass</label>
+      </div>
+    </div>
+
+    <div class="quiz-q">
+      <div class="q-num">QUESTION 9 / 10</div>
+      <div class="q-text">What is a black hole famous for doing to light?</div>
+      <div class="q-options">
+        <label class="q-option"><input type="radio" name="q9" value="a"> Reflecting it back like a mirror</label>
+        <label class="q-option"><input type="radio" name="q9" value="b"> Splitting it into colours</label>
+        <label class="q-option"><input type="radio" name="q9" value="c"> Trapping it — light that enters cannot escape</label>
+        <label class="q-option"><input type="radio" name="q9" value="d"> Speeding it up beyond normal</label>
+      </div>
+    </div>
+
+    <div class="quiz-q">
+      <div class="q-num">QUESTION 10 / 10</div>
+      <div class="q-text">How many types of colour receptors do mantis shrimps have in their eyes?</div>
+      <div class="q-options">
+        <label class="q-option"><input type="radio" name="q10" value="a"> 3 (same as humans)</label>
+        <label class="q-option"><input type="radio" name="q10" value="b"> 6</label>
+        <label class="q-option"><input type="radio" name="q10" value="c"> 16</label>
+        <label class="q-option"><input type="radio" name="q10" value="d"> 100</label>
+      </div>
+    </div>
+
+    <button class="quiz-submit" onclick="submitQuiz()">Submit Answers</button>
+  </div>
+
+  <div class="quiz-result" id="quiz-result">
+    <div class="result-score" id="result-score">—</div>
+    <div class="result-label" id="result-label">correct answers</div>
+  </div>
+</div>
+
+<!-- ─── Footer ────────────────────────────────── -->
+<footer>
+  Curriculum designed for curious minds · All linked resources are free and educational<br>
+  Videos: YouTube · TED-Ed / Kurzgesagt / Veritasium / MinutePhysics · Simulations: PhET Interactive (University of Colorado)<br>
+  <br>
+  © 2025 <a href="https://curious-minds-science-lab.org">Curious Minds Science Lab</a> ·
+  Free educational content for curious young minds everywhere.
+</footer>
+
+<!-- ─── Scripts ───────────────────────────────── -->
 <script>
-  // Generate starfield
-  const container = document.getElementById('stars');
-  for (let i = 0; i < 120; i++) {
-    const s = document.createElement('span');
-    const size = Math.random() * 2.5 + 0.5;
-    s.style.cssText = `
-      width: ${size}px;
-      height: ${size}px;
-      top: ${Math.random() * 100}%;
-      left: ${Math.random() * 100}%;
-      --d: ${(Math.random() * 4 + 2).toFixed(1)}s;
-      --delay: -${(Math.random() * 6).toFixed(1)}s;
-      --op: ${(Math.random() * 0.5 + 0.2).toFixed(2)};
-    `;
-    container.appendChild(s);
+  /* ── Module toggle ── */
+  function toggleModule(header) {
+    const mod = header.closest('.module');
+    const isOpen = mod.classList.contains('open');
+    mod.classList.toggle('open', !isOpen);
+    updateProgress();
+  }
+
+  /* ── Progress tracker ── */
+  function updateProgress() {
+    const openMods = document.querySelectorAll('.module.open');
+    let mins = 0;
+    openMods.forEach(m => { mins += parseInt(m.dataset.minutes, 10) || 0; });
+    mins = Math.min(mins, 60);
+    document.getElementById('prog-fill').style.width = (mins / 60 * 100) + '%';
+    document.getElementById('prog-label').textContent = mins + ' / 60 min';
+  }
+
+  /* ── Quiz ── */
+  const answers = { q1:'a', q2:'b', q3:'c', q4:'b', q5:'c', q6:'b', q7:'c', q8:'b', q9:'c', q10:'c' };
+
+  function submitQuiz() {
+    let score = 0;
+    document.querySelectorAll('.quiz-q').forEach(qDiv => {
+      const sel = qDiv.querySelector('input[type="radio"]:checked');
+      const name = qDiv.querySelector('input[type="radio"]').name;
+      const correct = answers[name];
+      qDiv.querySelectorAll('.q-option').forEach(opt => {
+        const inp = opt.querySelector('input');
+        if (inp.value === correct) opt.classList.add('correct');
+      });
+      if (sel) {
+        if (sel.value === correct) { score++; }
+        else { sel.closest('.q-option').classList.add('wrong'); }
+      }
+      qDiv.querySelectorAll('input').forEach(i => i.disabled = true);
+    });
+
+    const msgs = [
+      'Keep exploring — science takes practice! 🔬',
+      'Good start — try reviewing the modules again!',
+      'Nicely done — you\'re getting the hang of it! 💡',
+      'Great work — you\'re a light scientist! 🌟',
+      'Perfect score — you\'re a photon master! 🚀'
+    ];
+    const msgIdx = score <= 2 ? 0 : score <= 4 ? 1 : score <= 6 ? 2 : score <= 9 ? 3 : 4;
+
+    document.getElementById('result-score').textContent = score + ' / 10';
+    document.getElementById('result-label').textContent = msgs[msgIdx];
+    const res = document.getElementById('quiz-result');
+    res.classList.add('show');
+    res.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    document.querySelector('.quiz-submit').style.display = 'none';
   }
 </script>
+
 </body>
 </html>
