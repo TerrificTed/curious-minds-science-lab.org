@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🧬 DNA & Life Sciences Explorer — Curious Minds Science Lab</title>
+<style>
+  :root {
+    --green: #00c896;
+    --green-dark: #00a07a;
+    --green-dim: #003d2e;
+    --bg: #0a0f0d;
+    --bg2: #0f1a14;
+    --bg3: #152019;
+    --card: #111c16;
+    --border: #1e3228;
+    --text: #d4edd8;
+    --text-dim: #6a9070;
+    --accent: #39ff8a;
+    --yellow: #f0e040;
+    --red: #ff5555;
+    --purple: #c084fc;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Courier New', 'Lucida Console', monospace;
+    line-height: 1.6;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+  }
+  .site-header a {
+    color: var(--green);
+    text-decoration: none;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+  .site-header a:hover { color: var(--accent); }
+  .sep { opacity: 0.3; }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 48px 24px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 50% 0%, rgba(0,200,150,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-icon {
+    font-size: 52px;
+    display: block;
+    margin-bottom: 12px;
+    filter: drop-shadow(0 0 20px rgba(0,200,150,0.5));
+  }
+  .hero-label {
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .hero h1 {
+    font-size: 28px;
+    font-weight: bold;
+    color: #fff;
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+  }
+  .hero h1 span { color: var(--green); }
+  .hero-sub {
+    font-size: 13px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+  }
+  .hero-badges {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .badge {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 4px 14px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+  }
+
+  /* ── PROGRESS ── */
+  .progress-bar-wrap {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+  }
+  .progress-track {
+    flex: 1;
+    height: 4px;
+    background: var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--green);
+    width: 0%;
+    transition: width 0.4s ease;
+    box-shadow: 0 0 8px var(--green);
+  }
+  #progress-label { color: var(--green); min-width: 80px; }
+
+  /* ── LAYOUT ── */
+  .main { max-width: 860px; margin: 0 auto; padding: 32px 20px 64px; }
+
+  /* ── MODULE ── */
+  .module {
+    border: 1px solid var(--border);
+    background: var(--card);
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .module-header {
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s;
+  }
+  .module-header:hover { background: var(--bg3); }
+  .module-num {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--text-dim);
+    min-width: 80px;
+  }
+  .module-title {
+    flex: 1;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    letter-spacing: 0.5px;
+  }
+  .module-time {
+    font-size: 11px;
+    color: var(--green);
+    letter-spacing: 2px;
+    margin-right: 12px;
+  }
+  .module-arrow {
+    color: var(--text-dim);
+    font-size: 14px;
+    transition: transform 0.2s;
+  }
+  .module.open .module-arrow { transform: rotate(180deg); }
+
+  .module-body {
+    display: none;
+    padding: 0 20px 24px;
+    border-top: 1px solid var(--border);
+  }
+  .module.open .module-body { display: block; }
+
+  .module-intro {
+    padding: 18px 0 16px;
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.75;
+  }
+  .module-intro strong { color: var(--accent); }
+  .module-intro em { color: var(--yellow); font-style: normal; }
+
+  /* ── RESOURCE CARDS ── */
+  .resource {
+    border: 1px solid var(--border);
+    background: var(--bg2);
+    padding: 14px 16px;
+    margin: 10px 0;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .resource-type {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    min-width: 80px;
+    padding-top: 2px;
+    text-transform: uppercase;
+  }
+  .resource-type.video { color: var(--red); }
+  .resource-type.interactive { color: var(--purple); }
+  .resource-type.article { color: var(--yellow); }
+  .resource-body { flex: 1; }
+  .resource-title {
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .resource-desc {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+    line-height: 1.6;
+  }
+  .resource-link {
+    display: inline-block;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--green);
+    text-decoration: none;
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 4px 12px;
+    transition: all 0.15s;
+  }
+  .resource-link:hover {
+    background: var(--green);
+    color: #000;
+    border-color: var(--green);
+  }
+
+  /* ── VOCAB STRIP ── */
+  .vocab-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 14px 0;
+  }
+  .vocab-pill {
+    background: var(--green-dim);
+    border: 1px solid var(--green-dark);
+    color: var(--green);
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 3px 10px;
+  }
+
+  /* ── FACT BOX ── */
+  .fact-box {
+    border-left: 3px solid var(--green);
+    background: var(--bg3);
+    padding: 12px 16px;
+    margin: 14px 0;
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.7;
+  }
+  .fact-box::before {
+    content: '🤯 Mind-blowing fact: ';
+    color: var(--yellow);
+    font-weight: bold;
+  }
+
+  /* ── TIMELINE ── */
+  .timeline { margin: 16px 0; }
+  .tl-item {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 14px;
+    align-items: flex-start;
+  }
+  .tl-year {
+    min-width: 60px;
+    color: var(--green);
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    padding-top: 2px;
+  }
+  .tl-line {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 4px;
+  }
+  .tl-dot {
+    width: 10px; height: 10px;
+    border: 2px solid var(--green);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .tl-stem {
+    width: 1px;
+    flex: 1;
+    background: var(--border);
+    min-height: 24px;
+    margin-top: 4px;
+  }
+  .tl-text { font-size: 13px; color: var(--text); line-height: 1.6; padding-top: 0; }
+  .tl-text strong { color: #fff; }
+
+  /* ── QUIZ ── */
+  .quiz-section {
+    border: 1px solid var(--border);
+    background: var(--card);
+    margin-top: 32px;
+  }
+  .quiz-header {
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 24px;
+    text-align: center;
+  }
+  .quiz-header .quiz-icon { font-size: 36px; display: block; margin-bottom: 8px; }
+  .quiz-header h2 {
+    font-size: 18px;
+    color: #fff;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .quiz-header p { font-size: 12px; color: var(--text-dim); letter-spacing: 2px; }
+  .quiz-body { padding: 24px; }
+
+  .q-block { margin-bottom: 28px; }
+  .q-text {
+    font-size: 14px;
+    color: #fff;
+    margin-bottom: 12px;
+    line-height: 1.6;
+  }
+  .q-num {
+    color: var(--green);
+    font-size: 11px;
+    letter-spacing: 2px;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .q-options { display: flex; flex-direction: column; gap: 6px; }
+  .q-opt {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 9px 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 13px;
+    color: var(--text);
+    user-select: none;
+  }
+  .q-opt:hover { border-color: var(--green); color: #fff; }
+  .q-opt input { accent-color: var(--green); cursor: pointer; }
+  .q-opt.correct { border-color: var(--green); background: var(--green-dim); color: var(--accent); }
+  .q-opt.wrong { border-color: var(--red); background: #2a0a0a; color: var(--red); }
+
+  .quiz-submit {
+    display: block;
+    width: 100%;
+    background: var(--green);
+    color: #000;
+    border: none;
+    padding: 14px;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    cursor: pointer;
+    font-family: inherit;
+    text-transform: uppercase;
+    transition: background 0.15s;
+    margin-top: 8px;
+  }
+  .quiz-submit:hover { background: var(--accent); }
+  .quiz-result {
+    display: none;
+    margin-top: 20px;
+    padding: 20px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    text-align: center;
+  }
+  .quiz-result.show { display: block; }
+  .quiz-score {
+    font-size: 36px;
+    font-weight: bold;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .quiz-msg { font-size: 13px; color: var(--text-dim); letter-spacing: 1px; }
+
+  /* ── FOOTER ── */
+  .page-footer {
+    border-top: 1px solid var(--border);
+    padding: 20px 24px;
+    text-align: center;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    line-height: 2;
+    margin-top: 48px;
+  }
+  .page-footer a { color: var(--green); text-decoration: none; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 20px; }
+    .module-num { display: none; }
+    .resource { flex-direction: column; gap: 6px; }
+    .resource-type { min-width: unset; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SITE HEADER -->
+<div class="site-header">
+  <a href="https://curious-minds-science-lab.org/">🧪 CURIOUS MINDS SCIENCE LAB</a>
+  <span class="sep">·</span>
+  <span>LEARNING PORTAL</span>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <span class="hero-icon">🧬</span>
+  <div class="hero-label">Science Explorer</div>
+  <h1>Curious Minds Science Lab<br><span>DNA & Life Sciences</span></h1>
+  <div class="hero-sub">A 1-hour guided curriculum · Age 10 · Beginner Friendly</div>
+  <div class="hero-badges">
+    <span class="badge">FREE</span>
+    <span class="badge">INTERACTIVE</span>
+    <span class="badge">SELF-PACED</span>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-bar-wrap">
+  <span>PROGRESS</span>
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <span id="progress-label">0 / 60 min</span>
+</div>
+
+<div class="main">
+
+  <!-- ══ MODULE 01 ══ -->
+  <div class="module" id="mod1" data-minutes="10">
+    <div class="module-header" onclick="toggleModule('mod1', 10)">
+      <span class="module-num">MODULE 01</span>
+      <span class="module-title">🧬 What Is DNA?</span>
+      <span class="module-time">10 min</span>
+      <span class="module-arrow">▼</span>
+    </div>
+    <div class="module-body">
+      <div class="module-intro">
+        Inside every single cell of your body — and there are about <strong>37 trillion</strong> of them — there is a twisted ladder called <strong>DNA</strong>. DNA stands for <em>Deoxyribonucleic Acid</em>, and it is the most incredible storage device ever discovered. It holds <strong>all the instructions</strong> needed to build you: your eye colour, how tall you grow, whether you can roll your tongue. If you stretched out all the DNA in just one of your cells, it would be about <strong>2 metres long</strong>. And yet it is coiled so tightly it fits inside a space 200 times smaller than the width of a human hair.
+      </div>
+
+      <div class="resource">
+        <span class="resource-type video">▶ VIDEO</span>
+        <div class="resource-body">
+          <div class="resource-title">What is DNA and How Does It Work? — Stated Clearly</div>
+          <div class="resource-desc">A beautifully animated and crystal-clear explanation of DNA: what it is, how it's structured, and what it actually does inside your cells. Perfect starting point, age-appropriate and engaging (~10 min).</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=zwibgNGe4aY" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+      </div>
+
+      <div class="resource">
+        <span class="resource-type interactive">◉ INTERACTIVE</span>
+        <div class="resource-body">
+          <div class="resource-title">HHMI BioInteractive: DNA Structure</div>
+          <div class="resource-desc">Explore the double helix structure in 3D — spin it, zoom in, and see how base pairs (A-T and G-C) fit together like puzzle pieces. From the Howard Hughes Medical Institute, one of the world's top biology education organisations.</div>
+          <a class="resource-link" href="https://dna-3-d-simulator.vercel.app/" target="_blank">Explore Interactive →</a>
+        </div>
+      </div>
+
+      <div class="vocab-strip">
+        <span class="vocab-pill">DNA</span>
+        <span class="vocab-pill">Double Helix</span>
+        <span class="vocab-pill">Nucleotide</span>
+        <span class="vocab-pill">Base Pair</span>
+        <span class="vocab-pill">Adenine (A)</span>
+        <span class="vocab-pill">Thymine (T)</span>
+        <span class="vocab-pill">Guanine (G)</span>
+        <span class="vocab-pill">Cytosine (C)</span>
+      </div>
+
+      <div class="fact-box">
+        If you uncoiled all the DNA from all 37 trillion cells in your body and laid it end to end, it would stretch from Earth to the Sun — and back — about <strong>70 times</strong>.
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ MODULE 02 ══ -->
+  <div class="module" id="mod2" data-minutes="10">
+    <div class="module-header" onclick="toggleModule('mod2', 10)">
+      <span class="module-num">MODULE 02</span>
+      <span class="module-title">🔤 DNA vs RNA — What's the Difference?</span>
+      <span class="module-time">10 min</span>
+      <span class="module-arrow">▼</span>
+    </div>
+    <div class="module-body">
+      <div class="module-intro">
+        DNA is like the master recipe book, locked safely in the nucleus of your cell. But the cell's machinery — out in the cytoplasm — can't read it directly. That's where <strong>RNA</strong> (Ribonucleic Acid) comes in. RNA is a temporary <em>copy</em> of one recipe, carried out of the nucleus so the cell can build the proteins it needs. Think of DNA as the original cookbook in a library vault, and RNA as a photocopy you take to the kitchen. There are three key differences: RNA is <strong>single-stranded</strong> (not a double helix), it uses <em>Uracil (U)</em> instead of Thymine, and it is much shorter and disposable.
+      </div>
+
+      <div class="resource">
+        <span class="resource-type video">▶ VIDEO</span>
+        <div class="resource-body">
+          <div class="resource-title">What is DNA and How Does it Work?</div>
+          <div class="resource-desc">TED-Ed's brilliantly animated explainer covers the full story — DNA structure, how genes work, and what separates DNA from RNA. Narrated clearly for young learners (~5 min).</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=zwibgNGe4aY" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+      </div>
+
+      <div class="resource">
+        <span class="resource-type video">▶ VIDEO</span>
+        <div class="resource-body">
+          <div class="resource-title">From DNA to Protein — HHMI BioInteractive</div>
+          <div class="resource-desc">Watch step by step how a gene in DNA gets transcribed into mRNA, then translated into a protein by a ribosome. The central dogma of biology, beautifully animated (3 min).</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=gG7uCskUOrA" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+      </div>
+
+      <div class="resource">
+        <span class="resource-type interactive">◉ INTERACTIVE</span>
+        <div class="resource-body">
+          <div class="resource-title">Learn.Genetics: DNA to Protein Interactive</div>
+          <div class="resource-desc">Step through transcription and translation yourself — build an mRNA strand from a DNA template, then use the genetic code to build a protein. Brilliant hands-on interactive from University of Utah.</div>
+          <a class="resource-link" href="https://learn.genetics.utah.edu/content/basics/transcribe/" target="_blank">Try Interactive →</a>
+        </div>
+      </div>
+
+      <div class="vocab-strip">
+        <span class="vocab-pill">RNA</span>
+        <span class="vocab-pill">mRNA</span>
+        <span class="vocab-pill">Transcription</span>
+        <span class="vocab-pill">Translation</span>
+        <span class="vocab-pill">Ribosome</span>
+        <span class="vocab-pill">Uracil (U)</span>
+        <span class="vocab-pill">Protein</span>
+        <span class="vocab-pill">Codon</span>
+      </div>
+
+      <div class="fact-box">
+        One type of COVID-19 vaccines was an <strong>mRNA Vaccine</strong> — the first of its kind used widely in humans. Instead of putting a weakened virus into your body, it gives your cells an mRNA instruction that teaches them to recognise the virus. RNA science literally helped end a pandemic.
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ MODULE 03 ══ -->
+  <div class="module" id="mod3" data-minutes="15">
+    <div class="module-header" onclick="toggleModule('mod3', 15)">
+      <span class="module-num">MODULE 03</span>
+      <span class="module-title">👤 Human Genetics — What Makes You, You?</span>
+      <span class="module-time">15 min</span>
+      <span class="module-arrow">▼</span>
+    </div>
+    <div class="module-body">
+      <div class="module-intro">
+        Your DNA contains about <strong>3 billion base pairs</strong> — that's the human genome. Packed inside those pairs are roughly <em>20,000 genes</em>, each one an instruction for making a protein that does something in your body. But here's the wild part: <strong>99.9% of your DNA is identical to every other human on Earth</strong>. That tiny 0.1% difference — just 3 million base pairs — accounts for all the variation you see between people: height, hair, blood type, even how your earwax smells. You also inherit two copies of each gene — one from each parent — which is why traits can skip generations or mix in unexpected ways.
+      </div>
+
+      <div class="resource">
+        <span class="resource-type video">▶ VIDEO</span>
+        <div class="resource-body">
+          <div class="resource-title">TED-Ed: How Mendel's Pea Plants Helped Us Understand Genetics</div>
+          <div class="resource-desc">The story of Gregor Mendel, the monk who figured out inheritance using pea plants in the 1860s — long before DNA was even discovered. A brilliant and funny history of how genetics began.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=Mehz7tCxjSE" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+      </div>
+
+      <div class="resource">
+        <span class="resource-type interactive">◉ INTERACTIVE</span>
+        <div class="resource-body">
+          <div class="resource-title">Learn.Genetics: How Traits Are Inherited</div>
+          <div class="resource-desc">Try the "Dragon Genetics" activity — breed two dragons and predict what traits their offspring will inherit. Dominant and recessive genes explained visually and interactively. From the University of Utah.</div>
+          <a class="resource-link" href="https://learn.genetics.utah.edu/content/basics/inheritance/" target="_blank">Try Interactive →</a>
+        </div>
+      </div>
+
+      <div class="resource">
+        <span class="resource-type video">▶ VIDEO</span>
+        <div class="resource-body">
+          <div class="resource-title">Genetics and Heredity | Science for Kids</div>
+          <div class="resource-desc">Surprising facts about what our genes actually do — including why some people can taste bitter compounds others can't, and why identical twins aren't perfectly identical. Fast, fun, and full of "wow" moments (~7 min).</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=Xh5OKecomXE" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+      </div>
+
+      <div class="vocab-strip">
+        <span class="vocab-pill">Gene</span>
+        <span class="vocab-pill">Genome</span>
+        <span class="vocab-pill">Chromosome</span>
+        <span class="vocab-pill">Dominant</span>
+        <span class="vocab-pill">Recessive</span>
+        <span class="vocab-pill">Heredity</span>
+        <span class="vocab-pill">Allele</span>
+        <span class="vocab-pill">Mutation</span>
+      </div>
+
+      <div class="fact-box">
+        You share about <strong>60% of your DNA</strong> with a banana. And about <strong>98.7%</strong> with a chimpanzee. Evolution left its fingerprints all over life on Earth — and the proof is in the genes.
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ MODULE 04 ══ -->
+  <div class="module" id="mod4" data-minutes="15">
+    <div class="module-header" onclick="toggleModule('mod4', 15)">
+      <span class="module-num">MODULE 04</span>
+      <span class="module-title">🦕 Evolution & How It Shapes Our DNA</span>
+      <span class="module-time">15 min</span>
+      <span class="module-arrow">▼</span>
+    </div>
+    <div class="module-body">
+      <div class="module-intro">
+        Evolution is the process by which life changes over millions of years — and <strong>DNA is the mechanism</strong>. When DNA is copied, tiny mistakes called <em>mutations</em> sometimes happen. Most are harmless. Some are harmful. But occasionally, a mutation gives an organism a <strong>survival advantage</strong> — and that creature is more likely to survive, reproduce, and pass the mutation on. Over millions of generations, these changes accumulate. That's how fish became land animals, how dinosaurs became birds, and how primates became us. Every organism alive today carries DNA that has been shaped by roughly <strong>4 billion years</strong> of evolution.
+      </div>
+
+      <div class="resource">
+        <span class="resource-type video">▶ VIDEO</span>
+        <div class="resource-body">
+          <div class="resource-title">Kurzgesagt: Evolution — How It Actually Works</div>
+          <div class="resource-desc">Kurzgesagt's stunning animation explains natural selection, random mutation, and how these forces drove all of life's diversity — from single-celled ancestors to humans. One of the best evolution explainers ever made (~10 min).</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=hOfRN0KihOU" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+      </div>
+
+      <div class="resource">
+        <span class="resource-type interactive">◉ INTERACTIVE</span>
+        <div class="resource-body">
+          <div class="resource-title">PBS Evolution: Sorting Out Evolution Interactive</div>
+          <div class="resource-desc">Explore how natural selection works by simulating bird beak evolution. Change environments and watch which beak shapes help birds survive. Developed for PBS by WGBH Educational Foundation.</div>
+          <a class="resource-link" href="https://www.pbs.org/wgbh/evolution/educators/teachstuds/svideos.html" target="_blank">Explore Interactive →</a>
+        </div>
+      </div>
+
+      <div class="timeline">
+        <div class="tl-item">
+          <span class="tl-year">~4 bya</span>
+          <div class="tl-line"><div class="tl-dot"></div><div class="tl-stem"></div></div>
+          <div class="tl-text"><strong>First life on Earth</strong> — simple single-celled organisms, probably similar to modern bacteria. Their DNA was the original blueprint.</div>
+        </div>
+        <div class="tl-item">
+          <span class="tl-year">~600 mya</span>
+          <div class="tl-line"><div class="tl-dot"></div><div class="tl-stem"></div></div>
+          <div class="tl-text"><strong>Multicellular animals emerge</strong> — cells begin cooperating and specialising, guided by increasingly complex gene networks.</div>
+        </div>
+        <div class="tl-item">
+          <span class="tl-year">~375 mya</span>
+          <div class="tl-line"><div class="tl-dot"></div><div class="tl-stem"></div></div>
+          <div class="tl-text"><strong>Fish crawl onto land</strong> — key genes mutated to allow lungs, limbs, and life out of water. We still carry versions of those genes.</div>
+        </div>
+        <div class="tl-item">
+          <span class="tl-year">~6 mya</span>
+          <div class="tl-line"><div class="tl-dot"></div><div class="tl-stem"></div></div>
+          <div class="tl-text"><strong>Humans and chimps diverge</strong> — our last common ancestor lived in Africa. Since then, a small number of gene changes gave us larger brains and language.</div>
+        </div>
+        <div class="tl-item">
+          <span class="tl-year">~300,000 ya</span>
+          <div class="tl-line"><div class="tl-dot"></div><div class="tl-stem"></div></div>
+          <div class="tl-text"><strong>Homo sapiens appear</strong> — modern humans with our current genome emerge in Africa and eventually spread across the entire planet.</div>
+        </div>
+        <div class="tl-item">
+          <span class="tl-year">Today</span>
+          <div class="tl-line"><div class="tl-dot"></div></div>
+          <div class="tl-text"><strong>Evolution continues</strong> — humans are still evolving slowly. Changes in diet, environment and disease continue to shape which genes are most common.</div>
+        </div>
+      </div>
+
+      <div class="vocab-strip">
+        <span class="vocab-pill">Natural Selection</span>
+        <span class="vocab-pill">Mutation</span>
+        <span class="vocab-pill">Common Ancestor</span>
+        <span class="vocab-pill">Adaptation</span>
+        <span class="vocab-pill">Fossil Record</span>
+        <span class="vocab-pill">Speciation</span>
+      </div>
+
+      <div class="fact-box">
+        The gene that makes our bones, called <em>RUNX2</em>, is almost identical in humans, mice, crocodiles, and sharks. Evolution is conservative — if a gene works well, it keeps it for hundreds of millions of years.
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ MODULE 05 ══ -->
+  <div class="module" id="mod5" data-minutes="10">
+    <div class="module-header" onclick="toggleModule('mod5', 10)">
+      <span class="module-num">MODULE 05</span>
+      <span class="module-title">🚀 How Life Science Has Changed — CRISPR & the Future</span>
+      <span class="module-time">10 min</span>
+      <span class="module-arrow">▼</span>
+    </div>
+    <div class="module-body">
+      <div class="module-intro">
+        In 1953, scientists first saw the double helix shape of DNA. In 1990, the Human Genome Project launched — a 13-year effort to read all 3 billion letters of the human genome for the first time. It cost <strong>$2.7 billion</strong>. Today, you can have your genome sequenced for about <em>$100</em>. And now, scientists have a tool called <strong>CRISPR</strong> that can edit genes like a word processor edits text — cutting out faulty letters and replacing them. It is already being used to cure inherited diseases, develop drought-resistant crops, and may one day reverse aging. Life science has gone from microscopes and pea plants to rewriting the code of life itself — all within about 150 years.
+      </div>
+
+      <div class="resource">
+        <span class="resource-type video">▶ VIDEO</span>
+        <div class="resource-body">
+          <div class="resource-title">Kurzgesagt: Genetic Engineering Will Change Everything Forever — CRISPR</div>
+          <div class="resource-desc">One of the most-watched science videos ever made. Kurzgesagt explains CRISPR gene editing — how it works, what it can cure, and the ethical questions it raises. Mind-expanding and age-appropriate (~16 min).</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=jAhjPd4uNFY" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+      </div>
+
+      <div class="resource">
+        <span class="resource-type interactive">◉ INTERACTIVE</span>
+        <div class="resource-body">
+          <div class="resource-title">Genetic Science Learning Center: Tour of the Basics</div>
+          <div class="resource-desc">A complete interactive journey through cells, DNA, genes, proteins, heredity, and genetic technology. Built by the University of Utah — arguably the best free genetics education site in the world for young learners.</div>
+          <a class="resource-link" href="https://learn.genetics.utah.edu/content/basics/" target="_blank">Start Tour →</a>
+        </div>
+      </div>
+
+      <div class="resource">
+        <span class="resource-type article">📖 ARTICLE</span>
+        <div class="resource-body">
+          <div class="resource-title">Nobel Prize: The Discovery of CRISPR — Explained for Young Readers</div>
+          <div class="resource-desc">The Nobel Prize committee's own explanation of how Jennifer Doudna and Emmanuelle Charpentier developed CRISPR — the tool that won the 2020 Chemistry Nobel Prize and is changing medicine forever.</div>
+          <a class="resource-link" href="https://www.nobelprize.org/prizes/chemistry/2020/popular-information/" target="_blank">Read Article →</a>
+        </div>
+      </div>
+
+      <div class="vocab-strip">
+        <span class="vocab-pill">CRISPR</span>
+        <span class="vocab-pill">Gene Editing</span>
+        <span class="vocab-pill">Human Genome Project</span>
+        <span class="vocab-pill">Sequencing</span>
+        <span class="vocab-pill">Genetic Disease</span>
+        <span class="vocab-pill">Biotechnology</span>
+        <span class="vocab-pill">Stem Cell</span>
+      </div>
+
+      <div class="fact-box">
+        In 2023, the FDA approved the first-ever CRISPR-based treatment for sickle cell disease — a painful inherited blood disorder that affects millions of people. A single treatment, editing the patient's own bone marrow cells, may be a permanent cure.
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ QUIZ ══ -->
+  <div class="quiz-section">
+    <div class="quiz-header">
+      <span class="quiz-icon">🧪</span>
+      <h2>Knowledge Check</h2>
+      <p>10 questions · See how much you've learned!</p>
+    </div>
+    <div class="quiz-body">
+
+      <div class="q-block">
+        <span class="q-num">QUESTION 01</span>
+        <div class="q-text">What does DNA stand for?</div>
+        <div class="q-options">
+          <label class="q-opt"><input type="radio" name="q1" value="a"> Deoxyribonucleic Acid</label>
+          <label class="q-opt"><input type="radio" name="q1" value="b"> Double Nucleotide Array</label>
+          <label class="q-opt"><input type="radio" name="q1" value="c"> Deoxyribose Nitrogen Acid</label>
+          <label class="q-opt"><input type="radio" name="q1" value="d"> Dual Nucleic Acid</label>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <span class="q-num">QUESTION 02</span>
+        <div class="q-text">Which base pairs correctly in DNA? (A pairs with __ and G pairs with __)</div>
+        <div class="q-options">
+          <label class="q-opt"><input type="radio" name="q2" value="a"> A-G and C-T</label>
+          <label class="q-opt"><input type="radio" name="q2" value="b"> A-T and G-C</label>
+          <label class="q-opt"><input type="radio" name="q2" value="c"> A-C and G-T</label>
+          <label class="q-opt"><input type="radio" name="q2" value="d"> A-U and G-C</label>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <span class="q-num">QUESTION 03</span>
+        <div class="q-text">What is the key difference between RNA and DNA?</div>
+        <div class="q-options">
+          <label class="q-opt"><input type="radio" name="q3" value="a"> RNA is found in the nucleus; DNA is not</label>
+          <label class="q-opt"><input type="radio" name="q3" value="b"> RNA is single-stranded and uses Uracil instead of Thymine</label>
+          <label class="q-opt"><input type="radio" name="q3" value="c"> RNA contains more base pairs than DNA</label>
+          <label class="q-opt"><input type="radio" name="q3" value="d"> RNA carries the master copy and DNA is the messenger</label>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <span class="q-num">QUESTION 04</span>
+        <div class="q-text">Approximately how many genes does the human genome contain?</div>
+        <div class="q-options">
+          <label class="q-opt"><input type="radio" name="q4" value="a"> 200</label>
+          <label class="q-opt"><input type="radio" name="q4" value="b"> 3,000</label>
+          <label class="q-opt"><input type="radio" name="q4" value="c"> 20,000</label>
+          <label class="q-opt"><input type="radio" name="q4" value="d"> 1,000,000</label>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <span class="q-num">QUESTION 05</span>
+        <div class="q-text">How much DNA do two random humans share?</div>
+        <div class="q-options">
+          <label class="q-opt"><input type="radio" name="q5" value="a"> About 50%</label>
+          <label class="q-opt"><input type="radio" name="q5" value="b"> About 75%</label>
+          <label class="q-opt"><input type="radio" name="q5" value="c"> About 99.9%</label>
+          <label class="q-opt"><input type="radio" name="q5" value="d"> About 85%</label>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <span class="q-num">QUESTION 06</span>
+        <div class="q-text">What is a mutation?</div>
+        <div class="q-options">
+          <label class="q-opt"><input type="radio" name="q6" value="a"> A type of protein made by RNA</label>
+          <label class="q-opt"><input type="radio" name="q6" value="b"> A change in the DNA sequence</label>
+          <label class="q-opt"><input type="radio" name="q6" value="c"> A process that copies the whole genome</label>
+          <label class="q-opt"><input type="radio" name="q6" value="d"> A vitamin that repairs DNA</label>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <span class="q-num">QUESTION 07</span>
+        <div class="q-text">Approximately what percentage of DNA do humans share with chimpanzees?</div>
+        <div class="q-options">
+          <label class="q-opt"><input type="radio" name="q7" value="a"> 50%</label>
+          <label class="q-opt"><input type="radio" name="q7" value="b"> 75%</label>
+          <label class="q-opt"><input type="radio" name="q7" value="c"> 98.7%</label>
+          <label class="q-opt"><input type="radio" name="q7" value="d"> 60%</label>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <span class="q-num">QUESTION 08</span>
+        <div class="q-text">What does CRISPR allow scientists to do?</div>
+        <div class="q-options">
+          <label class="q-opt"><input type="radio" name="q8" value="a"> Grow new organs in a lab</label>
+          <label class="q-opt"><input type="radio" name="q8" value="b"> Edit specific sections of DNA</label>
+          <label class="q-opt"><input type="radio" name="q8" value="c"> Sequence a genome in one second</label>
+          <label class="q-opt"><input type="radio" name="q8" value="d"> Convert RNA into DNA</label>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <span class="q-num">QUESTION 09</span>
+        <div class="q-text">What was the Human Genome Project?</div>
+        <div class="q-options">
+          <label class="q-opt"><input type="radio" name="q9" value="a"> A plan to clone the first human</label>
+          <label class="q-opt"><input type="radio" name="q9" value="b"> A project to map all human genes and DNA sequences</label>
+          <label class="q-opt"><input type="radio" name="q9" value="c"> A mission to find DNA in dinosaur fossils</label>
+          <label class="q-opt"><input type="radio" name="q9" value="d"> A programme to teach genetics in schools</label>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <span class="q-num">QUESTION 10</span>
+        <div class="q-text">Which scientist first proposed the idea of natural selection — that better-adapted creatures survive and pass on their traits?</div>
+        <div class="q-options">
+          <label class="q-opt"><input type="radio" name="q10" value="a"> Gregor Mendel</label>
+          <label class="q-opt"><input type="radio" name="q10" value="b"> James Watson</label>
+          <label class="q-opt"><input type="radio" name="q10" value="c"> Charles Darwin</label>
+          <label class="q-opt"><input type="radio" name="q10" value="d"> Francis Crick</label>
+        </div>
+      </div>
+
+      <button class="quiz-submit" onclick="submitQuiz()">SUBMIT ANSWERS</button>
+
+      <div class="quiz-result" id="quizResult">
+        <span class="quiz-score" id="quizScore"></span>
+        <div class="quiz-msg" id="quizMsg"></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<div class="page-footer">
+  Curriculum designed for curious minds · All linked resources are free and educational<br>
+  Videos: YouTube · TED-Ed / Kurzgesagt / Stated Clearly · Simulations: HHMI BioInteractive / Learn.Genetics (University of Utah)<br>
+  <a href="https://curious-minds-science-lab.org/">← Back to all curricula</a>
+</div>
+
+<script>
+  // ── MODULE TOGGLE ──
+  let openMinutes = 0;
+  const moduleMinutes = {};
+
+  function toggleModule(id, mins) {
+    const el = document.getElementById(id);
+    const wasOpen = el.classList.contains('open');
+    el.classList.toggle('open');
+    if (!wasOpen && !moduleMinutes[id]) {
+      moduleMinutes[id] = mins;
+      openMinutes += mins;
+      updateProgress();
+    }
+  }
+
+  function updateProgress() {
+    const pct = Math.min(100, (openMinutes / 60) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progress-label').textContent = openMinutes + ' / 60 min';
+  }
+
+  // ── QUIZ ──
+  const answers = {
+    q1: 'a', q2: 'b', q3: 'b', q4: 'c', q5: 'c',
+    q6: 'b', q7: 'c', q8: 'b', q9: 'b', q10: 'c'
+  };
+
+  function submitQuiz() {
+    let score = 0;
+    for (const [q, correct] of Object.entries(answers)) {
+      const chosen = document.querySelector(`input[name="${q}"]:checked`);
+      document.querySelectorAll(`input[name="${q}"]`).forEach(inp => {
+        const label = inp.closest('.q-opt');
+        if (inp.value === correct) label.classList.add('correct');
+        else if (chosen && inp.value === chosen.value) label.classList.add('wrong');
+        inp.disabled = true;
+      });
+      if (chosen && chosen.value === correct) score++;
+    }
+
+    const result = document.getElementById('quizResult');
+    document.getElementById('quizScore').textContent = score + ' / 10 correct';
+    const msgs = {
+      10: '🧬 Perfect score! You are a DNA scientist in the making.',
+      9:  '🌟 Outstanding! Almost perfect — review any you missed.',
+      8:  '🎉 Excellent work! You clearly paid close attention.',
+      7:  '👍 Great job! Review the modules you found tricky.',
+      6:  '🔬 Good effort — go back to the videos and try again!',
+    };
+    document.getElementById('quizMsg').textContent =
+      msgs[score] || (score >= 5
+        ? '📚 A solid start! Revisit the modules and try again.'
+        : '🔄 Keep exploring — science takes practice. Re-read the modules and have another go!');
+    result.classList.add('show');
+    document.querySelector('.quiz-submit').disabled = true;
+
+    // Count quiz as completed in progress
+    if (!moduleMinutes['quiz']) {
+      moduleMinutes['quiz'] = 0;
+      openMinutes = Math.min(60, openMinutes + 0);
+      document.getElementById('progressFill').style.width = '100%';
+      document.getElementById('progress-label').textContent = '60 / 60 min';
+    }
+  }
+</script>
+</body>
+</html>
