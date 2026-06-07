@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Space & Astronomy · Curious Minds Science Lab</title>
+  <style>
+    /* ── Google Fonts ── */
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600&display=swap');
+
+    /* ── CSS Variables ── */
+    :root {
+      --bg:        #050a18;
+      --bg2:       #0a1428;
+      --bg3:       #0f1f3d;
+      --border:    #1a3060;
+      --accent:    #4fc3f7;
+      --accent2:   #ffd54f;
+      --accent3:   #ef5350;
+      --text:      #e8f4fd;
+      --text-dim:  #8ab0cc;
+      --card-bg:   #0d1a35;
+      --tag-video: #1565c0;
+      --tag-read:  #1b5e20;
+      --tag-inter: #4a148c;
+      --star1:     #ffffff;
+      --glow:      rgba(79,195,247,0.18);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Exo 2', sans-serif;
+      font-weight: 400;
+      line-height: 1.7;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Starfield ── */
+    .starfield {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle var(--dur, 3s) ease-in-out infinite;
+      animation-delay: var(--delay, 0s);
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; transform: scale(1); }
+      50%       { opacity: 1;   transform: scale(1.4); }
+    }
+
+    /* ── Aurora bar ── */
+    .aurora-bar {
+      height: 4px;
+      background: linear-gradient(90deg,
+        #4fc3f7 0%, #7c4dff 25%, #4fc3f7 50%, #00e5ff 75%, #4fc3f7 100%);
+      background-size: 200% 100%;
+      animation: aurora 4s linear infinite;
+      position: relative; z-index: 10;
+    }
+    @keyframes aurora { from { background-position: 0% 0%; } to { background-position: 200% 0%; } }
+
+    /* ── Header ── */
+    header {
+      position: relative; z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 28px;
+      background: rgba(5,10,24,0.9);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(8px);
+    }
+    .logo-link {
+      font-family: 'Orbitron', monospace;
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: 0.12em;
+    }
+    .logo-link:hover { color: var(--accent2); }
+    .header-badge {
+      font-family: 'Orbitron', monospace;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--text-dim);
+      border: 1px solid var(--border);
+      padding: 3px 10px;
+      border-radius: 2px;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative; z-index: 5;
+      text-align: center;
+      padding: 56px 24px 40px;
+      background: radial-gradient(ellipse at 50% 0%, rgba(79,195,247,0.08) 0%, transparent 70%);
+    }
+    .hero-emoji {
+      font-size: 64px;
+      display: block;
+      margin-bottom: 16px;
+      filter: drop-shadow(0 0 24px rgba(79,195,247,0.6));
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-10px); }
+    }
+    .hero h1 {
+      font-family: 'Orbitron', monospace;
+      font-weight: 900;
+      font-size: clamp(22px, 5vw, 40px);
+      letter-spacing: 0.06em;
+      color: var(--text);
+      margin-bottom: 10px;
+      text-shadow: 0 0 40px rgba(79,195,247,0.4);
+    }
+    .hero-sub {
+      font-size: 13px;
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+    .hero-tags { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .hero-tag {
+      font-family: 'Orbitron', monospace;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      padding: 4px 12px;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      border-radius: 2px;
+    }
+
+    /* ── Progress Bar ── */
+    .progress-bar-wrap {
+      position: relative; z-index: 5;
+      max-width: 760px;
+      margin: 0 auto 28px;
+      padding: 0 20px;
+    }
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-family: 'Orbitron', monospace;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      color: var(--text-dim);
+      margin-bottom: 6px;
+    }
+    .progress-bar {
+      height: 6px;
+      background: var(--bg3);
+      border-radius: 3px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), #7c4dff);
+      border-radius: 3px;
+      transition: width 0.6s ease;
+      box-shadow: 0 0 8px var(--accent);
+    }
+
+    /* ── Modules ── */
+    .modules {
+      position: relative; z-index: 5;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 20px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .module {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      transition: border-color 0.3s;
+    }
+    .module:hover { border-color: var(--accent); }
+    .module.open  { border-color: var(--accent); box-shadow: 0 0 20px var(--glow); }
+
+    .module-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 20px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.2s;
+    }
+    .module-header:hover { background: rgba(79,195,247,0.04); }
+
+    .module-num {
+      font-family: 'Orbitron', monospace;
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      color: var(--accent);
+      white-space: nowrap;
+    }
+    .module-emoji { font-size: 22px; }
+    .module-title-wrap { flex: 1; }
+    .module-title {
+      font-family: 'Orbitron', monospace;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.06em;
+      color: var(--text);
+    }
+    .module-time {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 2px;
+    }
+    .module-toggle {
+      font-size: 12px;
+      color: var(--text-dim);
+      transition: transform 0.3s;
+    }
+    .module.open .module-toggle { transform: rotate(180deg); }
+
+    .module-body {
+      display: none;
+      padding: 0 20px 24px;
+      border-top: 1px solid var(--border);
+    }
+    .module.open .module-body { display: block; }
+
+    .module-intro {
+      font-size: 14px;
+      color: var(--text-dim);
+      line-height: 1.8;
+      padding: 18px 0 14px;
+    }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .card:hover { border-color: var(--accent); box-shadow: 0 2px 16px var(--glow); }
+    .card:last-child { margin-bottom: 0; }
+
+    .card-type {
+      font-family: 'Orbitron', monospace;
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      padding: 3px 8px;
+      border-radius: 2px;
+      display: inline-block;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+    .card-type.video { background: var(--tag-video); color: #90caf9; }
+    .card-type.read  { background: var(--tag-read);  color: #a5d6a7; }
+    .card-type.inter { background: var(--tag-inter); color: #ce93d8; }
+
+    .card-title {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .card-desc {
+      font-size: 13px;
+      color: var(--text-dim);
+      line-height: 1.7;
+      margin-bottom: 10px;
+    }
+    .card-link {
+      display: inline-block;
+      font-family: 'Orbitron', monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      text-decoration: none;
+      border: 1px solid var(--accent);
+      padding: 5px 14px;
+      border-radius: 3px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .card-link:hover { background: var(--accent); color: var(--bg); }
+
+    /* ── Vocab chips ── */
+    .vocab-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 14px 0 6px;
+    }
+    .vocab-strip-label {
+      font-family: 'Orbitron', monospace;
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      color: var(--text-dim);
+      width: 100%;
+      margin-bottom: 4px;
+    }
+    .vocab-chip {
+      font-size: 12px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      color: var(--accent2);
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+
+    /* ── Fact box ── */
+    .fact-box {
+      background: linear-gradient(135deg, rgba(79,195,247,0.06), rgba(124,77,255,0.06));
+      border-left: 3px solid var(--accent);
+      padding: 12px 16px;
+      margin: 14px 0;
+      border-radius: 0 4px 4px 0;
+      font-size: 13px;
+      color: var(--text);
+    }
+    .fact-box strong { color: var(--accent2); }
+
+    /* ── Timeline ── */
+    .timeline { padding: 10px 0 4px; }
+    .tl-item {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 10px;
+      align-items: flex-start;
+    }
+    .tl-year {
+      font-family: 'Orbitron', monospace;
+      font-size: 11px;
+      color: var(--accent);
+      white-space: nowrap;
+      min-width: 54px;
+      padding-top: 2px;
+    }
+    .tl-dot {
+      width: 8px; height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      margin-top: 6px;
+      flex-shrink: 0;
+      box-shadow: 0 0 8px var(--accent);
+    }
+    .tl-text { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+
+    /* ── Quiz ── */
+    .quiz-section {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .quiz-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 20px;
+      cursor: pointer;
+      user-select: none;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.2s;
+    }
+    .quiz-header:hover { background: rgba(79,195,247,0.04); }
+    .quiz-header-title {
+      font-family: 'Orbitron', monospace;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.06em;
+      flex: 1;
+    }
+    .quiz-body { display: none; padding: 20px; }
+    .quiz-section.open .quiz-body { display: block; }
+    .quiz-section.open .module-toggle { transform: rotate(180deg); }
+
+    .quiz-intro {
+      font-size: 13px;
+      color: var(--text-dim);
+      margin-bottom: 20px;
+    }
+    .q-block { margin-bottom: 24px; }
+    .q-text {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 12px;
+      line-height: 1.6;
+    }
+    .q-num {
+      font-family: 'Orbitron', monospace;
+      font-size: 9px;
+      color: var(--accent);
+      letter-spacing: 0.2em;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .options { display: flex; flex-direction: column; gap: 8px; }
+    .opt-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      border-radius: 4px;
+      font-size: 13px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .opt-label:hover { border-color: var(--accent); background: rgba(79,195,247,0.05); }
+    .opt-label input { accent-color: var(--accent); }
+    .opt-label.correct { border-color: #66bb6a; background: rgba(102,187,106,0.1); color: #66bb6a; }
+    .opt-label.wrong   { border-color: #ef5350; background: rgba(239,83,80,0.1);  color: #ef5350; }
+
+    .quiz-submit {
+      font-family: 'Orbitron', monospace;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      padding: 12px 32px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-weight: 700;
+      margin-top: 8px;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+    .quiz-submit:hover:not(:disabled) { opacity: 0.85; transform: translateY(-1px); }
+    .quiz-submit:disabled { opacity: 0.4; cursor: default; }
+
+    .quiz-result {
+      display: none;
+      margin-top: 20px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 18px;
+      text-align: center;
+    }
+    .quiz-result.show { display: block; }
+    .quiz-score {
+      font-family: 'Orbitron', monospace;
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--accent2);
+      display: block;
+      margin-bottom: 8px;
+    }
+    .quiz-msg { font-size: 14px; color: var(--text); }
+
+    /* ── Footer ── */
+    footer {
+      position: relative; z-index: 5;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 28px 24px;
+      font-size: 13px;
+      color: var(--text-dim);
+      line-height: 1.8;
+    }
+    footer a { color: var(--text-dim); }
+    footer a:hover { color: var(--accent); }
+
+    /* ── Responsive ── */
+    @media (max-width: 480px) {
+      .module-header { gap: 10px; padding: 14px 14px; }
+      .module-body   { padding: 0 14px 20px; }
+      .quiz-body     { padding: 14px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Starfield -->
+<div class="starfield" id="starfield"></div>
+
+<!-- Aurora bar -->
+<div class="aurora-bar"></div>
+
+<!-- Header -->
+<header>
+  <a class="logo-link" href="https://curious-minds-science-lab.org/">🔭 CURIOUS MINDS SCIENCE LAB</a>
+  <span class="header-badge">LEARNING PORTAL</span>
+</header>
+
+<!-- Hero -->
+<div class="hero">
+  <span class="hero-emoji">🚀</span>
+  <h1>Space &amp; Astronomy</h1>
+  <p class="hero-sub">A 1-hour guided curriculum · Age 10 · Beginner Friendly</p>
+  <div class="hero-tags">
+    <span class="hero-tag">FREE</span>
+    <span class="hero-tag">INTERACTIVE</span>
+    <span class="hero-tag">SELF-PACED</span>
+  </div>
+</div>
+
+<!-- Progress Bar -->
+<div class="progress-bar-wrap">
+  <div class="progress-label">
+    <span>MISSION PROGRESS</span>
+    <span id="prog-label">0 / 60 min</span>
+  </div>
+  <div class="progress-bar">
+    <div class="progress-fill" id="prog-fill"></div>
+  </div>
+</div>
+
+<!-- ─────────────────── MODULES ─────────────────── -->
+<div class="modules">
+
+  <!-- MODULE 01 -->
+  <div class="module" id="mod1" data-min="10">
+    <div class="module-header" onclick="toggleModule('mod1')">
+      <span class="module-num">MODULE 01</span>
+      <span class="module-emoji">🌌</span>
+      <div class="module-title-wrap">
+        <div class="module-title">The Universe — What Is Out There?</div>
+        <div class="module-time">10 min</div>
+      </div>
+      <span class="module-toggle">▼</span>
+    </div>
+    <div class="module-body">
+      <div class="module-intro">
+        The universe is everything that exists — every star, planet, galaxy, and even the space in between. It is
+        <strong>93 billion light-years</strong> across (that we can observe!) and contains at least
+        <strong>2 trillion galaxies</strong>. But how did it all begin? And what is most of it made of?
+        This module introduces the scale of the cosmos and the Big Bang theory — the leading scientific explanation for how the universe was born.
+      </div>
+
+      <div class="card">
+        <div class="card-type video">▶ VIDEO</div>
+        <div class="card-title">The Big Bang — Kurzgesagt</div>
+        <div class="card-desc">
+          A beautifully animated explanation of how the universe began from an incredibly hot, dense point around 13.8 billion years ago, and expanded to everything we see today.
+        </div>
+        <a class="card-link" href="https://www.youtube.com/watch?v=wNDGgL73ihY" target="_blank" rel="noopener">WATCH ↗</a>
+      </div>
+
+      <div class="card">
+        <div class="card-type video">▶ VIDEO</div>
+        <div class="card-title">How Big Is the Universe? — TED-Ed</div>
+        <div class="card-desc">
+          A mind-bending look at the scale of the observable universe — from the Earth, to the solar system, to the Milky Way, to the cosmic web of galaxies beyond.
+        </div>
+        <a class="card-link" href="https://www.youtube.com/watch?v=Iy7NzjCmUf0" target="_blank" rel="noopener">WATCH ↗</a>
+      </div>
+
+      <div class="fact-box">
+        <strong>⚡ Mind-Bending Fact:</strong> The light you see from the Andromeda Galaxy left its source
+        <strong>2.5 million years ago</strong> — before humans even existed. When you look up at the night sky,
+        you are looking back in time!
+      </div>
+
+      <div class="vocab-strip">
+        <div class="vocab-strip-label">KEY VOCABULARY</div>
+        <span class="vocab-chip">Universe</span>
+        <span class="vocab-chip">Big Bang</span>
+        <span class="vocab-chip">Light-year</span>
+        <span class="vocab-chip">Galaxy</span>
+        <span class="vocab-chip">Observable Universe</span>
+        <span class="vocab-chip">Cosmic Microwave Background</span>
+      </div>
+
+      <div class="card">
+        <div class="card-type inter">⚙ INTERACTIVE</div>
+        <div class="card-title">Scale of the Universe — Explore</div>
+        <div class="card-desc">
+          Zoom from the smallest quantum particles all the way to the full observable universe. A classic interactive that puts cosmic scale into perspective. Scroll to zoom in and out!
+        </div>
+        <a class="card-link" href="https://scaleofuniverse.com/" target="_blank" rel="noopener">EXPLORE ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODULE 02 -->
+  <div class="module" id="mod2" data-min="12">
+    <div class="module-header" onclick="toggleModule('mod2')">
+      <span class="module-num">MODULE 02</span>
+      <span class="module-emoji">☀️</span>
+      <div class="module-title-wrap">
+        <div class="module-title">Our Solar System</div>
+        <div class="module-time">12 min</div>
+      </div>
+      <span class="module-toggle">▼</span>
+    </div>
+    <div class="module-body">
+      <div class="module-intro">
+        Our solar system formed about <strong>4.6 billion years ago</strong> from a cloud of gas and dust.
+        At its centre is the Sun — a star so massive that it contains <strong>99.86% of all the mass</strong>
+        in the solar system. Orbiting it are 8 planets, dozens of moons, asteroids, comets, and dwarf planets.
+        Let's take a tour!
+      </div>
+
+      <div class="card">
+        <div class="card-type video">▶ VIDEO</div>
+        <div class="card-title">The Solar System — Our Home in Space (Kurzgesagt)</div>
+        <div class="card-desc">
+          A beautifully illustrated tour of every major body in our solar system — from the scorching surface of Mercury to the icy Kuiper Belt beyond Neptune, with stunning scale comparisons.
+        </div>
+        <a class="card-link" href="https://www.youtube.com/watch?v=libKVRa01L8" target="_blank" rel="noopener">WATCH ↗</a>
+      </div>
+
+      <div class="card">
+        <div class="card-type inter">⚙ INTERACTIVE</div>
+        <div class="card-title">Solar System Scope — 3D Orrery</div>
+        <div class="card-desc">
+          A stunning real-time 3D model of the solar system. Drag to rotate, click any planet to learn about it, and see the actual positions of planets today. Works in your browser — no download needed.
+        </div>
+        <a class="card-link" href="https://www.solarsystemscope.com/" target="_blank" rel="noopener">EXPLORE ↗</a>
+      </div>
+
+      <div class="timeline">
+        <div class="vocab-strip-label" style="font-family:'Orbitron',monospace;font-size:9px;letter-spacing:0.2em;color:var(--text-dim);margin-bottom:10px;">PLANET FAST FACTS</div>
+        <div class="tl-item"><div class="tl-year">Mercury</div><div class="tl-dot"></div><div class="tl-text">Closest to the Sun; no atmosphere; surface swings from −180 °C to 430 °C</div></div>
+        <div class="tl-item"><div class="tl-year">Venus</div><div class="tl-dot"></div><div class="tl-text">Hottest planet (462 °C avg); thick CO₂ atmosphere; rotates backwards</div></div>
+        <div class="tl-item"><div class="tl-year">Earth</div><div class="tl-dot"></div><div class="tl-text">Only known planet with life; perfect distance from the Sun — the "Goldilocks zone"</div></div>
+        <div class="tl-item"><div class="tl-year">Mars</div><div class="tl-dot"></div><div class="tl-text">The "Red Planet"; has the tallest volcano in the solar system (Olympus Mons)</div></div>
+        <div class="tl-item"><div class="tl-year">Jupiter</div><div class="tl-dot"></div><div class="tl-text">Largest planet; 95 moons; its Great Red Spot is a storm bigger than Earth</div></div>
+        <div class="tl-item"><div class="tl-year">Saturn</div><div class="tl-dot"></div><div class="tl-text">Famous rings made of ice and rock; so light it would float on water</div></div>
+        <div class="tl-item"><div class="tl-year">Uranus</div><div class="tl-dot"></div><div class="tl-text">Tilted 98° on its side; has faint rings; appears blue-green from methane gas</div></div>
+        <div class="tl-item"><div class="tl-year">Neptune</div><div class="tl-dot"></div><div class="tl-text">Farthest planet; winds up to 2,100 km/h — the fastest in the solar system</div></div>
+      </div>
+
+      <div class="vocab-strip">
+        <div class="vocab-strip-label">KEY VOCABULARY</div>
+        <span class="vocab-chip">Orbit</span>
+        <span class="vocab-chip">Solar System</span>
+        <span class="vocab-chip">Asteroid Belt</span>
+        <span class="vocab-chip">Goldilocks Zone</span>
+        <span class="vocab-chip">Dwarf Planet</span>
+        <span class="vocab-chip">Gas Giant</span>
+        <span class="vocab-chip">Rocky Planet</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODULE 03 -->
+  <div class="module" id="mod3" data-min="12">
+    <div class="module-header" onclick="toggleModule('mod3')">
+      <span class="module-num">MODULE 03</span>
+      <span class="module-emoji">👨‍🚀</span>
+      <div class="module-title-wrap">
+        <div class="module-title">Space Missions &amp; Astronauts</div>
+        <div class="module-time">12 min</div>
+      </div>
+      <span class="module-toggle">▼</span>
+    </div>
+    <div class="module-body">
+      <div class="module-intro">
+        Since the first satellite launched in 1957, humans have sent spacecraft across the entire solar system,
+        walked on the Moon, lived on a space station, and landed robots on Mars. Space exploration is one of
+        humanity's greatest adventures — and it is still going! Let's look at the most remarkable missions and the
+        brave astronauts who made history.
+      </div>
+
+      <div class="card">
+        <div class="card-type video">▶ VIDEO</div>
+        <div class="card-title">The History of Space Exploration | A Short Documentary</div>
+        <div class="card-desc">
+          From Sputnik to the Space Shuttle to the Mars rovers, this documentary covers decades of space exploration and the technology that made it possible.
+        </div>
+        <a class="card-link" href="https://www.youtube.com/watch?v=Dp5xnT55_XA" target="_blank" rel="noopener">WATCH ↗</a>
+      </div>
+
+      <div class="card">
+        <div class="card-type video">▶ VIDEO</div>
+        <div class="card-title">What Life Inside The International Space Station is Like</div>
+        <div class="card-desc">
+          Ever wondered how astronauts sleep, eat, or use the bathroom in zero gravity? This video gives a fascinating behind-the-scenes look at life aboard the International Space Station.
+        </div>
+        <a class="card-link" href="https://www.youtube.com/watch?v=OBIxbULqDxY" target="_blank" rel="noopener">WATCH ↗</a>
+      </div>
+
+      <div class="fact-box">
+        <strong>🏆 Hall of Fame Missions:</strong><br>
+        <strong>Sputnik 1 (1957)</strong> — First satellite ever launched, by the Soviet Union.<br>
+        <strong>Apollo 11 (1969)</strong> — Neil Armstrong & Buzz Aldrin became the first humans on the Moon.<br>
+        <strong>Voyager 1 (1977)</strong> — Still travelling; now the most distant human-made object, in interstellar space.<br>
+        <strong>Hubble Space Telescope (1990)</strong> — Transformed our view of the universe with iconic deep-field images.<br>
+        <strong>Perseverance Rover (2021)</strong> — NASA's rover searching for signs of ancient life on Mars.
+      </div>
+
+      <div class="timeline">
+        <div class="vocab-strip-label" style="font-family:'Orbitron',monospace;font-size:9px;letter-spacing:0.2em;color:var(--text-dim);margin-bottom:10px;">ASTRONAUT LEGENDS</div>
+        <div class="tl-item"><div class="tl-year">Yuri Gagarin</div><div class="tl-dot"></div><div class="tl-text">First human in space (April 12, 1961), completing one orbit of Earth in 108 minutes</div></div>
+        <div class="tl-item"><div class="tl-year">Neil Armstrong</div><div class="tl-dot"></div><div class="tl-text">First human to walk on the Moon, July 20, 1969 — "One small step for man…"</div></div>
+        <div class="tl-item"><div class="tl-year">Valentina Tereshkova</div><div class="tl-dot"></div><div class="tl-text">First woman in space (1963); orbited Earth 48 times over three days</div></div>
+        <div class="tl-item"><div class="tl-year">Sally Ride</div><div class="tl-dot"></div><div class="tl-text">First American woman in space (1983); flew on Space Shuttle Challenger</div></div>
+        <div class="tl-item"><div class="tl-year">Chris Hadfield</div><div class="tl-dot"></div><div class="tl-text">Commander of ISS; famous for playing guitar in space and inspiring millions online</div></div>
+      </div>
+
+      <div class="vocab-strip">
+        <div class="vocab-strip-label">KEY VOCABULARY</div>
+        <span class="vocab-chip">Orbit</span>
+        <span class="vocab-chip">ISS</span>
+        <span class="vocab-chip">Zero Gravity</span>
+        <span class="vocab-chip">Rocket</span>
+        <span class="vocab-chip">Space Shuttle</span>
+        <span class="vocab-chip">Rover</span>
+        <span class="vocab-chip">Spacewalk (EVA)</span>
+      </div>
+
+      <div class="card">
+        <div class="card-type inter">⚙ INTERACTIVE</div>
+        <div class="card-title">NASA Eyes on the Solar System</div>
+        <div class="card-desc">
+          Fly alongside real NASA spacecraft using actual mission data. You can replay historic missions like Voyager and New Horizons, or watch the Perseverance rover on Mars right now.
+        </div>
+        <a class="card-link" href="https://eyes.nasa.gov/apps/solar-system/#/home" target="_blank" rel="noopener">EXPLORE ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODULE 04 -->
+  <div class="module" id="mod4" data-min="14">
+    <div class="module-header" onclick="toggleModule('mod4')">
+      <span class="module-num">MODULE 04</span>
+      <span class="module-emoji">🌑</span>
+      <div class="module-title-wrap">
+        <div class="module-title">Amazing Things in Space</div>
+        <div class="module-time">14 min</div>
+      </div>
+      <span class="module-toggle">▼</span>
+    </div>
+    <div class="module-body">
+      <div class="module-intro">
+        The universe is full of objects so extreme they seem impossible. Black holes that swallow light.
+        Nebulae the size of thousands of solar systems, glowing in spectacular colours. Comets streaking
+        across the sky. Neutron stars spinning hundreds of times per second. This module takes you on a
+        tour of the most jaw-dropping phenomena in the cosmos.
+      </div>
+
+      <div class="card">
+        <div class="card-type video">▶ VIDEO</div>
+        <div class="card-title">Black Holes Explained — Kurzgesagt</div>
+        <div class="card-desc">
+          What is a black hole? How do they form? What happens if you fall into one? Kurzgesagt's iconic animated explainer answers all of this in a way that will blow your mind (but hopefully not the rest of you).
+        </div>
+        <a class="card-link" href="https://www.youtube.com/watch?v=e-P5IFTqB98" target="_blank" rel="noopener">WATCH ↗</a>
+      </div>
+
+      <div class="card">
+        <div class="card-type video">▶ VIDEO</div>
+        <div class="card-title">Comets, Asteroids, and Meteors — What They Are &amp; How They Differ</div>
+        <div class="card-desc">
+          What is the difference between a comet, an asteroid, and a meteor? Where do they come from? This clear video explains each one and why scientists study them so carefully.
+        </div>
+        <a class="card-link" href="https://www.youtube.com/watch?v=UHK-fbdbwF8" target="_blank" rel="noopener">WATCH ↗</a>
+      </div>
+
+      <div class="fact-box">
+        <strong>🌠 Amazing Space Objects:</strong><br>
+        <strong>Black Hole:</strong> A region where gravity is so extreme that not even light can escape. The first black hole ever photographed (M87*, 2019) is 6.5 billion times the mass of our Sun.<br><br>
+        <strong>Nebula:</strong> A vast cloud of gas and dust in space — often the birthplace of new stars. The Pillars of Creation nebula is 6,500 light-years away.<br><br>
+        <strong>Neutron Star:</strong> The collapsed core of a dead massive star, just 20 km wide but with more mass than our Sun. A teaspoon would weigh a billion tonnes!<br><br>
+        <strong>Comet:</strong> A ball of ice and rock that develops a glowing tail as it approaches the Sun — the tail always points away from the Sun, blown by solar wind.
+      </div>
+
+      <div class="card">
+        <div class="card-type video">▶ VIDEO</div>
+        <div class="card-title">10 Beautiful Nebulae in the Milky Way</div>
+        <div class="card-desc">
+          A visual showcase of the most breathtaking nebulae in our galaxy — stellar nurseries, supernova remnants, and planetary nebulae captured in vivid colour.
+        </div>
+        <a class="card-link" href="https://www.youtube.com/watch?v=tc0VoPFpUnI" target="_blank" rel="noopener">WATCH ↗</a>
+      </div>
+
+      <div class="card">
+        <div class="card-type inter">⚙ INTERACTIVE</div>
+        <div class="card-title">Hubble Space Telescope Gallery — NASA</div>
+        <div class="card-desc">
+          Browse the most iconic images ever taken by the Hubble Space Telescope — galaxies, nebulae, supernovae, and deep fields — with explanations written for curious learners.
+        </div>
+        <a class="card-link" href="https://hubblesite.org/images/gallery" target="_blank" rel="noopener">EXPLORE ↗</a>
+      </div>
+
+      <div class="vocab-strip">
+        <div class="vocab-strip-label">KEY VOCABULARY</div>
+        <span class="vocab-chip">Black Hole</span>
+        <span class="vocab-chip">Nebula</span>
+        <span class="vocab-chip">Supernova</span>
+        <span class="vocab-chip">Neutron Star</span>
+        <span class="vocab-chip">Comet</span>
+        <span class="vocab-chip">Asteroid</span>
+        <span class="vocab-chip">Event Horizon</span>
+        <span class="vocab-chip">Solar Wind</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODULE 05 -->
+  <div class="module" id="mod5" data-min="12">
+    <div class="module-header" onclick="toggleModule('mod5')">
+      <span class="module-num">MODULE 05</span>
+      <span class="module-emoji">🔭</span>
+      <div class="module-title-wrap">
+        <div class="module-title">Stars, Galaxies &amp; the Future of Space</div>
+        <div class="module-time">12 min</div>
+      </div>
+      <span class="module-toggle">▼</span>
+    </div>
+    <div class="module-body">
+      <div class="module-intro">
+        The Sun is just one of about <strong>200–400 billion stars</strong> in our Milky Way galaxy, and
+        the Milky Way is one of at least 2 trillion galaxies in the universe. Stars are not forever —
+        they are born, live for millions or billions of years, and die, sometimes in spectacular explosions.
+        This module covers how stars work, what galaxies are, and what the future of space exploration looks like.
+      </div>
+
+      <div class="card">
+        <div class="card-type video">▶ VIDEO</div>
+        <div class="card-title">The Life Cycle of a Star — TED-Ed</div>
+        <div class="card-desc">
+          From a collapsing cloud of gas to a glowing main-sequence star, to a red giant, and finally a white dwarf or supernova — this video explains every stage of a star's life beautifully.
+        </div>
+        <a class="card-link" href="https://www.youtube.com/watch?v=PM9CQDlQI0A" target="_blank" rel="noopener">WATCH ↗</a>
+      </div>
+
+      <div class="card">
+        <div class="card-type video">▶ VIDEO</div>
+        <div class="card-title">What Will Happen to Our Universe? — Kurzgesagt</div>
+        <div class="card-desc">
+          A fascinating look at the long-term future of the cosmos — the death of stars, the fate of black holes, and the ultimate end of the universe, trillions of years from now.
+        </div>
+        <a class="card-link" href="https://www.youtube.com/watch?v=uD4izuDMUQA" target="_blank" rel="noopener">WATCH ↗</a>
+      </div>
+
+      <div class="fact-box">
+        <strong>🔭 Future Missions to Watch:</strong><br>
+        <strong>Artemis Programme (NASA):</strong> Plans to return humans to the Moon and eventually send astronauts to Mars.<br><br>
+        <strong>James Webb Space Telescope (2021–):</strong> The most powerful space telescope ever built; already revealing galaxies from less than 300 million years after the Big Bang.<br><br>
+        <strong>Mars Sample Return:</strong> A joint NASA/ESA mission to bring rock samples from Mars back to Earth for detailed analysis.
+      </div>
+
+      <div class="timeline">
+        <div class="vocab-strip-label" style="font-family:'Orbitron',monospace;font-size:9px;letter-spacing:0.2em;color:var(--text-dim);margin-bottom:10px;">STAR LIFE CYCLE</div>
+        <div class="tl-item"><div class="tl-year">Nebula</div><div class="tl-dot"></div><div class="tl-text">A cloud of gas and dust pulled together by gravity — the birth cloud of stars</div></div>
+        <div class="tl-item"><div class="tl-year">Protostar</div><div class="tl-dot"></div><div class="tl-text">A young star forming as the cloud contracts and heats up at its core</div></div>
+        <div class="tl-item"><div class="tl-year">Main Sequence</div><div class="tl-dot"></div><div class="tl-text">The long stable phase; our Sun has been in this phase for 4.6 billion years</div></div>
+        <div class="tl-item"><div class="tl-year">Red Giant</div><div class="tl-dot"></div><div class="tl-text">As hydrogen runs out, the core contracts and outer layers expand enormously</div></div>
+        <div class="tl-item"><div class="tl-year">Supernova / White Dwarf</div><div class="tl-dot"></div><div class="tl-text">Massive stars explode as supernovae; smaller stars like our Sun become white dwarfs</div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-type inter">⚙ INTERACTIVE</div>
+        <div class="card-title">James Webb Space Telescope — Image Explorer</div>
+        <div class="card-desc">
+          Browse the most spectacular deep-field images ever captured by the JWST, released by NASA. These are the farthest, clearest images of the early universe ever taken by humankind.
+        </div>
+        <a class="card-link" href="https://webbtelescope.org/news/webb-releases" target="_blank" rel="noopener">EXPLORE ↗</a>
+      </div>
+
+      <div class="vocab-strip">
+        <div class="vocab-strip-label">KEY VOCABULARY</div>
+        <span class="vocab-chip">Milky Way</span>
+        <span class="vocab-chip">Star Life Cycle</span>
+        <span class="vocab-chip">Supernova</span>
+        <span class="vocab-chip">White Dwarf</span>
+        <span class="vocab-chip">Red Giant</span>
+        <span class="vocab-chip">Dark Matter</span>
+        <span class="vocab-chip">James Webb Telescope</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────── QUIZ ─────────────── -->
+  <div class="quiz-section" id="quizSection">
+    <div class="quiz-header" onclick="toggleQuiz()">
+      <span class="module-num" style="font-family:'Orbitron',monospace;font-size:9px;letter-spacing:0.2em;color:var(--accent2);">MISSION CHECK</span>
+      <span class="module-emoji">🎯</span>
+      <div class="quiz-header-title" style="color:var(--accent2);">Space &amp; Astronomy Quiz — 10 Questions</div>
+      <span style="font-size:11px;color:var(--text-dim);margin-right:4px;">10 min</span>
+      <span class="module-toggle" id="quizToggle">▼</span>
+    </div>
+    <div class="quiz-body">
+      <p class="quiz-intro">Test what you've learned! Choose the best answer for each question, then click <strong>Submit Mission Report</strong> to see your score.</p>
+
+      <!-- Q1 -->
+      <div class="q-block">
+        <span class="q-num">QUESTION 01</span>
+        <div class="q-text">According to the Big Bang theory, approximately how old is the universe?</div>
+        <div class="options">
+          <label class="opt-label"><input type="radio" name="q1" value="a"> 4.6 billion years</label>
+          <label class="opt-label"><input type="radio" name="q1" value="b"> 13.8 billion years</label>
+          <label class="opt-label"><input type="radio" name="q1" value="c"> 100 billion years</label>
+          <label class="opt-label"><input type="radio" name="q1" value="d"> 1 million years</label>
+        </div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="q-block">
+        <span class="q-num">QUESTION 02</span>
+        <div class="q-text">Which planet in our solar system has the most moons (as of recent discoveries)?</div>
+        <div class="options">
+          <label class="opt-label"><input type="radio" name="q2" value="a"> Saturn</label>
+          <label class="opt-label"><input type="radio" name="q2" value="b"> Neptune</label>
+          <label class="opt-label"><input type="radio" name="q2" value="c"> Jupiter</label>
+          <label class="opt-label"><input type="radio" name="q2" value="d"> Uranus</label>
+        </div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="q-block">
+        <span class="q-num">QUESTION 03</span>
+        <div class="q-text">Who was the first human to walk on the Moon?</div>
+        <div class="options">
+          <label class="opt-label"><input type="radio" name="q3" value="a"> Yuri Gagarin</label>
+          <label class="opt-label"><input type="radio" name="q3" value="b"> Buzz Aldrin</label>
+          <label class="opt-label"><input type="radio" name="q3" value="c"> Neil Armstrong</label>
+          <label class="opt-label"><input type="radio" name="q3" value="d"> John Glenn</label>
+        </div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="q-block">
+        <span class="q-num">QUESTION 04</span>
+        <div class="q-text">What is a light-year?</div>
+        <div class="options">
+          <label class="opt-label"><input type="radio" name="q4" value="a"> The time it takes light to travel around Earth once</label>
+          <label class="opt-label"><input type="radio" name="q4" value="b"> The distance light travels in one year</label>
+          <label class="opt-label"><input type="radio" name="q4" value="c"> How bright a star appears from Earth</label>
+          <label class="opt-label"><input type="radio" name="q4" value="d"> The age of the Sun in years</label>
+        </div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="q-block">
+        <span class="q-num">QUESTION 05</span>
+        <div class="q-text">What makes a black hole so extreme that even light cannot escape it?</div>
+        <div class="options">
+          <label class="opt-label"><input type="radio" name="q5" value="a"> Its very cold temperature</label>
+          <label class="opt-label"><input type="radio" name="q5" value="b"> Its extremely strong magnetic field</label>
+          <label class="opt-label"><input type="radio" name="q5" value="c"> Its incredibly powerful gravitational pull</label>
+          <label class="opt-label"><input type="radio" name="q5" value="d"> Its rapid spinning speed</label>
+        </div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="q-block">
+        <span class="q-num">QUESTION 06</span>
+        <div class="q-text">Which spacecraft is currently the farthest human-made object from Earth?</div>
+        <div class="options">
+          <label class="opt-label"><input type="radio" name="q6" value="a"> Hubble Space Telescope</label>
+          <label class="opt-label"><input type="radio" name="q6" value="b"> Apollo 11</label>
+          <label class="opt-label"><input type="radio" name="q6" value="c"> Voyager 1</label>
+          <label class="opt-label"><input type="radio" name="q6" value="d"> Perseverance Rover</label>
+        </div>
+      </div>
+
+      <!-- Q7 -->
+      <div class="q-block">
+        <span class="q-num">QUESTION 07</span>
+        <div class="q-text">A nebula is best described as:</div>
+        <div class="options">
+          <label class="opt-label"><input type="radio" name="q7" value="a"> A planet with multiple moons</label>
+          <label class="opt-label"><input type="radio" name="q7" value="b"> A vast cloud of gas and dust in space, often where new stars are born</label>
+          <label class="opt-label"><input type="radio" name="q7" value="c"> A type of comet that orbits the Sun</label>
+          <label class="opt-label"><input type="radio" name="q7" value="d"> The region around a black hole</label>
+        </div>
+      </div>
+
+      <!-- Q8 -->
+      <div class="q-block">
+        <span class="q-num">QUESTION 08</span>
+        <div class="q-text">In which direction does a comet's tail always point?</div>
+        <div class="options">
+          <label class="opt-label"><input type="radio" name="q8" value="a"> In the direction the comet is travelling</label>
+          <label class="opt-label"><input type="radio" name="q8" value="b"> Towards the Sun</label>
+          <label class="opt-label"><input type="radio" name="q8" value="c"> Away from the Sun</label>
+          <label class="opt-label"><input type="radio" name="q8" value="d"> Towards the nearest planet</label>
+        </div>
+      </div>
+
+      <!-- Q9 -->
+      <div class="q-block">
+        <span class="q-num">QUESTION 09</span>
+        <div class="q-text">What will our Sun eventually become after it exhausts its hydrogen fuel?</div>
+        <div class="options">
+          <label class="opt-label"><input type="radio" name="q9" value="a"> A neutron star</label>
+          <label class="opt-label"><input type="radio" name="q9" value="b"> A black hole</label>
+          <label class="opt-label"><input type="radio" name="q9" value="c"> A red giant, then a white dwarf</label>
+          <label class="opt-label"><input type="radio" name="q9" value="d"> A supernova, then nothing</label>
+        </div>
+      </div>
+
+      <!-- Q10 -->
+      <div class="q-block">
+        <span class="q-num">QUESTION 10</span>
+        <div class="q-text">Which space telescope, launched in 2021, is the most powerful ever built and can see the earliest galaxies in the universe?</div>
+        <div class="options">
+          <label class="opt-label"><input type="radio" name="q10" value="a"> Hubble Space Telescope</label>
+          <label class="opt-label"><input type="radio" name="q10" value="b"> James Webb Space Telescope</label>
+          <label class="opt-label"><input type="radio" name="q10" value="c"> Kepler Space Telescope</label>
+          <label class="opt-label"><input type="radio" name="q10" value="d"> Chandra X-ray Observatory</label>
+        </div>
+      </div>
+
+      <button class="quiz-submit" onclick="submitQuiz()">SUBMIT MISSION REPORT 🚀</button>
+
+      <div class="quiz-result" id="quizResult">
+        <span class="quiz-score" id="quizScore"></span>
+        <div class="quiz-msg" id="quizMsg"></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /modules -->
+
+<!-- Footer -->
+<footer>
+  © 2025 Curious Minds Science Lab ·
+  <a href="https://curious-minds-science-lab.org">curious-minds-science-lab.org</a><br>
+  Free educational content for curious young minds everywhere.
+</footer>
+
+<!-- ── Scripts ── -->
+<script>
+  // ── Starfield ──
+  (function(){
+    const sf = document.getElementById('starfield');
+    for(let i = 0; i < 160; i++){
+      const s = document.createElement('div');
+      s.className = 'star';
+      const size = Math.random() * 2.2 + 0.4;
+      s.style.cssText = `
+        width:${size}px; height:${size}px;
+        left:${Math.random()*100}%;
+        top:${Math.random()*100}%;
+        --dur:${2+Math.random()*5}s;
+        --delay:${Math.random()*6}s;
+      `;
+      sf.appendChild(s);
+    }
+  })();
+
+  // ── Progress Tracking ──
+  const totalMin = 60;
+  const opened = {};
+
+  function updateProgress(){
+    let done = Object.values(opened).reduce((a,b)=>a+b, 0);
+    done = Math.min(done, totalMin);
+    const pct = (done / totalMin) * 100;
+    document.getElementById('prog-fill').style.width = pct + '%';
+    document.getElementById('prog-label').textContent = done + ' / ' + totalMin + ' min';
+  }
+
+  // ── Module Toggle ──
+  function toggleModule(id){
+    const mod = document.getElementById(id);
+    const wasOpen = mod.classList.contains('open');
+    mod.classList.toggle('open');
+    if(!wasOpen && !opened[id]){
+      opened[id] = parseInt(mod.dataset.min, 10);
+      updateProgress();
+    }
+  }
+
+  // ── Quiz Toggle ──
+  function toggleQuiz(){
+    const qs = document.getElementById('quizSection');
+    qs.classList.toggle('open');
+    if(qs.classList.contains('open') && !opened['quiz']){
+      opened['quiz'] = 10;
+      updateProgress();
+    }
+  }
+
+  // ── Quiz Answers ──
+  const answers = {
+    q1: 'b', q2: 'c', q3: 'c', q4: 'b', q5: 'c',
+    q6: 'c', q7: 'b', q8: 'c', q9: 'c', q10: 'b'
+  };
+
+  function submitQuiz(){
+    let score = 0;
+    for(const [q, correct] of Object.entries(answers)){
+      const selected = document.querySelector(`input[name="${q}"]:checked`);
+      const labels = document.querySelectorAll(`input[name="${q}"]`);
+      labels.forEach(inp => {
+        const lbl = inp.parentElement;
+        if(inp.value === correct) lbl.classList.add('correct');
+        if(selected && inp === selected && inp.value !== correct) lbl.classList.add('wrong');
+      });
+      if(selected && selected.value === correct) score++;
+    }
+    const result = document.getElementById('quizResult');
+    document.getElementById('quizScore').textContent = score + ' / 10';
+    const msgs = {
+      10: '🚀 Perfect score! You are ready to join NASA!',
+       9: '🌟 Outstanding! Almost mission-perfect!',
+       8: '🎉 Excellent work! A true space explorer!',
+       7: '👍 Great job! Review the modules you found tricky.',
+       6: '🔭 Good effort — re-watch the videos and try again!',
+    };
+    document.getElementById('quizMsg').textContent =
+      msgs[score] || (score >= 5
+        ? '📚 Solid start! Revisit the modules and try again.'
+        : '🔄 Keep exploring — the universe rewards curiosity! Re-read the modules and have another go.');
+    result.classList.add('show');
+    document.querySelector('.quiz-submit').disabled = true;
+  }
+</script>
+
+</body>
+</html>
