@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Electricity &amp; Magnetism Explorer — Age 10</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #05080f;
+    --panel: #0b1220;
+    --border: #1a2d50;
+    --accent: #00e5ff;
+    --gold: #ffd600;
+    --green: #00e676;
+    --red: #ff1744;
+    --orange: #ff6d00;
+    --text: #cfe4ff;
+    --muted: #5a7a9f;
+    --radius: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Starfield background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 30% 40%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 55% 25%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 60%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 92% 10%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(2px 2px at 20% 80%, rgba(0,229,255,0.2) 0%, transparent 100%),
+      radial-gradient(2px 2px at 70% 90%, rgba(0,229,255,0.15) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  /* HEADER */
+  header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    padding: 2.5rem 1rem 2rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, #0b1a30 0%, #0d1f3c 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  header::after {
+    content: '⚡';
+    font-size: 8rem;
+    position: absolute;
+    right: -1rem;
+    top: -1rem;
+    opacity: 0.06;
+    animation: spin 20s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .badge {
+    display: inline-block;
+    background: var(--accent);
+    color: #000;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1.6rem, 5vw, 2.6rem);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+  }
+
+  .header-topic {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    font-weight: 400;
+    color: var(--accent);
+    letter-spacing: 2px;
+    margin-bottom: 0.6rem;
+  }
+  .header-topic span {
+    border-bottom: 2px solid rgba(0,229,255,0.35);
+    padding-bottom: 2px;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+  }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .progress-label {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+  .progress-bar-outer {
+    flex: 1;
+    height: 8px;
+    background: #1a2d50;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .progress-bar-inner {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent), var(--green));
+    border-radius: 4px;
+    transition: width 0.5s ease;
+  }
+  .progress-time {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.75rem;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+
+  /* SECTION CARDS */
+  .section-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .section-card:hover { border-color: var(--accent); }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.2rem 1.5rem;
+    cursor: pointer;
+    user-select: none;
+    background: linear-gradient(90deg, #0d1a30 0%, transparent 100%);
+  }
+  .section-num {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 2px;
+    min-width: 60px;
+  }
+  .section-title {
+    flex: 1;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #fff;
+  }
+  .section-time {
+    font-size: 0.78rem;
+    color: var(--gold);
+    font-weight: 600;
+  }
+  .chevron {
+    color: var(--muted);
+    transition: transform 0.3s;
+    font-size: 1.1rem;
+  }
+  .section-card.open .chevron { transform: rotate(180deg); }
+
+  .section-body {
+    display: none;
+    padding: 0 1.5rem 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .section-card.open .section-body { display: block; }
+
+  .section-intro {
+    margin: 1rem 0 1.2rem;
+    color: var(--text);
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  /* RESOURCES */
+  .resource-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 0.9rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .resource-card {
+    background: #0a1525;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: pointer;
+  }
+  .resource-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .resource-type {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    margin-bottom: 0.5rem;
+  }
+  .type-video { background: rgba(255,29,68,0.15); color: #ff6b8a; border: 1px solid rgba(255,29,68,0.3); }
+  .type-interactive { background: rgba(0,229,255,0.1); color: var(--accent); border: 1px solid rgba(0,229,255,0.3); }
+  .type-read { background: rgba(255,214,0,0.1); color: var(--gold); border: 1px solid rgba(255,214,0,0.3); }
+  .type-sim { background: rgba(0,230,118,0.1); color: var(--green); border: 1px solid rgba(0,230,118,0.3); }
+
+  .resource-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #fff;
+    margin-bottom: 0.3rem;
+    line-height: 1.3;
+  }
+  .resource-desc {
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .resource-link:hover { text-decoration: underline; }
+
+  /* KEY CONCEPTS */
+  .concepts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  .concept-tag {
+    background: rgba(0,229,255,0.07);
+    border: 1px solid rgba(0,229,255,0.2);
+    color: var(--accent);
+    font-size: 0.78rem;
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+
+  /* QUIZ */
+  .quiz-section {
+    background: linear-gradient(135deg, #08142a 0%, #0b1e38 100%);
+    border: 1px solid var(--gold);
+    border-radius: var(--radius);
+    padding: 2rem;
+    margin-top: 2rem;
+  }
+  .quiz-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .quiz-icon { font-size: 2rem; }
+  .quiz-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--gold);
+  }
+  .quiz-subtitle { font-size: 0.85rem; color: var(--muted); margin-top: 3px; }
+
+  .question-block {
+    background: #0a1525;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.3rem;
+    margin-bottom: 1.2rem;
+    transition: border-color 0.3s;
+  }
+  .question-block.correct { border-color: var(--green); }
+  .question-block.wrong { border-color: var(--red); }
+
+  .question-num {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+  }
+  .question-text {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+  }
+  @media(max-width: 500px) { .options { grid-template-columns: 1fr; } }
+
+  .option-btn {
+    background: #0d1a2e;
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Exo 2', sans-serif;
+    font-size: 0.85rem;
+    padding: 0.7rem 1rem;
+    border-radius: 7px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+    line-height: 1.4;
+  }
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--accent);
+    background: rgba(0,229,255,0.05);
+  }
+  .option-btn.selected-correct {
+    border-color: var(--green);
+    background: rgba(0,230,118,0.1);
+    color: var(--green);
+  }
+  .option-btn.selected-wrong {
+    border-color: var(--red);
+    background: rgba(255,23,68,0.1);
+    color: var(--red);
+  }
+  .option-btn.reveal-correct {
+    border-color: var(--green);
+    color: var(--green);
+  }
+  .option-btn:disabled { cursor: default; }
+
+  .feedback {
+    margin-top: 0.8rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.ok { color: var(--green); }
+  .feedback.bad { color: #ff8a80; }
+
+  /* SCORE */
+  .score-wrap {
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+  .score-wrap.show { display: block; }
+  .score-display {
+    font-family: 'Orbitron', monospace;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--gold);
+    margin-bottom: 0.3rem;
+  }
+  .score-label { color: var(--muted); font-size: 0.9rem; margin-bottom: 1rem; }
+  .score-bar-outer {
+    height: 12px;
+    background: #1a2d50;
+    border-radius: 6px;
+    overflow: hidden;
+    max-width: 400px;
+    margin: 0 auto 1rem;
+  }
+  .score-bar-inner {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--green));
+    border-radius: 6px;
+    transition: width 1s ease;
+    width: 0%;
+  }
+  .score-message {
+    font-size: 0.95rem;
+    color: var(--text);
+    max-width: 400px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .submit-btn {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 1.5rem auto 0;
+    background: linear-gradient(90deg, var(--gold), var(--orange));
+    color: #000;
+    border: none;
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    padding: 0.9rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .submit-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+  .submit-btn:disabled { opacity: 0.4; cursor: default; transform: none; }
+
+  /* FUN FACT */
+  .fun-fact {
+    background: rgba(255,214,0,0.05);
+    border: 1px solid rgba(255,214,0,0.2);
+    border-radius: 8px;
+    padding: 0.9rem 1.1rem;
+    font-size: 0.85rem;
+    color: var(--gold);
+    margin-top: 1rem;
+    line-height: 1.5;
+  }
+  .fun-fact::before { content: '⭐ Fun Fact: '; font-weight: 700; }
+
+  footer {
+    text-align: center;
+    margin-top: 3rem;
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="badge">SCIENCE EXPLORER</div>
+    <h1>⚛ Curious Minds<br>Science Lab</h1>
+    <p class="header-topic"><span>Electricity &amp; Magnetism</span></p>
+    <p class="subtitle">A 1-hour guided curriculum · Age 10 · Beginner Friendly</p>
+  </header>
+
+  <!-- Progress -->
+  <div class="progress-wrap">
+    <span class="progress-label">PROGRESS</span>
+    <div class="progress-bar-outer"><div class="progress-bar-inner" id="progressBar"></div></div>
+    <span class="progress-time" id="progressTime">0 / 60 min</span>
+  </div>
+
+  <!-- ===== MODULE 1 ===== -->
+  <div class="section-card" onclick="toggleCard(this)">
+    <div class="section-header">
+      <span class="section-num">MODULE 01</span>
+      <span class="section-title">⚡ What Is Electricity?</span>
+      <span class="section-time">10 min</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <p class="section-intro">Electricity is the movement of tiny particles called <strong>electrons</strong>. Every atom has them — and when electrons jump or flow from one place to another, we get everything from a tiny static spark on a doorknob to a giant bolt of lightning in the sky. This module covers the basics: electric charge, static electricity, and electric current.</p>
+
+      <div class="resource-grid">
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">TED-Ed: The Science of Static Electricity</div>
+          <div class="resource-desc">Why does a balloon stick to your hair? A fun animation explaining electric charge, electrons, and how static electricity — including lightning — really works.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=yc2-363MIQs" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Electricity for Kids: What Is Electricity?</div>
+          <div class="resource-desc">A friendly tour of the big picture — what electricity is, where it comes from, lightning, AC vs DC, and why birds can sit on power lines safely.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=Dx3RpXdJw2k" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-interactive">◉ INTERACTIVE</span>
+          <div class="resource-name">PhET: Balloons &amp; Static Electricity</div>
+          <div class="resource-desc">Rub a balloon on a sweater and watch electrons jump! See charges attract and repel in this free browser simulation.</div>
+          <a class="resource-link" href="https://phet.colorado.edu/en/simulations/balloons-and-static-electricity" target="_blank">Play Simulation →</a>
+        </div>
+      </div>
+
+      <div class="concepts">
+        <span class="concept-tag">Electron</span>
+        <span class="concept-tag">Electric Charge</span>
+        <span class="concept-tag">Static Electricity</span>
+        <span class="concept-tag">Current</span>
+        <span class="concept-tag">Voltage</span>
+        <span class="concept-tag">Lightning</span>
+      </div>
+
+      <div class="fun-fact">A lightning bolt can heat the air around it to about 30,000°C — roughly five times hotter than the surface of the Sun!</div>
+    </div>
+  </div>
+
+  <!-- ===== MODULE 2 ===== -->
+  <div class="section-card" onclick="toggleCard(this)">
+    <div class="section-header">
+      <span class="section-num">MODULE 02</span>
+      <span class="section-title">💡 Circuits: Why Do Lights Turn On?</span>
+      <span class="section-time">12 min</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <p class="section-intro">When you flip a light switch, you're closing a <strong>circuit</strong> — a complete loop that lets electrons flow from a power source, through a wire, into the bulb, and back again. Break the loop anywhere and the light goes out. Electricity flows easily through <strong>conductors</strong> (like copper) but is blocked by <strong>insulators</strong> (like rubber and plastic).</p>
+
+      <div class="resource-grid">
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">SciShow Kids: The Power of Circuits!</div>
+          <div class="resource-desc">Jessi and Squeaks show how circuits work and build one of their own — batteries, wires, switches and bulbs made simple.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=HOFp8bHTN30" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-interactive">◉ INTERACTIVE</span>
+          <div class="resource-name">PhET: Circuit Construction Kit</div>
+          <div class="resource-desc">Build your own circuits with batteries, wires, bulbs and switches — even test whether a coin or an eraser conducts electricity!</div>
+          <a class="resource-link" href="https://phet.colorado.edu/en/simulations/circuit-construction-kit-dc" target="_blank">Play Simulation →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Conductors and Insulators</div>
+          <div class="resource-desc">Which materials let electricity through, and which block it? A quick, clear explainer on conductors and insulators — and why wires wear rubber jackets.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=qIF90dhqGPY" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+      </div>
+
+      <div class="concepts">
+        <span class="concept-tag">Circuit</span>
+        <span class="concept-tag">Switch</span>
+        <span class="concept-tag">Light Bulb</span>
+        <span class="concept-tag">Conductor</span>
+        <span class="concept-tag">Insulator</span>
+        <span class="concept-tag">Copper Wire</span>
+      </div>
+
+      <div class="fun-fact">The electrical signal in a wire travels at nearly the speed of light, but the electrons themselves crawl along slower than a snail — less than a millimetre per second!</div>
+    </div>
+  </div>
+
+  <!-- ===== MODULE 3 ===== -->
+  <div class="section-card" onclick="toggleCard(this)">
+    <div class="section-header">
+      <span class="section-num">MODULE 03</span>
+      <span class="section-title">🏭 Power Plants &amp; Batteries</span>
+      <span class="section-time">12 min</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <p class="section-intro">Where does the electricity in your wall socket come from? Most power plants — coal, gas, nuclear, hydro, even wind — do the same trick: they spin a <strong>generator</strong>, which moves magnets past coils of wire to push electrons through the grid. Batteries are different: they make electricity from a <strong>chemical reaction</strong>, stored and ready to go wherever you are.</p>
+
+      <div class="resource-grid">
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Energy 101: Electricity Generation</div>
+          <div class="resource-desc">U.S. Department of Energy animation following electricity all the way from the power plant, through the grid, to the light bulb in your home.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=20Vb6hlLQSg" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">TED-Ed: How Batteries Work</div>
+          <div class="resource-desc">The story of the battery — starting with two Italian scientists and a twitching frog leg in the 1780s — and how batteries store and release charge.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=9OVtk6G2TnQ" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-interactive">◉ INTERACTIVE</span>
+          <div class="resource-name">PhET: Faraday's Electromagnetic Lab</div>
+          <div class="resource-desc">Spin a magnet inside a coil and light a bulb — exactly how a real power plant generator works! Try the Generator tab.</div>
+          <a class="resource-link" href="https://phet.colorado.edu/en/simulations/faradays-electromagnetic-lab" target="_blank">Play Simulation →</a>
+        </div>
+      </div>
+
+      <div class="concepts">
+        <span class="concept-tag">Generator</span>
+        <span class="concept-tag">Turbine</span>
+        <span class="concept-tag">Power Grid</span>
+        <span class="concept-tag">Battery</span>
+        <span class="concept-tag">Chemical Energy</span>
+        <span class="concept-tag">AC / DC</span>
+      </div>
+
+      <div class="fun-fact">The word "volt" honours Alessandro Volta, who built the first battery in 1800 — a stack of zinc and copper discs separated by cloth soaked in salt water!</div>
+    </div>
+  </div>
+
+  <!-- ===== MODULE 4 ===== -->
+  <div class="section-card" onclick="toggleCard(this)">
+    <div class="section-header">
+      <span class="section-num">MODULE 04</span>
+      <span class="section-title">🧲 Magnets &amp; Planet Earth</span>
+      <span class="section-time">12 min</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <p class="section-intro">Every magnet has a <strong>north pole</strong> and a <strong>south pole</strong>. Opposite poles attract, matching poles push apart — and around every magnet is an invisible <strong>magnetic field</strong>. The most amazing magnet of all is under your feet: Earth itself is a giant magnet, powered by swirling liquid iron deep in its core. That's why a compass needle always knows which way is north.</p>
+
+      <div class="resource-grid">
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">SciShow Kids: The Amazing Power of Magnets</div>
+          <div class="resource-desc">Jessi and friends explore what magnets can do, what sticks and what doesn't, and how animals and people use magnetism to find their way.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=5hH5radPWHo" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">FuseSchool: Earth and Compasses</div>
+          <div class="resource-desc">Why is Earth a giant magnet? How does a compass work? Clear animation on Earth's magnetic field and the poles.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=OsQNHFlF8w4" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-interactive">◉ INTERACTIVE</span>
+          <div class="resource-name">PhET: Bar Magnet &amp; Compass</div>
+          <div class="resource-desc">Move a compass around a bar magnet and watch the invisible magnetic field appear. Part of Faraday's Electromagnetic Lab — try the Bar Magnet tab.</div>
+          <a class="resource-link" href="https://phet.colorado.edu/en/simulations/faradays-electromagnetic-lab" target="_blank">Play Simulation →</a>
+        </div>
+      </div>
+
+      <div class="concepts">
+        <span class="concept-tag">North / South Pole</span>
+        <span class="concept-tag">Attract &amp; Repel</span>
+        <span class="concept-tag">Magnetic Field</span>
+        <span class="concept-tag">Compass</span>
+        <span class="concept-tag">Magnetosphere</span>
+        <span class="concept-tag">Aurora</span>
+      </div>
+
+      <div class="fun-fact">Earth's magnetic field protects us from particles streaming off the Sun — and when those particles hit the field near the poles, they light up the sky as auroras (the Northern and Southern Lights)!</div>
+    </div>
+  </div>
+
+  <!-- ===== MODULE 5 ===== -->
+  <div class="section-card" onclick="toggleCard(this)">
+    <div class="section-header">
+      <span class="section-num">MODULE 05</span>
+      <span class="section-title">🚄 Electromagnets &amp; Floating Trains</span>
+      <span class="section-time">9 min</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <p class="section-intro">Here's the big secret of this whole topic: electricity and magnetism are two sides of the same force — <strong>electromagnetism</strong>. Run electricity through a coil of wire and it becomes a magnet you can switch on and off! Electromagnets power speakers, electric motors, scrapyard cranes… and <strong>maglev trains</strong> that float above their tracks and race along at over 400 km/h.</p>
+
+      <div class="resource-grid">
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">How Do Maglev Trains Work?</div>
+          <div class="resource-desc">The science of magnetic levitation — how powerful magnets make a whole train float and glide with no wheels touching the track.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=YGU-DfqqybA" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-sim">⚙ ACTIVITY</span>
+          <div class="resource-name">Build Your Own Electromagnet</div>
+          <div class="resource-desc">With an adult: wrap insulated wire around a big iron nail, connect the ends to a AA battery, and pick up paper clips! Unhook the battery and the magnetism vanishes.</div>
+          <a class="resource-link" href="https://phet.colorado.edu/en/simulations/faradays-electromagnetic-lab" target="_blank">Or Try the Electromagnet Sim →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">MinutePhysics: MAGNETS — How Do They Work?</div>
+          <div class="resource-desc">For super-curious minds: a deeper dive into what's really happening inside a magnet, down at the level of atoms and electrons.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=hFAOXdXZ5TM" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+      </div>
+
+      <div class="concepts">
+        <span class="concept-tag">Electromagnetism</span>
+        <span class="concept-tag">Electromagnet</span>
+        <span class="concept-tag">Electric Motor</span>
+        <span class="concept-tag">Maglev</span>
+        <span class="concept-tag">Levitation</span>
+        <span class="concept-tag">Superconductor</span>
+      </div>
+
+      <div class="fun-fact">Japan's experimental L0 maglev train hit 603 km/h in 2015 — the fastest train ever. It floats about 10 cm above the track on pure magnetic force!</div>
+    </div>
+  </div>
+
+  <!-- ===== QUIZ ===== -->
+  <div class="quiz-section">
+    <div class="quiz-header">
+      <div class="quiz-icon">🧪</div>
+      <div>
+        <div class="quiz-title">Knowledge Check</div>
+        <div class="quiz-subtitle">10 questions · See how much you've learned!</div>
+      </div>
+    </div>
+
+    <div id="quizContainer"></div>
+
+    <button class="submit-btn" id="submitBtn" onclick="submitQuiz()" disabled>Submit Answers</button>
+
+    <div class="score-wrap" id="scoreWrap">
+      <div class="score-display" id="scoreDisplay"></div>
+      <div class="score-label">correct answers</div>
+      <div class="score-bar-outer"><div class="score-bar-inner" id="scoreBar"></div></div>
+      <div class="score-message" id="scoreMsg"></div>
+    </div>
+  </div>
+
+  <footer>
+    Curriculum designed for curious minds · All linked resources are free and educational<br>
+    Videos: TED-Ed / SciShow Kids / FuseSchool / MinutePhysics / U.S. Dept. of Energy · Simulations: PhET Interactive (University of Colorado)
+  </footer>
+
+</div>
+
+<script>
+const questions = [
+  {
+    q: "Electricity is the movement of which tiny particles?",
+    options: ["Protons", "Electrons", "Neutrons", "Photons"],
+    answer: 1,
+    explanation: "Correct! Electric current is the flow of electrons — the tiny negatively-charged particles that orbit the nucleus of every atom."
+  },
+  {
+    q: "Why does a light turn on when you flip the switch?",
+    options: [
+      "The switch creates new electricity",
+      "The switch closes the circuit, letting electrons flow through the bulb",
+      "The switch heats up the wire",
+      "The bulb stores electricity for later"
+    ],
+    answer: 1,
+    explanation: "That's right! Flipping the switch closes the loop (circuit), so electrons can flow from the power source through the bulb and back. Break the loop and the light goes out."
+  },
+  {
+    q: "Which of these materials is a good conductor of electricity?",
+    options: ["Rubber", "Plastic", "Copper", "Glass"],
+    answer: 2,
+    explanation: "Copper is an excellent conductor — that's why most electrical wires are made of it. Rubber, plastic, and glass are insulators that block electricity."
+  },
+  {
+    q: "How do most power plants generate electricity?",
+    options: [
+      "By burning electrons",
+      "By collecting lightning",
+      "By spinning magnets past coils of wire in a generator",
+      "By squeezing batteries very hard"
+    ],
+    answer: 2,
+    explanation: "Whether it's steam, water, or wind doing the spinning, almost every power plant turns a generator — magnets moving past coils of wire push electrons and create electric current."
+  },
+  {
+    q: "How does a battery make electricity?",
+    options: [
+      "From a chemical reaction inside it",
+      "From tiny generators inside it",
+      "By absorbing light",
+      "By staying cold"
+    ],
+    answer: 0,
+    explanation: "Batteries use a chemical reaction between different materials (like zinc and copper) to push electrons out of one end and around a circuit."
+  },
+  {
+    q: "What happens when you bring two north poles of magnets together?",
+    options: [
+      "They stick together",
+      "They push each other away",
+      "They stop being magnets",
+      "They get hotter"
+    ],
+    answer: 1,
+    explanation: "Matching poles repel! North repels north, south repels south — but opposite poles (north + south) attract and snap together."
+  },
+  {
+    q: "Why does a compass needle point north?",
+    options: [
+      "Wind pushes it north",
+      "The needle is heavier on one end",
+      "Earth itself is a giant magnet, and the needle lines up with its magnetic field",
+      "Satellites steer it"
+    ],
+    answer: 2,
+    explanation: "Swirling liquid iron in Earth's core makes our planet act like one giant magnet. A compass needle is a small magnet that lines up with Earth's magnetic field."
+  },
+  {
+    q: "What is an electromagnet?",
+    options: [
+      "A magnet found inside computers",
+      "A coil of wire that becomes a magnet when electricity flows through it",
+      "A very old magnet",
+      "A magnet that makes electricity forever"
+    ],
+    answer: 1,
+    explanation: "Run electric current through a coil of wire (especially around an iron core) and it becomes a magnet you can switch on and off — that's an electromagnet!"
+  },
+  {
+    q: "How do maglev trains move without touching the track?",
+    options: [
+      "Powerful fans blow them upward",
+      "They ride on a cushion of water",
+      "Invisible rockets push them",
+      "Powerful magnets lift (levitate) and push the train along"
+    ],
+    answer: 3,
+    explanation: "Maglev is short for 'magnetic levitation' — magnets in the track and train repel to lift the train, and switching electromagnets pull it forward at incredible speeds."
+  },
+  {
+    q: "Which of these is TRUE about lightning?",
+    options: [
+      "It's a giant spark of static electricity",
+      "It's colder than ice",
+      "It only happens in winter",
+      "It's made of magnets"
+    ],
+    answer: 0,
+    explanation: "Lightning is a massive static electricity spark — charge builds up in storm clouds until it jumps through the air, heating it to about five times the temperature of the Sun's surface!"
+  }
+];
+
+let answered = {};
+
+function buildQuiz() {
+  const container = document.getElementById('quizContainer');
+  questions.forEach((q, qi) => {
+    const block = document.createElement('div');
+    block.className = 'question-block';
+    block.id = `q${qi}`;
+
+    let optionsHtml = q.options.map((opt, oi) =>
+      `<button class="option-btn" id="q${qi}o${oi}" onclick="selectOption(${qi}, ${oi})">${opt}</button>`
+    ).join('');
+
+    block.innerHTML = `
+      <div class="question-num">QUESTION ${qi + 1} OF ${questions.length}</div>
+      <div class="question-text">${q.q}</div>
+      <div class="options">${optionsHtml}</div>
+      <div class="feedback" id="fb${qi}"></div>
+    `;
+    container.appendChild(block);
+  });
+}
+
+function selectOption(qi, oi) {
+  if (answered[qi] !== undefined) return;
+  answered[qi] = oi;
+
+  const correct = questions[qi].answer;
+  const block = document.getElementById(`q${qi}`);
+  const fb = document.getElementById(`fb${qi}`);
+
+  // Disable all options
+  questions[qi].options.forEach((_, i) => {
+    document.getElementById(`q${qi}o${i}`).disabled = true;
+  });
+
+  if (oi === correct) {
+    document.getElementById(`q${qi}o${oi}`).classList.add('selected-correct');
+    block.classList.add('correct');
+    fb.className = 'feedback show ok';
+    fb.textContent = '✓ ' + questions[qi].explanation;
+  } else {
+    document.getElementById(`q${qi}o${oi}`).classList.add('selected-wrong');
+    document.getElementById(`q${qi}o${correct}`).classList.add('reveal-correct');
+    block.classList.add('wrong');
+    fb.className = 'feedback show bad';
+    fb.textContent = '✗ Not quite. ' + questions[qi].explanation;
+  }
+
+  updateSubmitBtn();
+}
+
+function updateSubmitBtn() {
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = Object.keys(answered).length < questions.length;
+
+  // Update progress
+  const pct = Math.round((Object.keys(answered).length / questions.length) * 30 + 70);
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressTime').textContent = `~${Math.round(pct * 0.6)} / 60 min`;
+}
+
+function submitQuiz() {
+  const score = Object.entries(answered).filter(([qi, oi]) => questions[qi].answer === oi).length;
+  const total = questions.length;
+  const pct = Math.round((score / total) * 100);
+
+  document.getElementById('scoreDisplay').textContent = `${score} / ${total}`;
+  const scoreWrap = document.getElementById('scoreWrap');
+  scoreWrap.classList.add('show');
+  setTimeout(() => {
+    document.getElementById('scoreBar').style.width = pct + '%';
+  }, 100);
+
+  let msg;
+  if (pct === 100) msg = "🏆 Perfect score! You're an electricity & magnetism superstar. Michael Faraday would be proud!";
+  else if (pct >= 80) msg = "⭐ Excellent work! You clearly paid close attention. Review any questions you missed and you'll be an expert in no time.";
+  else if (pct >= 60) msg = "👍 Good effort! You've got the core ideas down. Try re-watching the videos for the topics you found tricky.";
+  else msg = "🔌 Keep exploring! Electricity and magnetism can be tricky at first. Go back through the modules and try the simulations — hands-on learning makes it click!";
+
+  document.getElementById('scoreMsg').textContent = msg;
+  document.getElementById('submitBtn').disabled = true;
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('progressTime').textContent = '60 / 60 min ✓';
+}
+
+function toggleCard(card) {
+  card.classList.toggle('open');
+  updateProgress();
+}
+
+function updateProgress() {
+  const open = document.querySelectorAll('.section-card.open').length;
+  const total = document.querySelectorAll('.section-card').length;
+  const pct = Math.min(70, Math.round((open / total) * 70));
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressTime').textContent = `~${Math.round(pct * 0.6)} / 60 min`;
+}
+
+buildQuiz();
+</script>
+</body>
+</html>
