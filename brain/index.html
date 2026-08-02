@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Human Brain Explorer — Age 10</title>
+<meta name="description" content="A free 1-hour guided science curriculum on the human brain for curious 10-year-olds: brain parts, neurons, memory, reaction time and brain health.">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #05080f;
+    --panel: #0b1220;
+    --border: #1a2d50;
+    --accent: #00e5ff;
+    --gold: #ffd600;
+    --green: #00e676;
+    --red: #ff1744;
+    --orange: #ff6d00;
+    --text: #cfe4ff;
+    --muted: #5a7a9f;
+    --radius: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Starfield background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 30% 40%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 55% 25%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 60%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 92% 10%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(2px 2px at 20% 80%, rgba(0,229,255,0.2) 0%, transparent 100%),
+      radial-gradient(2px 2px at 70% 90%, rgba(0,229,255,0.15) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  /* HEADER */
+  header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    padding: 2.5rem 1rem 2rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, #0b1a30 0%, #0d1f3c 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  header::after {
+    content: '🧠';
+    font-size: 8rem;
+    position: absolute;
+    right: -1rem;
+    top: -1rem;
+    opacity: 0.06;
+    animation: pulse 6s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.06; }
+    50%      { transform: scale(1.06); opacity: 0.09; }
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .badge {
+    display: inline-block;
+    background: var(--accent);
+    color: #000;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1.6rem, 5vw, 2.6rem);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+  }
+
+  .header-topic {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    font-weight: 400;
+    color: var(--accent);
+    letter-spacing: 2px;
+    margin-bottom: 0.6rem;
+  }
+  .header-topic span {
+    border-bottom: 2px solid rgba(0,229,255,0.35);
+    padding-bottom: 2px;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+  }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .progress-label {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+  .progress-bar-outer {
+    flex: 1;
+    height: 8px;
+    background: #1a2d50;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .progress-bar-inner {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent), var(--green));
+    border-radius: 4px;
+    transition: width 0.5s ease;
+  }
+  .progress-time {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.75rem;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+
+  /* SECTION CARDS */
+  .section-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .section-card:hover { border-color: var(--accent); }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.2rem 1.5rem;
+    cursor: pointer;
+    user-select: none;
+    background: linear-gradient(90deg, #0d1a30 0%, transparent 100%);
+  }
+  .section-num {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 2px;
+    min-width: 60px;
+  }
+  .section-title {
+    flex: 1;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #fff;
+  }
+  .section-time {
+    font-size: 0.78rem;
+    color: var(--gold);
+    font-weight: 600;
+  }
+  .chevron {
+    color: var(--muted);
+    transition: transform 0.3s;
+    font-size: 1.1rem;
+  }
+  .section-card.open .chevron { transform: rotate(180deg); }
+
+  .section-body {
+    display: none;
+    padding: 0 1.5rem 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .section-card.open .section-body { display: block; }
+
+  .section-intro {
+    margin: 1rem 0 1.2rem;
+    color: var(--text);
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  /* RESOURCES */
+  .resource-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 0.9rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .resource-card {
+    background: #0a1525;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: pointer;
+  }
+  .resource-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .resource-type {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    margin-bottom: 0.5rem;
+  }
+  .type-video { background: rgba(255,29,68,0.15); color: #ff6b8a; border: 1px solid rgba(255,29,68,0.3); }
+  .type-interactive { background: rgba(0,229,255,0.1); color: var(--accent); border: 1px solid rgba(0,229,255,0.3); }
+  .type-read { background: rgba(255,214,0,0.1); color: var(--gold); border: 1px solid rgba(255,214,0,0.3); }
+  .type-sim { background: rgba(0,230,118,0.1); color: var(--green); border: 1px solid rgba(0,230,118,0.3); }
+
+  .resource-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #fff;
+    margin-bottom: 0.3rem;
+    line-height: 1.3;
+  }
+  .resource-desc {
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .resource-link:hover { text-decoration: underline; }
+
+  /* KEY CONCEPTS */
+  .concepts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  .concept-tag {
+    background: rgba(0,229,255,0.07);
+    border: 1px solid rgba(0,229,255,0.2);
+    color: var(--accent);
+    font-size: 0.78rem;
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+
+  /* QUIZ */
+  .quiz-section {
+    background: linear-gradient(135deg, #08142a 0%, #0b1e38 100%);
+    border: 1px solid var(--gold);
+    border-radius: var(--radius);
+    padding: 2rem;
+    margin-top: 2rem;
+  }
+  .quiz-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .quiz-icon { font-size: 2rem; }
+  .quiz-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--gold);
+  }
+  .quiz-subtitle { font-size: 0.85rem; color: var(--muted); margin-top: 3px; }
+
+  .question-block {
+    background: #0a1525;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.3rem;
+    margin-bottom: 1.2rem;
+    transition: border-color 0.3s;
+  }
+  .question-block.correct { border-color: var(--green); }
+  .question-block.wrong { border-color: var(--red); }
+
+  .question-num {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+  }
+  .question-text {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+  }
+  @media(max-width: 500px) { .options { grid-template-columns: 1fr; } }
+
+  .option-btn {
+    background: #0d1a2e;
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Exo 2', sans-serif;
+    font-size: 0.85rem;
+    padding: 0.7rem 1rem;
+    border-radius: 7px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+    line-height: 1.4;
+  }
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--accent);
+    background: rgba(0,229,255,0.05);
+  }
+  .option-btn.selected-correct {
+    border-color: var(--green);
+    background: rgba(0,230,118,0.1);
+    color: var(--green);
+  }
+  .option-btn.selected-wrong {
+    border-color: var(--red);
+    background: rgba(255,23,68,0.1);
+    color: var(--red);
+  }
+  .option-btn.reveal-correct {
+    border-color: var(--green);
+    color: var(--green);
+  }
+  .option-btn:disabled { cursor: default; }
+
+  .feedback {
+    margin-top: 0.8rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.ok { color: var(--green); }
+  .feedback.bad { color: #ff8a80; }
+
+  /* SCORE */
+  .score-wrap {
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+  .score-wrap.show { display: block; }
+  .score-display {
+    font-family: 'Orbitron', monospace;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--gold);
+    margin-bottom: 0.3rem;
+  }
+  .score-label { color: var(--muted); font-size: 0.9rem; margin-bottom: 1rem; }
+  .score-bar-outer {
+    height: 12px;
+    background: #1a2d50;
+    border-radius: 6px;
+    overflow: hidden;
+    max-width: 400px;
+    margin: 0 auto 1rem;
+  }
+  .score-bar-inner {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--green));
+    border-radius: 6px;
+    transition: width 1s ease;
+    width: 0%;
+  }
+  .score-message {
+    font-size: 0.95rem;
+    color: var(--text);
+    max-width: 400px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .submit-btn {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 1.5rem auto 0;
+    background: linear-gradient(90deg, var(--gold), var(--orange));
+    color: #000;
+    border: none;
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    padding: 0.9rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .submit-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+  .submit-btn:disabled { opacity: 0.4; cursor: default; transform: none; }
+
+  /* FUN FACT */
+  .fun-fact {
+    background: rgba(255,214,0,0.05);
+    border: 1px solid rgba(255,214,0,0.2);
+    border-radius: 8px;
+    padding: 0.9rem 1.1rem;
+    font-size: 0.85rem;
+    color: var(--gold);
+    margin-top: 1rem;
+    line-height: 1.5;
+  }
+  .fun-fact::before { content: '⭐ Fun Fact: '; font-weight: 700; }
+
+  footer {
+    text-align: center;
+    margin-top: 3rem;
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* ===== Built-in activities (Human Brain page) ===== */
+  .tryit {
+    background: rgba(0,230,118,0.05);
+    border: 1px solid rgba(0,230,118,0.32);
+    border-radius: 10px;
+    padding: 1.2rem;
+    margin-bottom: 1.2rem;
+    cursor: default;
+  }
+  .tryit-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    color: var(--green);
+    margin-bottom: 0.85rem;
+  }
+  .tryit-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.7; margin-bottom: 0.85rem; }
+  .tryit-desc strong { color: var(--text); }
+  .tryit-out { margin-top: 0.75rem; font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
+  .tryit-out b { color: var(--accent); }
+  .tryit-btn {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 0.6rem 1.1rem;
+    margin-top: 0.85rem;
+    cursor: pointer;
+    transition: background .18s, color .18s;
+  }
+  .tryit-btn:hover { background: var(--accent); color: #04202a; }
+
+  /* Match the part to the job */
+  .match-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 0.7rem; }
+  .match-row { display: flex; flex-direction: column; gap: 0.35rem; }
+  .match-part { font-family: 'Orbitron', monospace; font-size: 0.66rem; color: var(--text); letter-spacing: 0.04em; }
+  .match-row select {
+    background: #0a1525; color: var(--text);
+    border: 1px solid var(--border); border-radius: 6px;
+    padding: 0.5rem 0.6rem; font-family: 'Exo 2', sans-serif; font-size: 0.85rem;
+  }
+  .match-row.correct select { border-color: var(--green); color: #a5ffd0; }
+  .match-row.wrong select { border-color: var(--red); color: #ffb3c1; }
+
+  /* Signal relay */
+  .relay-steps { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .relay-step {
+    font-family: 'Exo 2', sans-serif; font-size: 0.82rem;
+    background: #0a1525; color: var(--text);
+    border: 1px solid var(--border); border-radius: 20px;
+    padding: 0.5rem 0.9rem; cursor: pointer; transition: all .15s;
+  }
+  .relay-step:hover { border-color: var(--accent); }
+  .relay-step.done { background: rgba(0,230,118,0.15); border-color: var(--green); color: #a5ffd0; cursor: default; }
+  .relay-step.bad { border-color: var(--red); color: #ffb3c1; }
+
+  /* Reaction lab */
+  #rtPad {
+    height: 130px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    font-family: 'Orbitron', monospace; font-size: 0.95rem;
+    cursor: pointer; user-select: none; padding: 0.6rem;
+    background: #0a1525; color: var(--muted); border: 1px solid var(--border);
+  }
+  #rtPad.wait { background: #4a0d18; color: #ffd4dc; border-color: var(--red); }
+  #rtPad.go   { background: #06603a; color: #d6ffe9; border-color: var(--green); }
+  #rtPad.done { background: #0d2a44; color: var(--text); border-color: var(--accent); }
+  .rt-small { font-size: 0.75rem; font-family: 'Exo 2', sans-serif; }
+
+  /* Memory span */
+  #spanDisplay {
+    font-family: 'Orbitron', monospace; font-size: 1.8rem; letter-spacing: 0.35em;
+    color: var(--accent); text-align: center;
+    background: #0a1525; border: 1px solid var(--border); border-radius: 8px;
+    padding: 1.3rem 0.6rem; min-height: 86px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  #spanDisplay.msg { font-size: 0.88rem; letter-spacing: 0; color: var(--muted); font-family: 'Exo 2', sans-serif; }
+  #spanInput {
+    width: 100%; margin-top: 0.6rem; display: none;
+    background: #0a1525; border: 1px solid var(--border); border-radius: 8px;
+    color: var(--text); font-family: 'Orbitron', monospace; font-size: 1.1rem;
+    letter-spacing: 0.25em; text-align: center; padding: 0.6rem;
+  }
+  #spanInput:focus { outline: none; border-color: var(--accent); }
+
+  /* Stroop */
+  #stroopWord {
+    font-family: 'Orbitron', monospace; font-weight: 900; font-size: 2.3rem;
+    text-align: center; background: #0a1525;
+    border: 1px solid var(--border); border-radius: 8px;
+    padding: 1.5rem 0.6rem; min-height: 104px;
+    display: flex; align-items: center; justify-content: center; letter-spacing: 0.06em;
+  }
+  #stroopWord.msg { font-size: 0.88rem; font-family: 'Exo 2', sans-serif; color: var(--muted); font-weight: 400; letter-spacing: 0; line-height: 1.7; }
+  .stroop-btns { display: grid; grid-template-columns: repeat(auto-fit, minmax(92px,1fr)); gap: 0.5rem; margin-top: 0.6rem; }
+  .stroop-btns button {
+    font-family: 'Orbitron', monospace; font-size: 0.68rem; letter-spacing: 0.1em;
+    padding: 0.7rem 0.4rem; border-radius: 8px;
+    border: 1px solid var(--border); background: #0a1525; color: var(--text); cursor: pointer;
+  }
+  .stroop-btns button:hover { border-color: var(--accent); }
+
+  /* Fact wall */
+  .factwall-section {
+    background: linear-gradient(135deg, #08142a 0%, #0b1e38 100%);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    margin-top: 2rem;
+  }
+  .factwall-head { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+  .factwall-icon { font-size: 2rem; }
+  .factwall-title { font-family: 'Orbitron', monospace; font-size: 1.1rem; font-weight: 700; color: var(--accent); }
+  .factwall-sub { font-size: 0.85rem; color: var(--muted); margin-top: 3px; }
+  .factwall { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 0.8rem; }
+  .factcard {
+    background: #0a1525; border: 1px solid var(--border); border-radius: 10px;
+    padding: 0.9rem 1rem; font-size: 0.85rem; line-height: 1.65; color: var(--text);
+  }
+  .factnum {
+    font-family: 'Orbitron', monospace; display: block;
+    font-size: 1.2rem; color: var(--accent); margin-bottom: 0.35rem;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="badge">SCIENCE EXPLORER</div>
+    <h1>⚛ Curious Minds<br>Science Lab</h1>
+    <p class="header-topic"><span>The Human Brain</span></p>
+    <p class="subtitle">A 1-hour guided curriculum · Age 10 · Beginner Friendly</p>
+  </header>
+
+  <!-- Progress -->
+  <div class="progress-wrap">
+    <span class="progress-label">PROGRESS</span>
+    <div class="progress-bar-outer"><div class="progress-bar-inner" id="progressBar"></div></div>
+    <span class="progress-time" id="progressTime">0 / 60 min</span>
+  </div>
+
+  <!-- ===== MODULE 1 ===== -->
+  <div class="section-card" onclick="toggleCard(this)">
+    <div class="section-header">
+      <span class="section-num">MODULE 01</span>
+      <span class="section-title">🧠 Meet Your Control Centre</span>
+      <span class="section-time">10 min</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <p class="section-intro">Inside your skull sits about <strong>1.4 kilograms</strong> of pinkish-grey tissue with roughly the wobble of firm jelly — and it never switches off. Right now it is reading these words, keeping your heart beating, holding you upright in your chair, remembering what you had for breakfast, and deciding whether to keep reading. All at the same time. Your brain is the <strong>control centre</strong> for everything you think, feel, sense and do, and it manages the whole job on about <strong>20 watts</strong> of power — less than the bulb in your bedside lamp.</p>
+
+      <div class="resource-grid">
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">SciShow Kids: Use Your Brain!</div>
+          <div class="resource-desc">A friendly introduction to what the brain is and the enormous number of jobs it quietly handles for you every single second.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=b79xio8qgiY" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Dr. Binocs: How Your Brain Works</div>
+          <div class="resource-desc">A bright animated tour of how the brain takes in information, makes sense of it, and fires instructions straight back out to your body.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=ndDpjT0_IM0" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-interactive">◉ INTERACTIVE</span>
+          <div class="resource-name">KidsHealth: Your Brain &amp; Nervous System</div>
+          <div class="resource-desc">A clear kid-level guide from Nemours Children's Health, with pronunciation help for every tricky word you are about to meet.</div>
+          <a class="resource-link" href="https://kidshealth.org/en/kids/brain.html" target="_blank">Read the guide →</a>
+        </div>
+      </div>
+
+      <div class="concepts">
+        <span class="concept-tag">Control Centre</span>
+        <span class="concept-tag">Grey Matter</span>
+        <span class="concept-tag">20 Watts</span>
+        <span class="concept-tag">Nervous System</span>
+        <span class="concept-tag">Neuron</span>
+      </div>
+
+      <div class="fun-fact">Your brain cannot feel pain. There are no pain sensors inside the brain itself — which is why surgeons can operate on someone's brain while that person is awake and chatting. Headaches actually come from the membranes and blood vessels <em>around</em> the brain, not the brain tissue.</div>
+    </div>
+  </div>
+
+  <!-- ===== MODULE 2 ===== -->
+  <div class="section-card" onclick="toggleCard(this)">
+    <div class="section-header">
+      <span class="section-num">MODULE 02</span>
+      <span class="section-title">🗺️ The Brain Map: Parts &amp; Their Jobs</span>
+      <span class="section-time">11 min</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <p class="section-intro">Your brain isn't one blob doing one job — it's a team, and every player has a position. The <strong>cerebrum</strong> is the big wrinkly part on top that thinks, talks, imagines and solves problems. The <strong>cerebellum</strong> ("little brain") sits at the back and makes your movements smooth and balanced — it's why you can ride a bike without falling off. The <strong>brain stem</strong> at the bottom runs everything you never have to think about: breathing, heartbeat, swallowing. Deep inside, the <strong>hippocampus</strong> is your save button for new memories, and the <strong>amygdala</strong> is the alarm bell that rings when something is scary or exciting.</p>
+
+      <div class="resource-grid">
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Human Brain: Everything You Need To Know</div>
+          <div class="resource-desc">Dr. Binocs walks through the cerebrum, cerebellum, brain stem and the four lobes — the single best kid-level anatomy overview.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=iyzDvZRNkqU" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Journey to Our Brain</div>
+          <div class="resource-desc">A short, focused explainer on the three big divisions — cerebrum, cerebellum and brainstem — and exactly what each one is responsible for.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=Wlaj8dHLGI8" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-interactive">◉ INTERACTIVE</span>
+          <div class="resource-name">AMNH OLogy: Brain Hub</div>
+          <div class="resource-desc">The American Museum of Natural History's brain playground — games, experiments and "Ask A Scientist" answers, all completely free.</div>
+          <a class="resource-link" href="https://www.amnh.org/explore/ology/brain" target="_blank">Explore the hub →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-interactive">◉ INTERACTIVE</span>
+          <div class="resource-name">Brain Facts &amp; Figures</div>
+          <div class="resource-desc">University of Washington's giant table of real brain numbers: weight, neuron counts, signal speeds. Perfect for winning arguments.</div>
+          <a class="resource-link" href="https://faculty.washington.edu/chudler/facts.html" target="_blank">See the numbers →</a>
+        </div>
+      </div>
+
+      <div class="tryit" onclick="event.stopPropagation()">
+        <div class="tryit-title">◈ TRY IT — MATCH THE PART TO THE JOB</div>
+        <div class="match-grid" id="matchGrid"></div>
+        <button class="tryit-btn" id="matchBtn">Check My Answers</button>
+        <div class="tryit-out" id="matchResult"></div>
+      </div>
+
+      <div class="concepts">
+        <span class="concept-tag">Cerebrum</span>
+        <span class="concept-tag">Cerebellum</span>
+        <span class="concept-tag">Brain Stem</span>
+        <span class="concept-tag">Lobes</span>
+        <span class="concept-tag">Hippocampus</span>
+        <span class="concept-tag">Amygdala</span>
+      </div>
+
+      <div class="fun-fact">If you could iron out every wrinkle in your cerebral cortex and lay it flat, it would spread out to about 2,500 square centimetres — a bit smaller than a pillowcase. The folds are nature's packing trick: a huge thinking surface squeezed into a skull small enough to carry around.</div>
+    </div>
+  </div>
+
+  <!-- ===== MODULE 3 ===== -->
+  <div class="section-card" onclick="toggleCard(this)">
+    <div class="section-header">
+      <span class="section-num">MODULE 03</span>
+      <span class="section-title">⚡ Neurons &amp; the Body's Fastest Messages</span>
+      <span class="section-time">13 min</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <p class="section-intro">Your brain is built from about <strong>86 billion neurons</strong> — messenger cells shaped a bit like trees. Bushy <strong>dendrites</strong> catch incoming messages, the cell body decides whether the message is worth passing on, and a long cable called the <strong>axon</strong> carries the signal onward as a tiny pulse of <strong>electricity</strong>. But here's the strange part: neurons never actually touch. At the end of the axon there's a microscopic gap called a <strong>synapse</strong>, and the electrical signal can't jump it. Instead the neuron squirts out <strong>chemical messengers</strong> called neurotransmitters, which float across and land on the next cell — turning the message back into electricity on the other side. Electric, then chemical, then electric again, billions of times every second.</p>
+
+      <div class="resource-grid">
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">TED-Ed: How Do Nerves Work?</div>
+          <div class="resource-desc">Elliot Krane explains how a signal races along a nerve and hands itself across the gap to the next cell. The clearest short version anywhere.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=uU_4uA6-zcE" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">What Is A Neuron?</div>
+          <div class="resource-desc">A gentle introduction to the parts of a nerve cell — dendrites, cell body and axon — pitched right at this age group.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=efv6pfmwsEA" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-interactive">◉ INTERACTIVE</span>
+          <div class="resource-name">Cells of the Nervous System</div>
+          <div class="resource-desc">Neuroscience for Kids: labelled neuron diagrams, sensory versus motor cells, audio pronunciations and printable colouring activities.</div>
+          <a class="resource-link" href="https://faculty.washington.edu/chudler/cells.html" target="_blank">Explore neurons →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-interactive">◉ INTERACTIVE</span>
+          <div class="resource-name">Inside the Synapse</div>
+          <div class="resource-desc">Zoom into the gap between two neurons and follow the chemical hand-off step by step. Ask a grown-up for help with the harder words.</div>
+          <a class="resource-link" href="https://faculty.washington.edu/chudler/synapse.html" target="_blank">See the synapse →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-interactive">◉ INTERACTIVE</span>
+          <div class="resource-name">Build Your Own Neuron</div>
+          <div class="resource-desc">University of Utah's Learn.Genetics lab — assemble a working nerve cell with Dr. Dendristein, then watch neurons talk to each other.</div>
+          <a class="resource-link" href="https://learn.genetics.utah.edu/content/neuroscience/" target="_blank">Open the lab →</a>
+        </div>
+      </div>
+
+      <div class="tryit" onclick="event.stopPropagation()">
+        <div class="tryit-title">◈ TRY IT — SIGNAL RELAY</div>
+        <p class="tryit-desc">A message is about to travel from one neuron to the next. Click the six steps <strong>in the right order</strong>.</p>
+        <div class="relay-steps" id="relaySteps"></div>
+        <div class="tryit-out" id="relayTrack">Waiting for the first step…</div>
+        <button class="tryit-btn" id="relayReset">Shuffle &amp; Restart</button>
+      </div>
+
+      <div class="concepts">
+        <span class="concept-tag">Neuron</span>
+        <span class="concept-tag">Dendrite</span>
+        <span class="concept-tag">Axon</span>
+        <span class="concept-tag">Synapse</span>
+        <span class="concept-tag">Neurotransmitter</span>
+        <span class="concept-tag">Electrical Signal</span>
+      </div>
+
+      <div class="fun-fact">Nerve signals can travel at up to 120 metres per second — about 430 km/h, faster than a Formula 1 car at full throttle. And a single neuron can connect to between 1,000 and 10,000 others, which is how your cerebral cortex ends up with at least 60 trillion connections.</div>
+    </div>
+  </div>
+
+  <!-- ===== MODULE 4 ===== -->
+  <div class="section-card" onclick="toggleCard(this)">
+    <div class="section-header">
+      <span class="section-num">MODULE 04</span>
+      <span class="section-title">💾 Memory, Learning &amp; Split-Second Decisions</span>
+      <span class="section-time">16 min</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <p class="section-intro">Every time you learn something, your brain physically changes shape. Neurons that fire together grow stronger connections — scientists call this <strong>neuroplasticity</strong>, and it is the real reason practice works. Your <strong>hippocampus</strong> decides which of the day's events are worth keeping and files them away, mostly while you sleep. Meanwhile your brain is making decisions faster than you can notice: light hits your eye, travels to the back of your brain, gets recognised, and an order goes out to your hand — the whole loop takes about <strong>a quarter of a second</strong>. Time yourself below and see.</p>
+
+      <div class="tryit" onclick="event.stopPropagation()">
+        <div class="tryit-title">◈ TRY IT — REACTION TIME LAB</div>
+        <div id="rtPad"><span>Click here to start.<br><span class="rt-small">Wait for GREEN, then click as fast as you can.</span></span></div>
+        <div class="tryit-out" id="rtStats">No attempts yet. Try five rounds and see if you get faster.</div>
+      </div>
+
+      <div class="tryit" onclick="event.stopPropagation()">
+        <div class="tryit-title">◈ TRY IT — MEMORY SPAN TEST</div>
+        <p class="tryit-desc">Numbers will flash on screen. Type them back in the same order. Each time you get it right the list grows by one digit. Most adults top out around <strong>seven</strong> — that is the size of your short-term memory.</p>
+        <div id="spanDisplay" class="msg"><span>Press Start to begin.</span></div>
+        <input id="spanInput" type="text" inputmode="numeric" autocomplete="off" placeholder="type the numbers">
+        <button class="tryit-btn" id="spanBtn">Start</button>
+        <div class="tryit-out" id="spanStats">Best so far: none yet.</div>
+      </div>
+
+      <div class="tryit" onclick="event.stopPropagation()">
+        <div class="tryit-title">◈ TRY IT — STROOP CHALLENGE</div>
+        <p class="tryit-desc">Click the button that matches the <strong>colour of the ink</strong>, not the word itself. Round 1 is easy. Round 2 is where your brain starts arguing with itself.</p>
+        <div id="stroopWord" class="msg"><span>Press Start for Round 1.</span></div>
+        <div class="stroop-btns" id="stroopBtns"></div>
+        <button class="tryit-btn" id="stroopStart">Start Round 1</button>
+        <div class="tryit-out" id="stroopStats">No rounds completed yet.</div>
+      </div>
+
+      <div class="resource-grid">
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">TED-Ed: How Memories Form</div>
+          <div class="resource-desc">Catharine Young traces a memory from the moment it happens to the place it is stored — and explains why we forget things.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=yOgAbKJGrTA" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Neuroplasticity for Kids</div>
+          <div class="resource-desc">Why struggling with something hard is literally your brain rewiring itself. The most useful four minutes on this page.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=YrTBKXEMAuk" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Operation Ouch: The Reaction Time Test</div>
+          <div class="resource-desc">Dr. Chris and Dr. Xand test human reaction speed with real experiments — pairs perfectly with the lab above.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=kj-L-6MfaE0" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-interactive">◉ INTERACTIVE</span>
+          <div class="resource-name">AMNH: Test Your Reaction!</div>
+          <div class="resource-desc">Measure your reaction time in the browser, then see a diagram of the exact eye-to-brain-to-hand path your signal just took.</div>
+          <a class="resource-link" href="https://www.amnh.org/explore/ology/brain/test-your-reaction2" target="_blank">Play now →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-interactive">◉ INTERACTIVE</span>
+          <div class="resource-name">AMNH: Trip Up Your Brain</div>
+          <div class="resource-desc">The classic Stroop test, built for kids. Name the colour, not the word — and watch your brain argue with itself.</div>
+          <a class="resource-link" href="https://www.amnh.org/explore/ology/brain/trip-up-your-brain2" target="_blank">Play now →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-interactive">◉ INTERACTIVE</span>
+          <div class="resource-name">Memory, Attention &amp; Distraction</div>
+          <div class="resource-desc">University of Utah's browser experiments on short-term memory, change blindness and why multitasking doesn't actually work.</div>
+          <a class="resource-link" href="https://learn.genetics.utah.edu/content/memory/" target="_blank">Run the experiments →</a>
+        </div>
+      </div>
+
+      <div class="concepts">
+        <span class="concept-tag">Neuroplasticity</span>
+        <span class="concept-tag">Hippocampus</span>
+        <span class="concept-tag">Short-Term Memory</span>
+        <span class="concept-tag">Reaction Time</span>
+        <span class="concept-tag">Stroop Effect</span>
+        <span class="concept-tag">Decision Making</span>
+      </div>
+
+      <div class="fun-fact">Your brain fires a decision before you are aware of making it. In a reflex the message doesn't even reach your brain first — your spinal cord answers on its own, and your brain only finds out a fraction of a second later. That's why your hand is already off the hot pan before you have thought "ouch".</div>
+    </div>
+  </div>
+
+  <!-- ===== MODULE 5 ===== -->
+  <div class="section-card" onclick="toggleCard(this)">
+    <div class="section-header">
+      <span class="section-num">MODULE 05</span>
+      <span class="section-title">🏃 Brain, Body &amp; Keeping It Sharp</span>
+      <span class="section-time">10 min</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <p class="section-intro">Your brain is not sealed off in your head — it is wired into every last corner of you. The <strong>spinal cord</strong> runs down your back like a data cable, and nerves branch off it to reach your fingertips and toes. Your five senses stream information in; your muscles take orders back out. And because the brain is a living organ, you can look after it. <strong>Exercise</strong> pushes more oxygen-rich blood into it and helps grow new connections. <strong>Sleep</strong> is when the hippocampus files the day's memories properly — skip it and you literally learn less. <strong>Water and good food</strong> matter too: your brain is about 75% water and burns roughly a fifth of all the energy you eat.</p>
+
+      <div class="resource-grid">
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Operation Ouch: Brilliant Brains</div>
+          <div class="resource-desc">Live-action nervous system experiments you can watch and then copy at home. Reflexes, nerves and some genuinely silly science.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=GUCcsMmZVec" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">SciShow Kids: Your Body's Senses</div>
+          <div class="resource-desc">A compilation on how sight, sound, smell, taste and touch all get converted into signals your brain can actually read.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=XtSq1wcFSEI" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">SciShow Kids: Why Do We Need Sleep?</div>
+          <div class="resource-desc">What your brain is busy doing all night while the rest of you is switched off — and why missing sleep hits your memory first.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=_aAmaCeq9v4" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">TED-Ed: Benefits of a Good Night's Sleep</div>
+          <div class="resource-desc">The direct link between sleep and locking in what you learned that day. Watch this one right before revising for a test.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=gedoSfZvBgE" target="_blank">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-interactive">◉ INTERACTIVE</span>
+          <div class="resource-name">Five Reflex Experiments</div>
+          <div class="resource-desc">Hands-on tests you can run right now with a ruler and a torch: the knee jerk, the blink reflex, the pupil test and the ruler drop.</div>
+          <a class="resource-link" href="https://faculty.washington.edu/chudler/chreflex.html" target="_blank">Do the experiments →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-interactive">◉ INTERACTIVE</span>
+          <div class="resource-name">Draw Your Own Nervous System</div>
+          <div class="resource-desc">Lie on a big sheet of paper, trace around yourself, and map the whole nervous system life-size. Free printable guide from AMNH.</div>
+          <a class="resource-link" href="https://www.amnh.org/explore/ology/brain/draw-your-nervous-system2" target="_blank">Get the activity →</a>
+        </div>
+      </div>
+
+      <div class="concepts">
+        <span class="concept-tag">Spinal Cord</span>
+        <span class="concept-tag">Reflex</span>
+        <span class="concept-tag">Senses</span>
+        <span class="concept-tag">Exercise</span>
+        <span class="concept-tag">Sleep</span>
+        <span class="concept-tag">Brain Health</span>
+      </div>
+
+      <div class="fun-fact">Laid end to end, the tiny capillaries feeding your brain would stretch about 400 miles. Around three-quarters of a litre of blood pumps through it every single minute. Your brain is only 2% of your body weight but takes 20% of your oxygen — a greedy little organ.</div>
+    </div>
+  </div>
+
+  <!-- ===== BRAIN FACTS ===== -->
+  <div class="factwall-section">
+    <div class="factwall-head">
+      <div class="factwall-icon">🤯</div>
+      <div>
+        <div class="factwall-title">Eight Facts To Amaze Everyone At Dinner</div>
+        <div class="factwall-sub">Every number below comes from a real neuroscience source.</div>
+      </div>
+    </div>
+    <div class="factwall">
+      <div class="factcard"><span class="factnum">86 billion</span>Neurons in your brain — more than ten times the number of people on Earth.</div>
+      <div class="factcard"><span class="factnum">120 m/s</span>Top speed of a nerve signal. About 430 km/h, or Formula 1 pace.</div>
+      <div class="factcard"><span class="factnum">60 trillion+</span>Connections in your cerebral cortex — and some estimates run several times higher.</div>
+      <div class="factcard"><span class="factnum">20 watts</span>Your brain's entire running cost — about the same as a dim LED bulb.</div>
+      <div class="factcard"><span class="factnum">60% fat</span>By dry weight, about 60% of your brain is fat — your fattiest organ.</div>
+      <div class="factcard"><span class="factnum">0 pain</span>The brain has no pain receptors. It cannot feel a thing being poked.</div>
+      <div class="factcard"><span class="factnum">400 miles</span>Of tiny capillaries threaded through your brain tissue.</div>
+      <div class="factcard"><span class="factnum">+1.5 °C</span>Your brain runs hotter than the rest of you — deep parts pass 40 °C.</div>
+    </div>
+  </div>
+
+  <!-- ===== QUIZ ===== -->
+  <div class="quiz-section">
+    <div class="quiz-header">
+      <div class="quiz-icon">🧪</div>
+      <div>
+        <div class="quiz-title">Knowledge Check</div>
+        <div class="quiz-subtitle">10 questions · See how much you've learned!</div>
+      </div>
+    </div>
+
+    <div id="quizContainer"></div>
+
+    <button class="submit-btn" id="submitBtn" onclick="submitQuiz()" disabled>Submit Answers</button>
+
+    <div class="score-wrap" id="scoreWrap">
+      <div class="score-display" id="scoreDisplay"></div>
+      <div class="score-label">correct answers</div>
+      <div class="score-bar-outer"><div class="score-bar-inner" id="scoreBar"></div></div>
+      <div class="score-message" id="scoreMsg"></div>
+    </div>
+  </div>
+
+  <footer>
+    Curriculum designed for curious minds · All linked resources are free and educational<br>
+    Videos: TED-Ed / SciShow Kids / Operation Ouch / Dr. Binocs · Interactives: American Museum of Natural History · Neuroscience for Kids (University of Washington) · Learn.Genetics (University of Utah) · KidsHealth (Nemours)
+  </footer>
+
+</div>
+
+<script>
+const questions = [
+  {
+    q: "Which of these is your brain doing right now, even though you are not thinking about it?",
+    options: ["Keeping your heart beating and your lungs breathing", "Nothing \u2014 it only works when you concentrate", "Growing new bones", "Digesting food all by itself with no help"],
+    answer: 0,
+    explanation: "Your brain stem runs the automatic jobs \u2014 breathing, heartbeat, swallowing \u2014 24 hours a day, without you ever giving the order."
+  },
+  {
+    q: "Which part of the brain keeps you balanced and makes your movements smooth?",
+    options: ["The hippocampus", "The cerebellum", "The brain stem", "The amygdala"],
+    answer: 1,
+    explanation: "The cerebellum, or \u2018little brain\u2019, sits at the back and fine-tunes every movement. It is why you can ride a bike without thinking about it."
+  },
+  {
+    q: "Which part controls breathing, heartbeat and swallowing?",
+    options: ["The cerebrum", "The frontal lobe", "The brain stem", "The cerebellum"],
+    answer: 2,
+    explanation: "The brain stem connects the brain to the spinal cord and runs all the life-support jobs automatically."
+  },
+  {
+    q: "On a neuron, which parts RECEIVE incoming messages?",
+    options: ["The axon", "The dendrites", "The synapse", "The myelin"],
+    answer: 1,
+    explanation: "Dendrites are the bushy branches that catch signals. The axon is the long cable that sends the signal onward."
+  },
+  {
+    q: "How does a message get across the tiny gap between two neurons?",
+    options: ["It jumps across as a spark of electricity", "The neurons touch and pass it directly", "Chemical messengers float across the gap and land on the next cell", "It travels through the blood"],
+    answer: 2,
+    explanation: "That gap is a synapse. The electrical signal cannot jump it, so the neuron releases neurotransmitters \u2014 chemicals that drift across and restart the signal on the other side."
+  },
+  {
+    q: "Which part of the brain acts like a \u2018save button\u2019 for new memories?",
+    options: ["The hippocampus", "The cerebellum", "The spinal cord", "The amygdala"],
+    answer: 0,
+    explanation: "The hippocampus decides which experiences are worth keeping and files them for long-term storage \u2014 a lot of it while you sleep."
+  },
+  {
+    q: "What happens inside your brain when you practise something over and over?",
+    options: ["The brain gets heavier", "Connections between neurons get stronger \u2014 this is called neuroplasticity", "You grow completely new lobes", "Nothing changes; you just get luckier"],
+    answer: 1,
+    explanation: "Neurons that fire together wire together. Practice physically strengthens the connections, which is exactly why hard things get easier."
+  },
+  {
+    q: "Roughly how long does it take a person to react to something they see?",
+    options: ["About 3 seconds", "About a quarter of a second", "About 10 milliseconds", "About 1 minute"],
+    answer: 1,
+    explanation: "Typical visual reaction time is around 200\u2013250 milliseconds \u2014 about a quarter of a second for light to hit your eye, reach your brain, and send an order to your hand."
+  },
+  {
+    q: "Why does your hand fly off a hot pan before you even feel the pain?",
+    options: ["Your skin pushes it away", "Your brain thinks extra fast when it is hot", "Your spinal cord fires a reflex before the message reaches your brain", "Your muscles work without any signal at all"],
+    answer: 2,
+    explanation: "That is a reflex arc. The spinal cord answers on its own to save time, and your brain only finds out a fraction of a second later."
+  },
+  {
+    q: "Which of these does the MOST to keep your brain working well?",
+    options: ["Regular exercise and a full night of sleep", "Staying up late to study more", "Skipping breakfast to save time", "Sitting very still all day"],
+    answer: 0,
+    explanation: "Exercise sends more oxygen-rich blood to the brain and helps grow new connections, and sleep is when memories actually get stored. Both beat cramming."
+  }
+];
+
+let answered = {};
+
+function buildQuiz() {
+  const container = document.getElementById('quizContainer');
+  questions.forEach((q, qi) => {
+    const block = document.createElement('div');
+    block.className = 'question-block';
+    block.id = `q${qi}`;
+
+    let optionsHtml = q.options.map((opt, oi) =>
+      `<button class="option-btn" id="q${qi}o${oi}" onclick="selectOption(${qi}, ${oi})">${opt}</button>`
+    ).join('');
+
+    block.innerHTML = `
+      <div class="question-num">QUESTION ${qi + 1} OF ${questions.length}</div>
+      <div class="question-text">${q.q}</div>
+      <div class="options">${optionsHtml}</div>
+      <div class="feedback" id="fb${qi}"></div>
+    `;
+    container.appendChild(block);
+  });
+}
+
+function selectOption(qi, oi) {
+  if (answered[qi] !== undefined) return;
+  answered[qi] = oi;
+
+  const correct = questions[qi].answer;
+  const block = document.getElementById(`q${qi}`);
+  const fb = document.getElementById(`fb${qi}`);
+
+  // Disable all options
+  questions[qi].options.forEach((_, i) => {
+    document.getElementById(`q${qi}o${i}`).disabled = true;
+  });
+
+  if (oi === correct) {
+    document.getElementById(`q${qi}o${oi}`).classList.add('selected-correct');
+    block.classList.add('correct');
+    fb.className = 'feedback show ok';
+    fb.textContent = '✓ ' + questions[qi].explanation;
+  } else {
+    document.getElementById(`q${qi}o${oi}`).classList.add('selected-wrong');
+    document.getElementById(`q${qi}o${correct}`).classList.add('reveal-correct');
+    block.classList.add('wrong');
+    fb.className = 'feedback show bad';
+    fb.textContent = '✗ Not quite. ' + questions[qi].explanation;
+  }
+
+  updateSubmitBtn();
+}
+
+function updateSubmitBtn() {
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = Object.keys(answered).length < questions.length;
+
+  // Update progress
+  const pct = Math.round((Object.keys(answered).length / questions.length) * 30 + 70);
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressTime').textContent = `~${Math.round(pct * 0.6)} / 60 min`;
+}
+
+function submitQuiz() {
+  const score = Object.entries(answered).filter(([qi, oi]) => questions[qi].answer === oi).length;
+  const total = questions.length;
+  const pct = Math.round((score / total) * 100);
+
+  document.getElementById('scoreDisplay').textContent = `${score} / ${total}`;
+  const scoreWrap = document.getElementById('scoreWrap');
+  scoreWrap.classList.add('show');
+  setTimeout(() => {
+    document.getElementById('scoreBar').style.width = pct + '%';
+  }, 100);
+
+  let msg;
+  if (pct === 100) msg = "🏆 Perfect score! Your hippocampus is doing excellent work — you really know your brain.";
+  else if (pct >= 80) msg = "⭐ Excellent work! You clearly paid close attention. Review the ones you missed and you will be an expert in no time.";
+  else if (pct >= 60) msg = "👍 Good effort! You have got the core ideas down. Try re-watching the videos for the topics you found tricky.";
+  else msg = "🧠 Keep exploring! The brain is a lot to take in at once. Go back through the modules, play the activities again — hands-on learning makes it stick.";
+
+  document.getElementById('scoreMsg').textContent = msg;
+  document.getElementById('submitBtn').disabled = true;
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('progressTime').textContent = '60 / 60 min ✓';
+}
+
+function toggleCard(card) {
+  card.classList.toggle('open');
+  updateProgress();
+}
+
+function updateProgress() {
+  const open = document.querySelectorAll('.section-card.open').length;
+  const total = document.querySelectorAll('.section-card').length;
+  const pct = Math.min(70, Math.round((open / total) * 70));
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressTime').textContent = `~${Math.round(pct * 0.6)} / 60 min`;
+}
+
+/* ===== Built-in activities (Human Brain page) ===== */
+
+/* --- Match the part to the job --- */
+(function () {
+  var PARTS = [
+    { part: 'Cerebrum',    job: 'Thinking, talking and imagining' },
+    { part: 'Cerebellum',  job: 'Balance and smooth movement' },
+    { part: 'Brain stem',  job: 'Breathing and heartbeat' },
+    { part: 'Hippocampus', job: 'Saving new memories' },
+    { part: 'Amygdala',    job: 'Fear and strong emotions' },
+    { part: 'Spinal cord', job: 'Carrying messages to the body' }
+  ];
+  var JOBS = PARTS.map(function (p) { return p.job; }).slice().sort();
+  var grid = document.getElementById('matchGrid');
+  if (!grid) return;
+
+  PARTS.forEach(function (p) {
+    var row = document.createElement('div');
+    row.className = 'match-row';
+    var label = document.createElement('div');
+    label.className = 'match-part';
+    label.textContent = p.part;
+    var sel = document.createElement('select');
+    sel.innerHTML = '<option value="">— choose a job —</option>' +
+      JOBS.map(function (j) { return '<option>' + j + '</option>'; }).join('');
+    sel.dataset.answer = p.job;
+    row.appendChild(label);
+    row.appendChild(sel);
+    grid.appendChild(row);
+  });
+
+  document.getElementById('matchBtn').addEventListener('click', function () {
+    var rows = grid.querySelectorAll('.match-row');
+    var right = 0;
+    rows.forEach(function (r) {
+      var s = r.querySelector('select');
+      r.classList.remove('correct', 'wrong');
+      if (!s.value) return;
+      if (s.value === s.dataset.answer) { r.classList.add('correct'); right++; }
+      else { r.classList.add('wrong'); }
+    });
+    document.getElementById('matchResult').textContent = right + ' out of ' + rows.length + ' correct' +
+      (right === rows.length ? ' — perfect! 🧠' : ' — fix the red ones and try again.');
+  });
+})();
+
+/* --- Signal relay ordering --- */
+(function () {
+  var ORDER = [
+    'Dendrites catch the message',
+    'The cell body decides to fire',
+    'The signal races down the axon',
+    'It reaches the end of the axon',
+    'Neurotransmitters cross the synapse',
+    'The next neuron picks it up'
+  ];
+  var host = document.getElementById('relaySteps');
+  var track = document.getElementById('relayTrack');
+  if (!host) return;
+  var next = 0;
+
+  function shuffle(a) {
+    a = a.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  function build() {
+    next = 0;
+    host.innerHTML = '';
+    track.innerHTML = 'Waiting for the first step…';
+    shuffle(ORDER).forEach(function (label) {
+      var b = document.createElement('button');
+      b.className = 'relay-step';
+      b.type = 'button';
+      b.textContent = label;
+      b.addEventListener('click', function () {
+        if (b.classList.contains('done')) return;
+        if (label === ORDER[next]) {
+          b.classList.add('done');
+          b.textContent = (next + 1) + '. ' + label;
+          next++;
+          track.innerHTML = next === ORDER.length
+            ? '<b>Perfect relay!</b> That is exactly how one neuron passes a message to the next — electrical, then chemical, then electrical again.'
+            : 'Step ' + next + ' of ' + ORDER.length + ' locked in. Keep going.';
+        } else {
+          b.classList.add('bad');
+          track.innerHTML = 'Not yet — that step happens later. Think about where a message <em>arrives</em> first.';
+          setTimeout(function () { b.classList.remove('bad'); }, 700);
+        }
+      });
+      host.appendChild(b);
+    });
+  }
+
+  document.getElementById('relayReset').addEventListener('click', build);
+  build();
+})();
+
+/* --- Reaction time lab --- */
+(function () {
+  var pad = document.getElementById('rtPad');
+  var stats = document.getElementById('rtStats');
+  if (!pad) return;
+  var state = 'idle', timer = null, startedAt = 0, times = [];
+
+  function render() {
+    var best = Math.min.apply(null, times);
+    var avg = Math.round(times.reduce(function (a, b) { return a + b; }, 0) / times.length);
+    var note = best < 200 ? 'Lightning fast — that is top 10% territory.'
+             : best < 260 ? 'Right around the typical human average.'
+             : 'Keep going — most people speed up after a few tries.';
+    stats.innerHTML = 'Attempts: <b>' + times.length + '</b> · Best: <b>' + best +
+      ' ms</b> · Average: <b>' + avg + ' ms</b><br>' + note;
+  }
+
+  pad.addEventListener('click', function () {
+    if (state === 'idle' || state === 'done') {
+      state = 'wait';
+      pad.className = 'wait';
+      pad.innerHTML = '<span>Wait for green…</span>';
+      timer = setTimeout(function () {
+        state = 'go';
+        pad.className = 'go';
+        pad.innerHTML = '<span>CLICK NOW!</span>';
+        startedAt = performance.now();
+      }, 1200 + Math.floor(Math.random() * 3300));
+    } else if (state === 'wait') {
+      clearTimeout(timer);
+      state = 'done';
+      pad.className = 'done';
+      pad.innerHTML = '<span>Too early! 😄<br><span class="rt-small">Your brain guessed instead of reacting. Click to try again.</span></span>';
+    } else if (state === 'go') {
+      var ms = Math.round(performance.now() - startedAt);
+      times.push(ms);
+      state = 'done';
+      pad.className = 'done';
+      pad.innerHTML = '<span>' + ms + ' ms<br><span class="rt-small">Click to go again.</span></span>';
+      render();
+    }
+  });
+})();
+
+/* --- Memory span test --- */
+(function () {
+  var disp = document.getElementById('spanDisplay');
+  var input = document.getElementById('spanInput');
+  var btn = document.getElementById('spanBtn');
+  var stats = document.getElementById('spanStats');
+  if (!disp) return;
+  var len = 3, best = 0, seq = '';
+
+  function show() {
+    seq = '';
+    for (var i = 0; i < len; i++) seq += Math.floor(Math.random() * 10);
+    disp.classList.remove('msg');
+    disp.textContent = seq;
+    input.style.display = 'none';
+    input.value = '';
+    btn.style.display = 'none';
+    setTimeout(function () {
+      disp.classList.add('msg');
+      disp.innerHTML = '<span>Now type them back and press Enter.</span>';
+      input.style.display = 'block';
+      input.focus();
+    }, 700 + len * 550);
+  }
+
+  function judge() {
+    var val = input.value.replace(/\D/g, '');
+    if (!val) return;
+    input.style.display = 'none';
+    btn.style.display = 'inline-block';
+    disp.classList.add('msg');
+    if (val === seq) {
+      if (len > best) best = len;
+      disp.innerHTML = '<span>Correct! The sequence was <b style="color:#00e676">' + seq + '</b>. Getting longer…</span>';
+      btn.textContent = 'Next Round (' + (len + 1) + ' digits)';
+      len++;
+    } else {
+      disp.innerHTML = '<span>It was <b style="color:#00e5ff">' + seq + '</b>, you typed <b>' + val + '</b>. That is your limit for now.</span>';
+      btn.textContent = 'Try Again';
+      len = 3;
+    }
+    stats.innerHTML = best
+      ? 'Longest sequence remembered: <b>' + best + ' digits</b>. ' +
+        (best >= 7 ? 'That is above the typical adult span — impressive.' : 'Typical adult span is about 7. Keep practising.')
+      : 'Best so far: none yet.';
+  }
+
+  btn.addEventListener('click', show);
+  input.addEventListener('keydown', function (e) { if (e.key === 'Enter') judge(); });
+})();
+
+/* --- Stroop challenge --- */
+(function () {
+  var COLOURS = [
+    { name: 'RED',    hex: '#ff1744' },
+    { name: 'GREEN',  hex: '#00e676' },
+    { name: 'BLUE',   hex: '#2979ff' },
+    { name: 'YELLOW', hex: '#ffd600' }
+  ];
+  var word = document.getElementById('stroopWord');
+  var btns = document.getElementById('stroopBtns');
+  var start = document.getElementById('stroopStart');
+  var stats = document.getElementById('stroopStats');
+  if (!word) return;
+
+  var ROUND_LEN = 8;
+  var round = 0, i = 0, ink = null, t0 = 0, times = [], errors = 0, results = {};
+
+  COLOURS.forEach(function (c) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = c.name;
+    b.addEventListener('click', function () { answer(c.name); });
+    btns.appendChild(b);
+  });
+  btns.style.display = 'none';
+
+  function nextTrial() {
+    if (i >= ROUND_LEN) { finish(); return; }
+    ink = COLOURS[Math.floor(Math.random() * COLOURS.length)];
+    var label;
+    if (round === 1) {
+      label = ink.name;
+    } else {
+      var opts = COLOURS.filter(function (c) { return c.name !== ink.name; });
+      label = opts[Math.floor(Math.random() * opts.length)].name;
+    }
+    word.classList.remove('msg');
+    word.textContent = label;
+    word.style.color = ink.hex;
+    t0 = performance.now();
+  }
+
+  function answer(name) {
+    if (!ink) return;
+    if (name !== ink.name) errors++;
+    times.push(performance.now() - t0);
+    i++;
+    nextTrial();
+  }
+
+  function finish() {
+    ink = null;
+    btns.style.display = 'none';
+    var avg = Math.round(times.reduce(function (a, b) { return a + b; }, 0) / times.length);
+    results[round] = { avg: avg, errors: errors };
+    word.classList.add('msg');
+    word.style.color = '';
+    start.style.display = 'inline-block';
+
+    if (round === 1) {
+      word.innerHTML = '<span>Round 1 done — average <b style="color:#00e5ff">' + avg + ' ms</b>, ' + errors + ' mistake(s).<br>Now for the tricky one.</span>';
+      start.textContent = 'Start Round 2 (Hard)';
+      stats.innerHTML = 'Round 1 (word matches the ink): <b>' + avg + ' ms</b> average.';
+    } else {
+      var d = results[1] ? avg - results[1].avg : null;
+      word.innerHTML = '<span>Round 2 done — average <b style="color:#00e5ff">' + avg + ' ms</b>, ' + errors + ' mistake(s).</span>';
+      start.textContent = 'Play Again';
+      stats.innerHTML = 'Round 1 (easy): <b>' + (results[1] ? results[1].avg : '—') + ' ms</b> · Round 2 (conflicting): <b>' + avg + ' ms</b>' +
+        (d !== null
+          ? '<br>You were <b>' + Math.abs(d) + ' ms ' + (d > 0 ? 'slower' : 'faster') + '</b> when the word fought the colour. ' +
+            (d > 0 ? 'That gap is the Stroop effect — reading is so automatic that your brain has to stop and override it.'
+                   : 'Unusual — most people slow right down on Round 2. Try it again.')
+          : '');
+      round = 0;
+    }
+  }
+
+  start.addEventListener('click', function () {
+    round = round === 1 ? 2 : 1;
+    i = 0; times = []; errors = 0;
+    start.style.display = 'none';
+    btns.style.display = 'grid';
+    nextTrial();
+  });
+})();
+
+buildQuiz();
+</script>
+</body>
+</html>
