@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Immune System Explorer — Age 10</title>
+<meta name="description" content="A free 1-hour guided science curriculum on the immune system for curious 10-year-olds: first and second lines of defence, macrophages, neutrophils, T cells and B cells, bacteria versus viruses, vaccines, allergies and staying healthy.">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #05080f;
+    --panel: #0b1220;
+    --border: #24244f;
+    --accent: #b388ff;
+    --gold: #ffd600;
+    --green: #00e676;
+    --red: #ff1744;
+    --orange: #ff6d00;
+    --text: #ddd8ff;
+    --muted: #7c7aa8;
+    --radius: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Faint "cells drifting in plasma" background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(3px 3px at 12% 18%, rgba(179,136,255,0.22) 0%, transparent 100%),
+      radial-gradient(2px 2px at 33% 42%, rgba(255,255,255,0.20) 0%, transparent 100%),
+      radial-gradient(4px 4px at 58% 26%, rgba(179,136,255,0.16) 0%, transparent 100%),
+      radial-gradient(2px 2px at 81% 63%, rgba(255,255,255,0.18) 0%, transparent 100%),
+      radial-gradient(3px 3px at 93% 12%, rgba(0,230,118,0.16) 0%, transparent 100%),
+      radial-gradient(5px 5px at 21% 82%, rgba(179,136,255,0.14) 0%, transparent 100%),
+      radial-gradient(3px 3px at 71% 91%, rgba(255,23,68,0.13) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  /* HEADER */
+  header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    padding: 2.5rem 1rem 2rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, #140f2e 0%, #1b1240 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  header::after {
+    content: '🛡️';
+    font-size: 8rem;
+    position: absolute;
+    right: -1rem;
+    top: -1rem;
+    opacity: 0.06;
+    animation: pulse 6s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.06; }
+    50%      { transform: scale(1.06); opacity: 0.09; }
+  }
+
+  .badge {
+    display: inline-block;
+    background: var(--accent);
+    color: #000;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1.6rem, 5vw, 2.6rem);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+  }
+
+  .header-topic {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    font-weight: 400;
+    color: var(--accent);
+    letter-spacing: 2px;
+    margin-bottom: 0.6rem;
+  }
+  .header-topic span {
+    border-bottom: 2px solid rgba(179,136,255,0.35);
+    padding-bottom: 2px;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+  }
+
+  .homelink {
+    display: inline-block;
+    margin-top: 1rem;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    color: var(--muted);
+    text-decoration: none;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 5px 14px;
+    position: relative;
+    z-index: 2;
+  }
+  .homelink:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .progress-label {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+  .progress-bar-outer {
+    flex: 1;
+    height: 8px;
+    background: #24244f;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .progress-bar-inner {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent), var(--green));
+    border-radius: 4px;
+    transition: width 0.5s ease;
+  }
+  .progress-time {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.75rem;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+
+  /* SECTION CARDS */
+  .section-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .section-card:hover { border-color: var(--accent); }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.2rem 1.5rem;
+    cursor: pointer;
+    user-select: none;
+    background: linear-gradient(90deg, #17123a 0%, transparent 100%);
+  }
+  .section-num {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 2px;
+    min-width: 60px;
+  }
+  .section-title {
+    flex: 1;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #fff;
+  }
+  .section-time {
+    font-size: 0.78rem;
+    color: var(--gold);
+    font-weight: 600;
+  }
+  .chevron {
+    color: var(--muted);
+    transition: transform 0.3s;
+    font-size: 1.1rem;
+  }
+  .section-card.open .chevron { transform: rotate(180deg); }
+
+  .section-body {
+    display: none;
+    padding: 0 1.5rem 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .section-card.open .section-body { display: block; }
+
+  .section-intro {
+    margin: 1rem 0 1.2rem;
+    color: var(--text);
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+  .section-intro strong { color: #fff; font-weight: 600; }
+
+  /* RESOURCES */
+  .resource-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 0.9rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .resource-card {
+    background: #0d1024;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .resource-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .resource-type {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    margin-bottom: 0.5rem;
+  }
+  .type-video { background: rgba(255,29,68,0.15); color: #ff6b8a; border: 1px solid rgba(255,29,68,0.3); }
+  .type-interactive { background: rgba(179,136,255,0.12); color: var(--accent); border: 1px solid rgba(179,136,255,0.32); }
+  .type-read { background: rgba(255,214,0,0.1); color: var(--gold); border: 1px solid rgba(255,214,0,0.3); }
+  .type-sim { background: rgba(0,230,118,0.1); color: var(--green); border: 1px solid rgba(0,230,118,0.3); }
+
+  .resource-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #fff;
+    margin-bottom: 0.3rem;
+    line-height: 1.3;
+  }
+  .resource-desc {
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .resource-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .resource-link:hover { text-decoration: underline; }
+
+  /* KEY CONCEPTS */
+  .concepts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  .concept-tag {
+    background: rgba(179,136,255,0.08);
+    border: 1px solid rgba(179,136,255,0.22);
+    color: var(--accent);
+    font-size: 0.78rem;
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+
+  /* QUIZ */
+  .quiz-section {
+    background: linear-gradient(135deg, #100b26 0%, #1a1240 100%);
+    border: 1px solid var(--gold);
+    border-radius: var(--radius);
+    padding: 2rem;
+    margin-top: 2rem;
+  }
+  .quiz-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .quiz-icon { font-size: 2rem; }
+  .quiz-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--gold);
+  }
+  .quiz-subtitle { font-size: 0.85rem; color: var(--muted); margin-top: 3px; }
+
+  .question-block {
+    background: #0d1024;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.3rem;
+    margin-bottom: 1.2rem;
+    transition: border-color 0.3s;
+  }
+  .question-block.correct { border-color: var(--green); }
+  .question-block.wrong { border-color: var(--red); }
+
+  .question-num {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+  }
+  .question-text {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+  }
+  @media(max-width: 500px) { .options { grid-template-columns: 1fr; } }
+
+  .option-btn {
+    background: #12112e;
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Exo 2', sans-serif;
+    font-size: 0.85rem;
+    padding: 0.7rem 1rem;
+    border-radius: 7px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+    line-height: 1.4;
+  }
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--accent);
+    background: rgba(179,136,255,0.07);
+  }
+  .option-btn.selected-correct {
+    border-color: var(--green);
+    background: rgba(0,230,118,0.1);
+    color: var(--green);
+  }
+  .option-btn.selected-wrong {
+    border-color: var(--red);
+    background: rgba(255,23,68,0.1);
+    color: #ff8fa3;
+  }
+  .option-btn.reveal-correct {
+    border-color: var(--green);
+    color: var(--green);
+  }
+  .option-btn:disabled { cursor: default; }
+
+  .feedback {
+    margin-top: 0.8rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.ok { color: var(--green); }
+  .feedback.bad { color: #ff8a80; }
+
+  /* SCORE */
+  .score-wrap {
+    margin-top: 1.5rem;
+    text-align: center;
+    display: none;
+  }
+  .score-wrap.show { display: block; }
+  .score-display {
+    font-family: 'Orbitron', monospace;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--gold);
+    margin-bottom: 0.3rem;
+  }
+  .score-label { color: var(--muted); font-size: 0.9rem; margin-bottom: 1rem; }
+  .score-bar-outer {
+    height: 12px;
+    background: #24244f;
+    border-radius: 6px;
+    overflow: hidden;
+    max-width: 400px;
+    margin: 0 auto 1rem;
+  }
+  .score-bar-inner {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--green));
+    border-radius: 6px;
+    transition: width 1s ease;
+    width: 0%;
+  }
+  .score-message {
+    font-size: 0.95rem;
+    color: var(--text);
+    max-width: 400px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .submit-btn {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 1.5rem auto 0;
+    background: linear-gradient(90deg, var(--gold), var(--orange));
+    color: #000;
+    border: none;
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    padding: 0.9rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .submit-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+  .submit-btn:disabled { opacity: 0.4; cursor: default; transform: none; }
+
+  /* FUN FACT */
+  .fun-fact {
+    background: rgba(255,214,0,0.05);
+    border: 1px solid rgba(255,214,0,0.2);
+    border-radius: 8px;
+    padding: 0.9rem 1.1rem;
+    font-size: 0.85rem;
+    color: var(--gold);
+    margin-top: 1rem;
+    line-height: 1.5;
+  }
+  .fun-fact::before { content: '⭐ Fun Fact: '; font-weight: 700; }
+
+  footer {
+    text-align: center;
+    margin-top: 3rem;
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  footer a { color: var(--muted); }
+  footer a:hover { color: var(--accent); }
+
+  /* ===== Built-in activities ===== */
+  .tryit {
+    background: rgba(0,230,118,0.05);
+    border: 1px solid rgba(0,230,118,0.32);
+    border-radius: 10px;
+    padding: 1.2rem;
+    margin-bottom: 1.2rem;
+    cursor: default;
+  }
+  .tryit-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    color: var(--green);
+    margin-bottom: 0.85rem;
+  }
+  .tryit-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.7; margin-bottom: 0.85rem; }
+  .tryit-desc strong { color: var(--text); }
+  .tryit-out { margin-top: 0.75rem; font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
+  .tryit-out b { color: var(--accent); }
+  .tryit-btn {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 0.6rem 1.1rem;
+    margin-top: 0.85rem;
+    margin-right: 0.5rem;
+    cursor: pointer;
+    transition: background .18s, color .18s;
+  }
+  .tryit-btn:hover { background: var(--accent); color: #12002a; }
+
+  /* Generic matching rows (barriers + cell crew) */
+  .match-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 0.7rem; }
+  .match-row { display: flex; flex-direction: column; gap: 0.35rem; }
+  .match-part { font-family: 'Orbitron', monospace; font-size: 0.64rem; color: var(--text); letter-spacing: 0.04em; line-height: 1.5; }
+  .match-row select {
+    background: #0d1024; color: var(--text);
+    border: 1px solid var(--border); border-radius: 6px;
+    padding: 0.5rem 0.6rem; font-family: 'Exo 2', sans-serif; font-size: 0.85rem;
+    width: 100%;
+  }
+  .match-row.correct select { border-color: var(--green); color: #a5ffd0; }
+  .match-row.wrong select { border-color: var(--red); color: #ffb3c1; }
+
+  /* Step-ordering relay (inflammation) */
+  .relay-steps { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .relay-step {
+    font-family: 'Exo 2', sans-serif; font-size: 0.82rem;
+    background: #0d1024; color: var(--text);
+    border: 1px solid var(--border); border-radius: 20px;
+    padding: 0.5rem 0.9rem; cursor: pointer; transition: all .15s;
+    text-align: left;
+  }
+  .relay-step:hover { border-color: var(--accent); }
+  .relay-step.done { background: rgba(0,230,118,0.15); border-color: var(--green); color: #a5ffd0; cursor: default; }
+  .relay-step.bad { border-color: var(--red); color: #ffb3c1; }
+
+  /* Antibody lock & key */
+  .ab-antigen {
+    display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+    background: #0d1024; border: 1px solid var(--border); border-radius: 8px;
+    padding: 1.1rem 0.6rem; min-height: 92px; text-align: center;
+    font-family: 'Orbitron', monospace; font-size: 0.9rem; color: var(--text);
+  }
+  .ab-shape { font-size: 2.1rem; line-height: 1; }
+  .ab-btns { display: grid; grid-template-columns: repeat(auto-fit, minmax(84px,1fr)); gap: 0.5rem; margin-top: 0.6rem; }
+  .ab-btns button {
+    font-size: 1.6rem; padding: 0.55rem 0.3rem; border-radius: 8px;
+    border: 1px solid var(--border); background: #0d1024; color: var(--text); cursor: pointer;
+    font-family: 'Orbitron', monospace;
+    transition: border-color .15s, background .15s;
+  }
+  .ab-btns button:hover { border-color: var(--accent); }
+  .ab-btns button.hit { border-color: var(--green); background: rgba(0,230,118,0.14); }
+  .ab-btns button.miss { border-color: var(--red); background: rgba(255,23,68,0.12); }
+
+  /* Bacteria or virus sorter */
+  .sort-card {
+    background: #0d1024; border: 1px solid var(--border); border-radius: 8px;
+    padding: 1.1rem 1rem; min-height: 84px; text-align: center;
+    font-size: 0.95rem; color: var(--text); line-height: 1.6;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .sort-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.6rem; }
+  .sort-btns button {
+    font-family: 'Orbitron', monospace; font-size: 0.7rem; letter-spacing: 0.08em;
+    padding: 0.75rem 0.4rem; border-radius: 8px;
+    border: 1px solid var(--border); background: #0d1024; color: var(--text); cursor: pointer;
+  }
+  .sort-btns button:hover { border-color: var(--accent); }
+
+  /* Herd immunity simulator */
+  .herd-controls { display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+  .herd-controls label { font-size: 0.82rem; color: var(--muted); white-space: nowrap; }
+  .herd-controls input[type=range] { flex: 1; min-width: 160px; accent-color: var(--accent); }
+  #herdPct { font-family: 'Orbitron', monospace; color: var(--gold); font-size: 0.9rem; min-width: 3.2rem; text-align: right; }
+  .herd-grid {
+    display: grid; grid-template-columns: repeat(20, 1fr); gap: 3px;
+    background: #0d1024; border: 1px solid var(--border); border-radius: 8px; padding: 0.7rem;
+    max-width: 520px; margin: 0 auto;
+  }
+  .herd-dot { width: 100%; aspect-ratio: 1; border-radius: 50%; background: #2b2b52; transition: background .25s; }
+  .herd-dot.vax { background: var(--accent); }
+  .herd-dot.sick { background: var(--red); }
+  .herd-dot.recovered { background: #4a4a70; }
+  .herd-legend { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 0.6rem; font-size: 0.76rem; color: var(--muted); }
+  .herd-legend span { display: inline-flex; align-items: center; gap: 5px; }
+  .herd-key { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+
+  /* Fact wall */
+  .factwall-section {
+    background: linear-gradient(135deg, #100b26 0%, #1a1240 100%);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    margin-top: 2rem;
+  }
+  .factwall-head { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+  .factwall-icon { font-size: 2rem; }
+  .factwall-title { font-family: 'Orbitron', monospace; font-size: 1.1rem; font-weight: 700; color: var(--accent); }
+  .factwall-sub { font-size: 0.85rem; color: var(--muted); margin-top: 3px; }
+  .factwall { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 0.8rem; }
+  .factcard {
+    background: #0d1024; border: 1px solid var(--border); border-radius: 10px;
+    padding: 0.9rem 1rem; font-size: 0.85rem; line-height: 1.65; color: var(--text);
+  }
+  .factnum {
+    font-family: 'Orbitron', monospace; display: block;
+    font-size: 1.2rem; color: var(--accent); margin-bottom: 0.35rem;
+  }
+
+  @media (max-width: 560px) {
+    .herd-grid { grid-template-columns: repeat(14, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <header>
+    <div class="badge">SCIENCE EXPLORER</div>
+    <h1>The Immune System Explorer</h1>
+    <p class="header-topic"><span>Your Body's Secret Defence Force</span></p>
+    <p class="subtitle">A 1-hour guided curriculum · Age 10 · Beginner Friendly</p>
+    <a class="homelink" href="https://curious-minds-science-lab.org/">← ALL CURRICULA</a>
+  </header>
+
+  <div class="progress-wrap">
+    <span class="progress-label">PROGRESS</span>
+    <div class="progress-bar-outer"><div class="progress-bar-inner" id="progressBar"></div></div>
+    <span class="progress-time" id="progressTime">0 / 60 min</span>
+  </div>
+
+  <!-- ===== MODULE 01 ===== -->
+  <div class="section-card" onclick="toggleCard(this)">
+    <div class="section-header">
+      <span class="section-num">MODULE 01</span>
+      <span class="section-title">🛡️ What Is the Immune System?</span>
+      <span class="section-time">9 min</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <p class="section-intro">Right now, while you read this, you are under attack. Bacteria are landing on your skin, viruses are drifting into your nose, and fungal spores are floating past your eyes. You have no idea it is happening — because you have an <strong>army</strong> inside you, and it is winning. The <strong>immune system</strong> is not one organ you could point to. It is a whole network: your skin, your snot, your blood, your <strong>bone marrow</strong>, your <strong>thymus</strong>, hundreds of <strong>lymph nodes</strong> and your <strong>spleen</strong>, all working as one. Its single most important trick is telling <strong>"self" from "non-self"</strong> — which cells are you, and which ones are intruders. And it defends you in three layers: walls that keep germs out, a rapid response team that swarms anything that gets in, and a squad of specialists that learns each enemy by name and never forgets it.</p>
+
+      <div class="resource-grid">
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">How Your Immune System Works</div>
+          <div class="resource-desc">Nemours KidsHealth's short, doctor-checked opener: what the immune system is and how it blocks and destroys germs. Start here.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=24IYt5Z3eC4" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Dr. Binocs: How Does Your Immune System Work?</div>
+          <div class="resource-desc">A bright cartoon tour of the barriers and the white blood cells, with every tricky word said out loud slowly.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=azE3rv5l28Y" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">How the Lymphatic System Works</div>
+          <div class="resource-desc">Where your immune cells actually live and travel: lymph vessels, lymph nodes and the reason your neck swells when you are ill.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=f4RQ0UXU50E" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-read">◆ READ</span>
+          <div class="resource-name">KidsHealth: Your Immune System</div>
+          <div class="resource-desc">The clearest kid-level written guide there is, from Nemours Children's Health. Has a read-aloud button if you would rather listen.</div>
+          <a class="resource-link" href="https://kidshealth.org/en/kids/immune.html" target="_blank" rel="noopener">Read the guide →</a>
+        </div>
+      </div>
+
+      <div class="concepts">
+        <span class="concept-tag">Immune System</span>
+        <span class="concept-tag">Pathogen</span>
+        <span class="concept-tag">Self vs Non-Self</span>
+        <span class="concept-tag">Bone Marrow</span>
+        <span class="concept-tag">Thymus</span>
+        <span class="concept-tag">Lymph Node</span>
+        <span class="concept-tag">Spleen</span>
+      </div>
+
+      <div class="fun-fact">Your gut is your immune system’s busiest border. It holds the biggest single patch of immune tissue in your body and makes more antibodies than anywhere else in you — which makes sense, because the inside of your intestines is one of the few places the outside world gets deep inside you. You will often read that “70% of your immune system is in your gut”. That number gets repeated everywhere, but when scientists actually counted the cells in 2023 they found most of your immune cells live in your bone marrow and lymph nodes instead. Even famous facts get corrected — that is science working properly.</div>
+    </div>
+  </div>
+
+  <!-- ===== MODULE 02 ===== -->
+  <div class="section-card" onclick="toggleCard(this)">
+    <div class="section-header">
+      <span class="section-num">MODULE 02</span>
+      <span class="section-title">🧱 First Line of Defence: The Castle Walls</span>
+      <span class="section-time">10 min</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <p class="section-intro">The best fight is the one that never starts. Your <strong>first line of defence</strong> is a set of walls and traps that stop germs before they are ever inside you — and it works on almost everything, all the time, without needing to know what the germ is. Your <strong>skin</strong> is the biggest one: about <strong>one and a half to two square metres</strong> of waterproof, germ-proof armour, and unbroken skin is nearly impossible for bacteria to cross. Where you cannot have skin — eyes, nose, mouth, lungs, gut — you have <strong>wet defences</strong> instead. <strong>Mucus</strong> (yes, snot) is sticky flypaper that traps whatever you breathe in, and microscopic hairs called <strong>cilia</strong> sweep it up your throat like a tiny escalator so you swallow it. <strong>Tears and saliva</strong> carry an enzyme called <strong>lysozyme</strong> that splits bacteria open. Your <strong>stomach acid</strong> drops to about <strong>pH 1.5 to 2</strong> when it is working hardest — more sour than lemon juice — and most swallowed germs simply dissolve. Even your <strong>good bacteria</strong> help: tens of trillions of friendly microbes cover your skin and gut, and they take up all the space and food so dangerous ones cannot move in. Sneezing, coughing, crying and weeing are all part of it too — every one of them physically flushes germs out.</p>
+
+      <div class="tryit" onclick="event.stopPropagation()">
+        <div class="tryit-title">◈ TRY IT — DEFEND THE CASTLE</div>
+        <p class="tryit-desc">Six germs are trying six different ways in. Pick the <strong>first-line defence</strong> that stops each one.</p>
+        <div class="match-grid" id="barrierGrid"></div>
+        <button class="tryit-btn" id="barrierBtn">Check My Answers</button>
+        <div class="tryit-out" id="barrierResult"></div>
+      </div>
+
+      <div class="resource-grid">
+        <div class="resource-card">
+          <span class="resource-type type-read">◆ READ</span>
+          <div class="resource-name">How the Innate Immune System Fights for Your Health</div>
+          <div class="resource-desc">A real science article from Frontiers for Young Minds — and it was reviewed by kids aged 9 and 12 before it was published. Covers the skin "fortress", mucus, tears and inflammation.</div>
+          <a class="resource-link" href="https://kids.frontiersin.org/articles/10.3389/frym.2021.609074" target="_blank" rel="noopener">Read the article →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">SciShow Kids: Where Do Cold Symptoms Come From?</div>
+          <div class="resource-desc">The surprising answer — a runny nose and a sore throat are not the virus hurting you, they are your own defences switching on.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=wFcwxRyZwp4" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-interactive">◉ INTERACTIVE</span>
+          <div class="resource-name">WHO: Immune Patrol</div>
+          <div class="resource-desc">The World Health Organization built this games-and-videos package for exactly your age — 10 to 12. Six modules on germs, defences, vaccines and spotting fake health news. Free, no account needed.</div>
+          <a class="resource-link" href="https://immune-patrol.seriousgames.net/" target="_blank" rel="noopener">Start Immune Patrol →</a>
+        </div>
+      </div>
+
+      <div class="concepts">
+        <span class="concept-tag">First Line of Defence</span>
+        <span class="concept-tag">Skin Barrier</span>
+        <span class="concept-tag">Mucus</span>
+        <span class="concept-tag">Cilia</span>
+        <span class="concept-tag">Lysozyme</span>
+        <span class="concept-tag">Stomach Acid</span>
+        <span class="concept-tag">Good Bacteria</span>
+      </div>
+
+      <div class="fun-fact">You swallow roughly a litre of your own mucus every single day and never notice. Your airways make it constantly, the cilia escalator sweeps it up to your throat, and down it goes — carrying every trapped dust speck, pollen grain and bacterium straight into your stomach acid, which finishes them off.</div>
+    </div>
+  </div>
+
+  <!-- ===== MODULE 03 ===== -->
+  <div class="section-card" onclick="toggleCard(this)">
+    <div class="section-header">
+      <span class="section-num">MODULE 03</span>
+      <span class="section-title">🚨 Second Line of Defence: The Rapid Response Team</span>
+      <span class="section-time">12 min</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <p class="section-intro">Step on a splinter and the wall is breached. Within seconds your <strong>second line of defence</strong> kicks in — and this one does not care what kind of germ it is, it just attacks anything that should not be there. This is called <strong>innate immunity</strong>, the defence you were born with — your barriers in Module 02 were innate too, and this is the innate system’s second wave, the one that fights back once something is already inside. Damaged cells release chemical alarm signals. Blood vessels around the wound widen and get leaky, so the area goes <strong>red, hot, swollen and sore</strong> — that is <strong>inflammation</strong>, and it is not the injury, it is the rescue. Through those leaky vessels pour the <strong>phagocytes</strong>, cells whose whole job is eating. <strong>Neutrophils</strong> arrive first, in enormous numbers, within minutes; they are the most common white blood cell in your blood, they swallow bacteria whole, and they live only about a day before dying at the scene. <strong>Macrophages</strong> — Greek for "big eaters" — arrive next: bigger, slower, longer-lived, and they clean up the mess afterwards. And if your temperature climbs, that is deliberate. A <strong>fever</strong> above 38 °C makes your body a worse place for many germs to breed and makes your own immune cells work faster. Feeling rubbish is often the sound of your army mobilising — though a fever that climbs very high, or lasts more than a day or two, always needs a grown-up to check on you.</p>
+
+      <div class="tryit" onclick="event.stopPropagation()">
+        <div class="tryit-title">◈ TRY IT — INFLAMMATION RESPONSE RELAY</div>
+        <p class="tryit-desc">You just got a splinter in your thumb. Click the six things your body does <strong>in the right order</strong>.</p>
+        <div class="relay-steps" id="relaySteps"></div>
+        <div class="tryit-out" id="relayTrack">Waiting for the first step…</div>
+        <button class="tryit-btn" id="relayReset">Shuffle &amp; Restart</button>
+      </div>
+
+      <div class="resource-grid">
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Dr. Binocs: Why Do We Get a Fever?</div>
+          <div class="resource-desc">Why your body turns the heat up on purpose, and why a fever is usually a sign the defence is working rather than a sign of the illness itself.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=BqOaG9VuP_I" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Operation Ouch: What Is Blood Made Of?</div>
+          <div class="resource-desc">Dr. Chris and Dr. Xand separate real blood into its layers so you can see red cells, white cells and plasma for yourself.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=nnH6Q0u2-BI" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-read">◆ READ</span>
+          <div class="resource-name">The Body's Second Line of Defence</div>
+          <div class="resource-desc">New Zealand's Science Learning Hub explains the whole white-blood-cell crew using job titles — bosses, spies, big eaters — which makes it stick.</div>
+          <a class="resource-link" href="https://www.sciencelearn.org.nz/resources/178-the-body-s-second-line-of-defence" target="_blank" rel="noopener">Read it →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-interactive">◉ INTERACTIVE</span>
+          <div class="resource-name">The Immune System (clickable diagram)</div>
+          <div class="resource-desc">Hover or tap any labelled cell on the diagram — dendritic cells, macrophages, neutrophils, T cells, B cells, antibodies — and it tells you what that one does.</div>
+          <a class="resource-link" href="https://www.sciencelearn.org.nz/image_maps/68-the-immune-system" target="_blank" rel="noopener">Explore the diagram →</a>
+        </div>
+      </div>
+
+      <div class="concepts">
+        <span class="concept-tag">Innate Immunity</span>
+        <span class="concept-tag">Inflammation</span>
+        <span class="concept-tag">Phagocyte</span>
+        <span class="concept-tag">Neutrophil</span>
+        <span class="concept-tag">Macrophage</span>
+        <span class="concept-tag">Fever</span>
+        <span class="concept-tag">Pus</span>
+      </div>
+
+      <div class="fun-fact">Pus is a battlefield. That yellowish-white stuff in a spot or an infected cut is mostly dead neutrophils — millions of them — that ate bacteria until they died doing it, mixed with fluid and bits of broken tissue. Gross, yes. But it means your side won.</div>
+    </div>
+  </div>
+
+  <!-- ===== MODULE 04 ===== -->
+  <div class="section-card" onclick="toggleCard(this)">
+    <div class="section-header">
+      <span class="section-num">MODULE 04</span>
+      <span class="section-title">🎯 The Specialists: T Cells, B Cells &amp; Antibodies</span>
+      <span class="section-time">14 min</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <p class="section-intro">Some germs are too clever for brute force. That is when your <strong>third line</strong> wakes up — the <strong>adaptive immune system</strong>, which does not just fight the enemy, it <em>studies</em> it. A macrophage or a <strong>dendritic cell</strong> that has eaten an invader holds up a piece of it like a wanted poster. That piece is called an <strong>antigen</strong>. <strong>Helper T cells</strong> read the poster and become the commanders: they raise the alarm and switch on everyone else. <strong>Killer T cells</strong> hunt down your own cells that a virus has taken over and destroy them — sad, but necessary, because a hijacked cell is a virus factory. <strong>B cells</strong> take a different approach: each one builds <strong>antibodies</strong>, Y-shaped proteins that lock onto one exact antigen shape and nothing else, like a key cut for a single lock. Antibodies clump germs together, glue them still, and mark them so phagocytes know exactly what to eat. Between them, your B cells can build <strong>more than a billion</strong> different antibody shapes — enough to match germs you have never even met. And when the fight is over, some cells stay behind forever as <strong>memory cells</strong>. That is why you almost never catch chickenpox twice. Next time, the response that took a week takes hours.</p>
+
+      <div class="tryit" onclick="event.stopPropagation()">
+        <div class="tryit-title">◈ TRY IT — MEET THE CELL CREW</div>
+        <p class="tryit-desc">Six cells, six jobs. Match each one to what it actually does.</p>
+        <div class="match-grid" id="crewGrid"></div>
+        <button class="tryit-btn" id="crewBtn">Check My Answers</button>
+        <div class="tryit-out" id="crewResult"></div>
+      </div>
+
+      <div class="tryit" onclick="event.stopPropagation()">
+        <div class="tryit-title">◈ TRY IT — ANTIBODY LOCK &amp; KEY</div>
+        <p class="tryit-desc">A germ shows its antigen. Click the antibody with the <strong>matching shape</strong> — fast. Ten rounds, and the game times you.</p>
+        <div class="ab-antigen" id="abAntigen"><span>Press Start to release the first germ.</span></div>
+        <div class="ab-btns" id="abBtns"></div>
+        <button class="tryit-btn" id="abStart">Start</button>
+        <div class="tryit-out" id="abStats">No rounds played yet.</div>
+      </div>
+
+      <div class="resource-grid">
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">TED-Ed: How Does Your Immune System Work?</div>
+          <div class="resource-desc">Emma Bryce's animation is the single best explanation of macrophages, T cells, B cells, antibodies and memory cells in one go. Watch this one twice.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=PSRJfaAYkW4" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-interactive">◉ INTERACTIVE</span>
+          <div class="resource-name">The Immune System in Action</div>
+          <div class="resource-desc">Click through a real immune response step by step, and watch how the answer to a virus differs from the answer to bacteria.</div>
+          <a class="resource-link" href="https://www.sciencelearn.org.nz/image_maps/69-the-immune-system-in-action" target="_blank" rel="noopener">Run the response →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-read">◆ READ</span>
+          <div class="resource-name">Ducksters: The Immune System</div>
+          <div class="resource-desc">B cells, T cells, helper and killer cells, memory cells, antigens and antibodies — all in plain English, with an audio version.</div>
+          <a class="resource-link" href="https://www.ducksters.com/science/biology/immune_system.php" target="_blank" rel="noopener">Read it →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-interactive">◉ INTERACTIVE</span>
+          <div class="resource-name">KidsHealth Immune System Quiz</div>
+          <div class="resource-desc">A short extra quiz that scores you instantly. Try it before the big Knowledge Check at the bottom of this page.</div>
+          <a class="resource-link" href="https://kidshealth.org/en/kids/isquiz.html" target="_blank" rel="noopener">Take the quiz →</a>
+        </div>
+      </div>
+
+      <div class="concepts">
+        <span class="concept-tag">Adaptive Immunity</span>
+        <span class="concept-tag">Antigen</span>
+        <span class="concept-tag">Antibody</span>
+        <span class="concept-tag">Helper T Cell</span>
+        <span class="concept-tag">Killer T Cell</span>
+        <span class="concept-tag">B Cell</span>
+        <span class="concept-tag">Memory Cell</span>
+        <span class="concept-tag">Dendritic Cell</span>
+      </div>
+
+      <div class="fun-fact">T cells get their letter from the <strong>thymus</strong>, a small organ behind your breastbone where they go to train — and almost any T cell that would attack your own body gets destroyed there before it can graduate. B cells got their letter from a completely different place: an organ in <em>birds</em> called the bursa of Fabricius, where scientists first found them. In you, B cells are made in your bone marrow — which is a lucky coincidence for anyone trying to remember it.</div>
+    </div>
+  </div>
+
+  <!-- ===== MODULE 05 ===== -->
+  <div class="section-card" onclick="toggleCard(this)">
+    <div class="section-header">
+      <span class="section-num">MODULE 05</span>
+      <span class="section-title">⚔️ Germs, Vaccines, Allergies &amp; Staying Healthy</span>
+      <span class="section-time">15 min</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <p class="section-intro">Not all germs are the same, and your body does not fight them the same way. <strong>Bacteria</strong> are complete living cells — they eat, they grow, they split in two, and they can multiply happily in your body all by themselves. Phagocytes eat them and antibodies clump them. <strong>Viruses</strong> are not really alive at all: a virus is basically a set of instructions in a shell, and it can do nothing until it breaks into one of <em>your</em> cells and forces it to build copies. That is why killer T cells have to destroy your own infected cells to stop it. It is also why <strong>antibiotics do not work on a cold</strong> — antibiotics attack machinery that only bacteria have, and a virus does not have any of it. Taking them anyway does real damage. In any big group of bacteria a few are already <strong>resistant</strong> purely by luck — so wiping out all the others just leaves the field clear for the tough ones to take over. That is not the bacteria learning; that is the antibiotic doing the choosing. And those survivors are much harder to treat next time.<br><br>Which brings us to the cleverest medical trick ever invented. A <strong>vaccine</strong> shows your immune system a harmless preview of a germ — a dead one, a weakened one, one piece of its outer coat, or a set of instructions that teaches your own cells to build that piece, which is how <strong>mRNA</strong> vaccines work — so your B cells and T cells can train against it and leave <strong>memory cells</strong> behind. You get the immunity without ever getting the disease. In <strong>1796</strong> a doctor called <strong>Edward Jenner</strong> noticed that milkmaids who caught mild cowpox never got deadly smallpox, and tested the idea on an eight-year-old boy named James Phipps. The word "vaccine" comes from <em>vacca</em>, Latin for cow. In <strong>1980</strong> the World Health Organization declared smallpox eradicated — wiped off the planet, the only human disease we have ever managed it with. And when enough people around you are immune, a germ runs out of people to jump to and dies out before it reaches the few who cannot be vaccinated. That is <strong>herd immunity</strong>, and you can play with it below.<br><br>Sometimes the system gets it wrong. An <strong>allergy</strong> is your immune system attacking something completely harmless — pollen, peanuts, cat fur — as though it were a deadly invader. It makes a type of antibody called <strong>IgE</strong>, which triggers cells to dump <strong>histamine</strong>, and histamine is what makes you sneeze, itch, stream and swell. That is why one common kind of allergy medicine is called an <strong>anti</strong>histamine. A few allergies can turn serious very fast, and antihistamines are nowhere near strong enough for that — people at risk carry an <strong>adrenaline pen</strong> instead and have a plan they have practised. The rule for everyone else is simple: if someone is reacting badly, tell an adult immediately. Looking after the whole system is refreshingly ordinary: <strong>sleep</strong>, <strong>real food</strong>, <strong>exercise</strong>, and <strong>washing your hands for twenty seconds</strong>. In one famous study, volunteers were deliberately given a cold virus — and the ones who had been sleeping under six hours a night were about <strong>four times</strong> more likely to actually come down with the cold than the ones getting seven or more. Your army fights better when it is rested.</p>
+
+      <div class="tryit" onclick="event.stopPropagation()">
+        <div class="tryit-title">◈ TRY IT — BACTERIA OR VIRUS?</div>
+        <p class="tryit-desc">Ten clues. Decide whether each one describes a <strong>bacterium</strong> or a <strong>virus</strong>.</p>
+        <div class="sort-card" id="sortCard">Press Start to see the first clue.</div>
+        <div class="sort-btns" id="sortBtns">
+          <button id="sortBac" disabled>🦠 BACTERIUM</button>
+          <button id="sortVir" disabled>☣️ VIRUS</button>
+        </div>
+        <button class="tryit-btn" id="sortStart">Start</button>
+        <div class="tryit-out" id="sortStats">Score: 0 / 0</div>
+      </div>
+
+      <div class="tryit" onclick="event.stopPropagation()">
+        <div class="tryit-title">◈ TRY IT — HERD IMMUNITY SIMULATOR</div>
+        <p class="tryit-desc">Each dot is a person in a school of 300. Choose how many are <strong>vaccinated</strong>, then release one infected person and watch what happens. Try <strong>0%</strong>, then <strong>90%</strong> — the difference is the whole point of vaccination. Then run <strong>50%</strong> several times: sometimes the germ tears through, sometimes it stops dead. That wobble is the tipping point, and it is exactly why doctors worry when vaccination rates slip.</p>
+        <div class="herd-controls">
+          <label for="herdRange">Vaccinated</label>
+          <input type="range" id="herdRange" min="0" max="100" step="5" value="0">
+          <span id="herdPct">0%</span>
+        </div>
+        <div class="herd-grid" id="herdGrid"></div>
+        <div class="herd-legend">
+          <span><i class="herd-key" style="background:#2b2b52"></i> Not vaccinated</span>
+          <span><i class="herd-key" style="background:#b388ff"></i> Vaccinated</span>
+          <span><i class="herd-key" style="background:#ff1744"></i> Infected</span>
+          <span><i class="herd-key" style="background:#4a4a70"></i> Recovered</span>
+        </div>
+        <button class="tryit-btn" id="herdRun">Release the Germ</button>
+        <button class="tryit-btn" id="herdReset">Reset</button>
+        <div class="tryit-out" id="herdStats">Set a vaccination level, then release the germ.</div>
+      </div>
+
+      <div class="resource-grid">
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Operation Ouch: Bacteria &amp; Infections</div>
+          <div class="resource-desc">Real doctors, real experiments, real bacteria growing in dishes. Shows what an infection actually is.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=LXJy3T1McpM" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Dr. Binocs: What Is a Virus?</div>
+          <div class="resource-desc">How something that is barely alive breaks into your cells and turns them into copy machines — the key difference from bacteria.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=Awt2HxCRhbE" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Dr. Binocs: Antibiotics &amp; the Discovery of Penicillin</div>
+          <div class="resource-desc">What antibiotics do, and the accident in Alexander Fleming's messy lab in 1928 that changed medicine forever.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=WELYkx1ylY8" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">TED-Ed: How Do Vaccines Work?</div>
+          <div class="resource-desc">Kelwalin Dhanasarnsombut on how a vaccine trains your memory cells without you ever getting ill. The best four minutes on vaccines anywhere.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=rb7TVW77ZCs" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Edward Jenner and the First Vaccine</div>
+          <div class="resource-desc">A short official piece from the UK Department of Health on cowpox, milkmaids and the experiment that started all of it.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=lAaAzBjioms" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Oxford Vaccine Group: How Does Herd Immunity Work?</div>
+          <div class="resource-desc">The clearest visual explanation of why vaccinating most people protects the few who cannot be vaccinated at all.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=8BUCi5Tuzms" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Operation Ouch: Alarming Allergies</div>
+          <div class="resource-desc">What is actually happening inside someone having an allergic reaction, and why the immune system gets it so wrong.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=GFAbgaHg26U" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Dr. Binocs: Why Do We Get Allergies?</div>
+          <div class="resource-desc">The cartoon version of the same idea — pollen, food and pet allergies, and the histamine that causes all the sneezing.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=sM3FDsMAMdc" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-sim">◈ GAME</span>
+          <div class="resource-name">Agent Antibiotic</div>
+          <div class="resource-desc">University of Utah mission game: wipe out an infection with antibiotics, then discover the damage you did to the friendly bacteria — and how resistance spreads.</div>
+          <a class="resource-link" href="https://learn.genetics.utah.edu/content/microbiome/agentantibiotic/" target="_blank" rel="noopener">Play the game →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-sim">◈ GAME</span>
+          <div class="resource-name">Antibiotic Resistance (Field Day Lab)</div>
+          <div class="resource-desc">Grow a bacterial colony, hit it with antibiotics, and watch evolution happen in front of you as the survivors take over. Free, no login.</div>
+          <a class="resource-link" href="https://fielddaylab.wisc.edu/play/antibiotic" target="_blank" rel="noopener">Play the game →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-sim">◈ SIMULATION</span>
+          <div class="resource-name">Utah Herd Immunity Simulation</div>
+          <div class="resource-desc">A serious version of the simulator above: change how contagious the virus is, how crowded the population is, and how long immunity lasts.</div>
+          <a class="resource-link" href="https://viruses.gslc.utah.edu/herd-immunity" target="_blank" rel="noopener">Run the simulation →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-interactive">◉ INTERACTIVE</span>
+          <div class="resource-name">Edward Jenner: The Vaccine Timeline</div>
+          <div class="resource-desc">Scroll the real historical timeline from the College of Physicians of Philadelphia — Jenner's 1796 experiment through to smallpox eradication in 1980.</div>
+          <a class="resource-link" href="https://historyofvaccines.org/history/edward-jenner-frs-frcpe/timeline/" target="_blank" rel="noopener">Open the timeline →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-read">◆ READ</span>
+          <div class="resource-name">Vaccines: Shots That Protect You</div>
+          <div class="resource-desc">Another kid-reviewed Frontiers for Young Minds article — antibodies as weapons, why boosters exist, and what herd protection really means.</div>
+          <a class="resource-link" href="https://kids.frontiersin.org/articles/10.3389/frym.2019.00031" target="_blank" rel="noopener">Read the article →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-read">◆ READ</span>
+          <div class="resource-name">KidsHealth: Allergies</div>
+          <div class="resource-desc">What allergens are, how IgE and histamine cause the symptoms, and what people do about them. Written for families.</div>
+          <a class="resource-link" href="https://kidshealth.org/en/kids/allergies.html" target="_blank" rel="noopener">Read it →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">How Can I Avoid Germs?</div>
+          <div class="resource-desc">The practical bit: handwashing, covering coughs, and why twenty seconds with soap really does beat a quick rinse.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=34aKRpgR5j8" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+      </div>
+
+      <div class="concepts">
+        <span class="concept-tag">Bacteria</span>
+        <span class="concept-tag">Virus</span>
+        <span class="concept-tag">Antibiotic</span>
+        <span class="concept-tag">Antibiotic Resistance</span>
+        <span class="concept-tag">Vaccine</span>
+        <span class="concept-tag">Herd Immunity</span>
+        <span class="concept-tag">Allergy</span>
+        <span class="concept-tag">Histamine</span>
+      </div>
+
+      <div class="fun-fact">Smallpox killed hundreds of millions of people across history — and then we deliberately drove it extinct. After a worldwide vaccination campaign, the last natural case was in Somalia in 1977, and the World Health Organization declared the disease eradicated in 1980. It remains the only human disease we have ever wiped off the Earth, and it started with one country doctor paying attention to milkmaids.</div>
+    </div>
+  </div>
+
+  <!-- ===== FACT WALL ===== -->
+  <div class="factwall-section">
+    <div class="factwall-head">
+      <div class="factwall-icon">🤯</div>
+      <div>
+        <div class="factwall-title">Eight Facts To Amaze Everyone At Dinner</div>
+        <div class="factwall-sub">Every number below comes from a real medical source.</div>
+      </div>
+    </div>
+    <div class="factwall">
+      <div class="factcard"><span class="factnum">100–200 bn</span>Neutrophils your bone marrow builds every single day — and most of them live about 24 hours.</div>
+      <div class="factcard"><span class="factnum">1.5–2 m²</span>Your skin: the biggest organ you have, and your single most important immune barrier.</div>
+      <div class="factcard"><span class="factnum">1 billion+</span>Different antibody shapes your B cells can build — including ones for germs that do not exist yet.</div>
+      <div class="factcard"><span class="factnum">~600</span>Lymph nodes scattered through your body, filtering fluid and swelling up when they get busy.</div>
+      <div class="factcard"><span class="factnum">38 trillion</span>Friendly microbes living on and inside you — roughly as many as your own cells.</div>
+      <div class="factcard"><span class="factnum">1796</span>Edward Jenner vaccinates James Phipps with cowpox. Modern medicine starts here.</div>
+      <div class="factcard"><span class="factnum">1980</span>Smallpox declared eradicated — the only human disease ever wiped out.</div>
+      <div class="factcard"><span class="factnum">4×</span>How much more likely you are to catch a cold on under six hours of sleep than on seven or more.</div>
+    </div>
+  </div>
+
+  <!-- ===== QUIZ ===== -->
+  <div class="quiz-section">
+    <div class="quiz-header">
+      <div class="quiz-icon">🧪</div>
+      <div>
+        <div class="quiz-title">Knowledge Check</div>
+        <div class="quiz-subtitle">10 questions · See how much you've learned!</div>
+      </div>
+    </div>
+
+    <div id="quizContainer"></div>
+
+    <button class="submit-btn" id="submitBtn" onclick="submitQuiz()" disabled>Submit Answers</button>
+
+    <div class="score-wrap" id="scoreWrap">
+      <div class="score-display" id="scoreDisplay"></div>
+      <div class="score-label">correct answers</div>
+      <div class="score-bar-outer"><div class="score-bar-inner" id="scoreBar"></div></div>
+      <div class="score-message" id="scoreMsg"></div>
+    </div>
+  </div>
+
+  <footer>
+    Curriculum designed for curious minds · All linked resources are free and educational<br>
+    Videos: TED-Ed / SciShow Kids / Operation Ouch / Dr. Binocs / Nemours KidsHealth / Oxford Vaccine Group / UK Department of Health &amp; Social Care · Interactives: World Health Organization · Science Learning Hub (University of Waikato) · Learn.Genetics &amp; Genetic Science Learning Center (University of Utah) · Field Day Lab (University of Wisconsin–Madison) · History of Vaccines (College of Physicians of Philadelphia) · Frontiers for Young Minds · KidsHealth (Nemours) · Ducksters<br>
+    <a href="https://curious-minds-science-lab.org/">← Back to all curricula</a>
+  </footer>
+
+</div>
+
+<script>
+const questions = [
+  {
+    q: "Which of these is part of your FIRST line of defence?",
+    options: ["Killer T cells", "Unbroken skin, mucus and stomach acid", "Memory cells", "Antibodies made by B cells"],
+    answer: 1,
+    explanation: "The first line is made of barriers and traps that stop germs getting in at all — skin, mucus, cilia, tears, saliva and stomach acid. T cells, B cells and antibodies only get involved once something is already inside."
+  },
+  {
+    q: "You get a splinter and your thumb goes red, hot, swollen and sore. What is that?",
+    options: ["The splinter poisoning you", "Inflammation — your rescue team arriving", "An allergic reaction to wood", "Your bones repairing themselves"],
+    answer: 1,
+    explanation: "That is inflammation. Blood vessels widen and get leaky so immune cells can flood into the area — the redness, heat and swelling are the rescue, not the injury."
+  },
+  {
+    q: "What does the word 'macrophage' actually mean?",
+    options: ["Big eater", "Fast runner", "Cell killer", "Blood maker"],
+    answer: 0,
+    explanation: "It is Greek for 'big eater' — a good description of a cell that swallows bacteria, dead cells and debris whole."
+  },
+  {
+    q: "Which white blood cell arrives FIRST at an infection, in huge numbers, and lives only about a day?",
+    options: ["The B cell", "The helper T cell", "The neutrophil", "The memory cell"],
+    answer: 2,
+    explanation: "Neutrophils are the most common white blood cell in your blood and the first responders. They swallow bacteria and die doing it — which is what pus is mostly made of."
+  },
+  {
+    q: "What is an antibody?",
+    options: ["A cell that eats germs whole", "A Y-shaped protein that locks onto one exact germ shape", "A chemical that raises your temperature", "A type of good bacteria in your gut"],
+    answer: 1,
+    explanation: "Antibodies are Y-shaped proteins built by B cells. Each one fits a single antigen shape like a key in a lock — clumping germs together and marking them for phagocytes to eat."
+  },
+  {
+    q: "Why do you almost never catch chickenpox twice?",
+    options: ["The virus is wiped off the planet", "Your skin grows thicker afterwards", "Memory cells remember it and respond in hours instead of days", "Your stomach acid gets stronger"],
+    answer: 2,
+    explanation: "After the first infection, memory B cells and T cells stay behind for years, so the second time that virus shows up the response is fast enough that you usually never feel ill. The chickenpox virus is sneaky though — instead of leaving, it hides in your nerves, and many years later it can wake up as a different illness called shingles."
+  },
+  {
+    q: "Why do antibiotics NOT work on a cold?",
+    options: ["Colds are caused by viruses, and antibiotics only attack bacteria", "Colds are too mild for medicine", "Antibiotics only work in winter", "Colds are caused by allergies"],
+    answer: 0,
+    explanation: "Antibiotics attack machinery that only bacteria have — things like a bacterial cell wall. A virus has none of it. Taking antibiotics anyway just helps resistant bacteria survive and spread."
+  },
+  {
+    q: "How does a vaccine protect you?",
+    options: ["It kills every germ already inside your body", "It shows your immune system a harmless preview so it can build memory cells", "It puts a coating over your skin", "It replaces your white blood cells with stronger ones"],
+    answer: 1,
+    explanation: "A vaccine contains a dead germ, a weakened one, a single piece of its outer coat, or instructions for your own cells to build that piece — that last one is how mRNA vaccines work. Your B and T cells train against it and leave memory cells behind, so you get the immunity without the disease."
+  },
+  {
+    q: "In 1796 Edward Jenner used cowpox to protect against which disease?",
+    options: ["Measles", "Polio", "Smallpox", "Flu"],
+    answer: 2,
+    explanation: "Jenner noticed milkmaids who caught mild cowpox never got deadly smallpox. The word 'vaccine' comes from vacca, Latin for cow. Smallpox was declared eradicated in 1980 — the only human disease ever wiped out."
+  },
+  {
+    q: "What is actually going wrong when someone has an allergy?",
+    options: ["Their immune system is too weak to fight anything", "Their immune system attacks something harmless as if it were dangerous", "They have run out of white blood cells", "Their skin barrier has disappeared"],
+    answer: 1,
+    explanation: "An allergy is an overreaction, not a weakness. The immune system treats something harmless — pollen, peanuts, cat fur — as an invader, makes IgE antibodies, and releases histamine. That is why one common allergy medicine is called an antihistamine. Serious reactions need adrenaline instead, and an adult straight away."
+  }
+];
+
+let answered = {};
+
+function buildQuiz() {
+  const container = document.getElementById('quizContainer');
+  questions.forEach((q, qi) => {
+    const block = document.createElement('div');
+    block.className = 'question-block';
+    block.id = `q${qi}`;
+
+    let optionsHtml = q.options.map((opt, oi) =>
+      `<button class="option-btn" id="q${qi}o${oi}" onclick="selectOption(${qi}, ${oi})">${opt}</button>`
+    ).join('');
+
+    block.innerHTML = `
+      <div class="question-num">QUESTION ${qi + 1} OF ${questions.length}</div>
+      <div class="question-text">${q.q}</div>
+      <div class="options">${optionsHtml}</div>
+      <div class="feedback" id="fb${qi}"></div>
+    `;
+    container.appendChild(block);
+  });
+}
+
+function selectOption(qi, oi) {
+  if (answered[qi] !== undefined) return;
+  answered[qi] = oi;
+
+  const correct = questions[qi].answer;
+  const block = document.getElementById(`q${qi}`);
+  const fb = document.getElementById(`fb${qi}`);
+
+  questions[qi].options.forEach((_, i) => {
+    document.getElementById(`q${qi}o${i}`).disabled = true;
+  });
+
+  if (oi === correct) {
+    document.getElementById(`q${qi}o${oi}`).classList.add('selected-correct');
+    block.classList.add('correct');
+    fb.className = 'feedback show ok';
+    fb.textContent = '✓ ' + questions[qi].explanation;
+  } else {
+    document.getElementById(`q${qi}o${oi}`).classList.add('selected-wrong');
+    document.getElementById(`q${qi}o${correct}`).classList.add('reveal-correct');
+    block.classList.add('wrong');
+    fb.className = 'feedback show bad';
+    fb.textContent = '✗ Not quite. ' + questions[qi].explanation;
+  }
+
+  updateSubmitBtn();
+}
+
+function updateSubmitBtn() {
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = Object.keys(answered).length < questions.length;
+  const pct = Math.round((Object.keys(answered).length / questions.length) * 30 + 70);
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressTime').textContent = `~${Math.round(pct * 0.6)} / 60 min`;
+}
+
+function submitQuiz() {
+  const score = Object.entries(answered).filter(([qi, oi]) => questions[qi].answer === oi).length;
+  const total = questions.length;
+  const pct = Math.round((score / total) * 100);
+
+  document.getElementById('scoreDisplay').textContent = `${score} / ${total}`;
+  const scoreWrap = document.getElementById('scoreWrap');
+  scoreWrap.classList.add('show');
+  setTimeout(() => {
+    document.getElementById('scoreBar').style.width = pct + '%';
+  }, 100);
+
+  let msg;
+  if (pct === 100) msg = "🏆 Perfect score! Your memory cells are working beautifully — you really understand your own defence force.";
+  else if (pct >= 80) msg = "⭐ Excellent work! You clearly paid close attention. Review the ones you missed and you will be an expert in no time.";
+  else if (pct >= 60) msg = "👍 Good effort! You have got the core ideas down. Try re-watching the videos for the topics you found tricky.";
+  else msg = "🛡️ Keep exploring! The immune system is a lot to take in at once. Go back through the modules, play the activities again — hands-on learning makes it stick.";
+
+  document.getElementById('scoreMsg').textContent = msg;
+  document.getElementById('submitBtn').disabled = true;
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('progressTime').textContent = '60 / 60 min ✓';
+}
+
+function toggleCard(card) {
+  card.classList.toggle('open');
+  updateProgress();
+}
+
+function updateProgress() {
+  const open = document.querySelectorAll('.section-card.open').length;
+  const total = document.querySelectorAll('.section-card').length;
+  const pct = Math.min(70, Math.round((open / total) * 70));
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressTime').textContent = `~${Math.round(pct * 0.6)} / 60 min`;
+}
+
+/* ===== Shared helper ===== */
+function shuffleArr(a) {
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+
+/* ===== Generic "match the pair" builder ===== */
+function buildMatcher(cfg) {
+  var grid = document.getElementById(cfg.gridId);
+  var btn = document.getElementById(cfg.btnId);
+  var out = document.getElementById(cfg.outId);
+  if (!grid || !btn || !out) return;
+
+  var answers = cfg.pairs.map(function (p) { return p.job; }).slice().sort();
+
+  cfg.pairs.forEach(function (p, i) {
+    var row = document.createElement('div');
+    row.className = 'match-row';
+    row.dataset.answer = p.job;
+    var label = document.createElement('div');
+    label.className = 'match-part';
+    label.textContent = p.part;
+    var sel = document.createElement('select');
+    sel.innerHTML = '<option value="">' + cfg.placeholder + '</option>' +
+      answers.map(function (j) { return '<option>' + j + '</option>'; }).join('');
+    row.appendChild(label);
+    row.appendChild(sel);
+    grid.appendChild(row);
+  });
+
+  btn.addEventListener('click', function () {
+    var rows = grid.querySelectorAll('.match-row');
+    var right = 0, blank = 0;
+    rows.forEach(function (r) {
+      var sel = r.querySelector('select');
+      r.classList.remove('correct', 'wrong');
+      if (!sel.value) { blank++; return; }
+      if (sel.value === r.dataset.answer) { r.classList.add('correct'); right++; }
+      else { r.classList.add('wrong'); }
+    });
+    if (blank === rows.length) {
+      out.innerHTML = 'Have a go at all ' + rows.length + ' first!';
+    } else if (right === rows.length) {
+      out.innerHTML = '<b>' + right + ' / ' + rows.length + '</b> — ' + cfg.winMsg;
+    } else {
+      out.innerHTML = '<b>' + right + ' / ' + rows.length + '</b> correct. Green rows are right, red ones need another try.' +
+        (blank ? ' (' + blank + ' still empty.)' : '');
+    }
+  });
+}
+
+/* --- Module 02: Defend the Castle --- */
+buildMatcher({
+  gridId: 'barrierGrid', btnId: 'barrierBtn', outId: 'barrierResult',
+  placeholder: '— choose a defence —',
+  winMsg: 'Perfect. Nothing got in.',
+  pairs: [
+    { part: 'A germ lands on your arm', job: 'Unbroken skin blocks it' },
+    { part: 'You breathe in dust and pollen', job: 'Sticky mucus traps it' },
+    { part: 'Trapped germs sit in your airway', job: 'Cilia sweep them up to your throat' },
+    { part: 'A germ gets in your eye', job: 'Tears wash it out and dissolve it' },
+    { part: 'You swallow a mouthful of bacteria', job: 'Stomach acid destroys them' },
+    { part: 'A harmful microbe reaches your gut', job: 'Good bacteria crowd it out' }
+  ]
+});
+
+/* --- Module 04: Meet the Cell Crew --- */
+buildMatcher({
+  gridId: 'crewGrid', btnId: 'crewBtn', outId: 'crewResult',
+  placeholder: '— choose a job —',
+  winMsg: 'Perfect. You know the whole crew.',
+  pairs: [
+    { part: 'Neutrophil', job: 'First on the scene — eats bacteria, dies in a day' },
+    { part: 'Macrophage', job: 'The big eater — swallows germs and clears up the mess' },
+    { part: 'Dendritic cell', job: 'The scout — shows a piece of the germ to the T cells' },
+    { part: 'Helper T cell', job: 'The commander — switches the whole army on' },
+    { part: 'Killer T cell', job: 'Destroys your own cells that a virus has taken over' },
+    { part: 'B cell', job: 'The factory — builds antibodies for one exact germ' }
+  ]
+});
+
+/* --- Module 03: Inflammation Response Relay --- */
+(function () {
+  var ORDER = [
+    'A splinter breaks through the skin',
+    'Damaged cells release chemical alarm signals',
+    'Blood vessels widen — the area goes red and hot',
+    'Vessels turn leaky — the thumb swells up',
+    'Neutrophils pour in and start eating bacteria',
+    'Macrophages arrive and clear away the mess'
+  ];
+  var steps = document.getElementById('relaySteps');
+  var track = document.getElementById('relayTrack');
+  var reset = document.getElementById('relayReset');
+  if (!steps || !track || !reset) return;
+  var next = 0;
+
+  function build() {
+    next = 0;
+    steps.innerHTML = '';
+    track.innerHTML = 'Waiting for the first step…';
+    shuffleArr(ORDER.slice()).forEach(function (label) {
+      var b = document.createElement('button');
+      b.className = 'relay-step';
+      b.type = 'button';
+      b.textContent = label;
+      b.addEventListener('click', function () {
+        if (b.classList.contains('done')) return;
+        if (label === ORDER[next]) {
+          b.classList.add('done');
+          next++;
+          if (next === ORDER.length) {
+            track.innerHTML = '<b>All six in order — that is inflammation.</b> The whole thing starts within seconds of the skin breaking.';
+          } else {
+            track.innerHTML = '<b>Step ' + next + ' of ' + ORDER.length + '.</b> ' + ORDER[next - 1];
+          }
+        } else {
+          b.classList.add('bad');
+          track.innerHTML = 'Not yet — something has to happen before that one.';
+          setTimeout(function () { b.classList.remove('bad'); }, 700);
+        }
+      });
+      steps.appendChild(b);
+    });
+  }
+  reset.addEventListener('click', build);
+  build();
+})();
+
+/* --- Module 04: Antibody Lock & Key --- */
+(function () {
+  var SHAPES = ['▲', '■', '●', '✦', '♥', '⬟'];
+  var pad = document.getElementById('abAntigen');
+  var btns = document.getElementById('abBtns');
+  var start = document.getElementById('abStart');
+  var stats = document.getElementById('abStats');
+  if (!pad || !btns || !start || !stats) return;
+
+  var ROUNDS = 10;
+  var round = 0, hits = 0, target = null, t0 = 0, times = [], live = false;
+
+  SHAPES.forEach(function (s) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = s;
+    b.addEventListener('click', function () { answer(s, b); });
+    btns.appendChild(b);
+  });
+
+  function clearMarks() {
+    btns.querySelectorAll('button').forEach(function (b) { b.classList.remove('hit', 'miss'); });
+  }
+
+  function nextRound() {
+    if (round >= ROUNDS) { finish(); return; }
+    round++;
+    clearMarks();
+    target = SHAPES[Math.floor(Math.random() * SHAPES.length)];
+    pad.innerHTML = '<span class="ab-shape">🦠</span><span>antigen: <b style="color:#b388ff">' + target + '</b></span>';
+    live = true;
+    t0 = Date.now();
+  }
+
+  function answer(s, b) {
+    if (!live) return;
+    var dt = Date.now() - t0;
+    live = false;
+    times.push(dt);
+    if (s === target) {
+      hits++;
+      b.classList.add('hit');
+      pad.innerHTML = '<span>✓ Locked on in ' + dt + ' ms — germ neutralised.</span>';
+    } else {
+      b.classList.add('miss');
+      pad.innerHTML = '<span>✗ That antibody does not fit. The right shape was <b style="color:#b388ff">' + target + '</b>.</span>';
+    }
+    stats.innerHTML = 'Round <b>' + round + '</b> of ' + ROUNDS + ' · matched <b>' + hits + '</b>.';
+    setTimeout(nextRound, 900);
+  }
+
+  function finish() {
+    live = false;
+    var avg = Math.round(times.reduce(function (a, b) { return a + b; }, 0) / times.length);
+    pad.innerHTML = '<span>Done! You matched <b style="color:#b388ff">' + hits + ' / ' + ROUNDS + '</b> antigens.</span>';
+    stats.innerHTML = 'Average lock-on time: <b>' + avg + ' ms</b>. Real B cells do this by shape alone, with no eyes — and your body can build over a billion different shapes to be sure one of them fits.';
+    start.textContent = 'Play Again';
+  }
+
+  start.addEventListener('click', function () {
+    round = 0; hits = 0; times = []; 
+    start.textContent = 'Restart';
+    stats.innerHTML = 'Round 0 of ' + ROUNDS + '.';
+    nextRound();
+  });
+})();
+
+/* --- Module 05: Bacteria or Virus? --- */
+(function () {
+  var CLUES = [
+    { t: 'I am a complete living cell. I eat, I grow, and I split in two all by myself.', a: 'bac' },
+    { t: 'I am not really alive. I cannot do anything until I break into one of your cells.', a: 'vir' },
+    { t: 'Antibiotics can kill me.', a: 'bac' },
+    { t: 'Antibiotics do nothing to me at all.', a: 'vir' },
+    { t: 'I cause the common cold, flu, chickenpox and measles.', a: 'vir' },
+    { t: 'I cause strep throat, and the food poisoning you get from Salmonella.', a: 'bac' },
+    { t: 'Killer T cells have to destroy your own infected cells to stop me.', a: 'vir' },
+    { t: 'Trillions of my harmless relatives live in your gut and actually help you.', a: 'bac' },
+    { t: 'I am basically a set of instructions wrapped in a protein shell.', a: 'vir' },
+    { t: 'A few of us are already immune to antibiotics by pure luck — kill the rest and only the tough ones are left.', a: 'bac' }
+  ];
+  var card = document.getElementById('sortCard');
+  var bBac = document.getElementById('sortBac');
+  var bVir = document.getElementById('sortVir');
+  var start = document.getElementById('sortStart');
+  var stats = document.getElementById('sortStats');
+  if (!card || !bBac || !bVir || !start || !stats) return;
+
+  var deck = [], i = 0, score = 0, live = false;
+
+  function show() {
+    if (i >= deck.length) { finish(); return; }
+    card.textContent = deck[i].t;
+    live = true;
+  }
+
+  function guess(g) {
+    if (!live) return;
+    live = false;
+    var right = (g === deck[i].a);
+    if (right) score++;
+    card.innerHTML = (right ? '✓ Correct — ' : '✗ Actually that is a ') +
+      (deck[i].a === 'bac' ? 'bacterium' : 'virus') + '.';
+    i++;
+    stats.innerHTML = 'Score: <b>' + score + '</b> / ' + i;
+    setTimeout(show, 1100);
+  }
+
+  function finish() {
+    bBac.disabled = true; bVir.disabled = true;
+    var msg;
+    if (score === deck.length) msg = 'Perfect — you can tell them apart every time.';
+    else if (score >= 7) msg = 'Strong work. Re-read the ones that caught you out.';
+    else msg = 'Worth another go — the big idea is that bacteria are alive on their own and viruses are not.';
+    card.innerHTML = 'Finished: <b>' + score + ' / ' + deck.length + '</b>. ' + msg;
+    start.textContent = 'Play Again';
+  }
+
+  bBac.addEventListener('click', function () { guess('bac'); });
+  bVir.addEventListener('click', function () { guess('vir'); });
+  start.addEventListener('click', function () {
+    deck = shuffleArr(CLUES.slice());
+    i = 0; score = 0;
+    bBac.disabled = false; bVir.disabled = false;
+    stats.innerHTML = 'Score: <b>0</b> / 0';
+    start.textContent = 'Restart';
+    show();
+  });
+})();
+
+/* --- Module 05: Herd Immunity Simulator --- */
+(function () {
+  var SIZE = 300;
+  var grid = document.getElementById('herdGrid');
+  var range = document.getElementById('herdRange');
+  var pctOut = document.getElementById('herdPct');
+  var runBtn = document.getElementById('herdRun');
+  var resetBtn = document.getElementById('herdReset');
+  var stats = document.getElementById('herdStats');
+  if (!grid || !range || !runBtn) return;
+
+  var dots = [], state = [], neighbours = [], cols = 20, running = false, timer = null;
+
+  function computeCols() {
+    return window.innerWidth <= 560 ? 14 : 20;
+  }
+
+  function buildNeighbours() {
+    neighbours = [];
+    for (var i = 0; i < SIZE; i++) {
+      var r = Math.floor(i / cols), c = i % cols, list = [];
+      for (var dr = -1; dr <= 1; dr++) {
+        for (var dc = -1; dc <= 1; dc++) {
+          if (!dr && !dc) continue;
+          var nr = r + dr, nc = c + dc;
+          if (nr < 0 || nc < 0 || nc >= cols) continue;
+          var ni = nr * cols + nc;
+          if (ni >= 0 && ni < SIZE) list.push(ni);
+        }
+      }
+      neighbours.push(list);
+    }
+  }
+
+  function build() {
+    cols = computeCols();
+    grid.style.gridTemplateColumns = 'repeat(' + cols + ', 1fr)';
+    grid.innerHTML = '';
+    dots = [];
+    for (var i = 0; i < SIZE; i++) {
+      var d = document.createElement('div');
+      d.className = 'herd-dot';
+      grid.appendChild(d);
+      dots.push(d);
+    }
+    buildNeighbours();
+    seed();
+  }
+
+  function seed() {
+    stop();
+    var pct = parseInt(range.value, 10);
+    var nVax = Math.round(SIZE * pct / 100);
+    var idx = shuffleArr(Array.from({ length: SIZE }, function (_, i) { return i; }));
+    state = new Array(SIZE).fill('well');
+    for (var k = 0; k < nVax; k++) state[idx[k]] = 'vax';
+    paint();
+    stats.innerHTML = '<b>' + nVax + '</b> of ' + SIZE + ' people vaccinated. Press <b>Release the Germ</b>.';
+  }
+
+  function paint() {
+    for (var i = 0; i < SIZE; i++) {
+      var c = 'herd-dot';
+      if (state[i] === 'vax') c += ' vax';
+      else if (state[i] === 'sick') c += ' sick';
+      else if (state[i] === 'rec') c += ' recovered';
+      dots[i].className = c;
+    }
+  }
+
+  function stop() {
+    running = false;
+    if (timer) { clearInterval(timer); timer = null; }
+    runBtn.textContent = 'Release the Germ';
+  }
+
+  function step() {
+    var newly = [];
+    for (var i = 0; i < SIZE; i++) {
+      if (state[i] !== 'sick') continue;
+      neighbours[i].forEach(function (n) {
+        if (state[n] === 'well' && Math.random() < 0.85) newly.push(n);
+      });
+    }
+    for (var j = 0; j < SIZE; j++) if (state[j] === 'sick') state[j] = 'rec';
+    newly.forEach(function (n) { state[n] = 'sick'; });
+    paint();
+
+    var infected = state.filter(function (s) { return s === 'sick'; }).length;
+    var everInfected = state.filter(function (s) { return s === 'sick' || s === 'rec'; }).length;
+    var pct = parseInt(range.value, 10);
+
+    if (infected === 0) {
+      stop();
+      var share = Math.round(everInfected / SIZE * 100);
+      var verdict;
+      if (share <= 3) verdict = 'The outbreak died out almost immediately — that is herd immunity protecting everyone, including the people who were never vaccinated.';
+      else if (share <= 20) verdict = 'It fizzled out early. With this many people immune, the germ kept running into dead ends.';
+      else if (share <= 60) verdict = 'It spread a long way before it ran out of people. More vaccination would have stopped it sooner.';
+      else verdict = 'Almost the whole school caught it. With nobody immune, a germ has an unbroken chain of people to jump along.';
+      stats.innerHTML = 'Vaccinated <b>' + pct + '%</b> · infected in the end: <b>' + everInfected + '</b> of ' + SIZE +
+        ' (<b>' + share + '%</b>). ' + verdict;
+    } else {
+      stats.innerHTML = 'Vaccinated <b>' + pct + '%</b> · currently ill: <b>' + infected + '</b> · total infected so far: <b>' + everInfected + '</b>…';
+    }
+  }
+
+  range.addEventListener('input', function () {
+    pctOut.textContent = range.value + '%';
+    seed();
+  });
+
+  runBtn.addEventListener('click', function () {
+    if (running) { stop(); return; }
+    var wellOnes = [];
+    for (var i = 0; i < SIZE; i++) if (state[i] === 'well') wellOnes.push(i);
+    if (!wellOnes.length) {
+      stats.innerHTML = 'Everybody is vaccinated — there is nobody left for the germ to infect at all.';
+      return;
+    }
+    for (var j = 0; j < SIZE; j++) if (state[j] === 'rec') state[j] = 'well';
+    state[wellOnes[Math.floor(Math.random() * wellOnes.length)]] = 'sick';
+    paint();
+    running = true;
+    runBtn.textContent = 'Pause';
+    timer = setInterval(step, 450);
+  });
+
+  resetBtn.addEventListener('click', seed);
+
+  var rebuildTimer = null;
+  window.addEventListener('resize', function () {
+    clearTimeout(rebuildTimer);
+    rebuildTimer = setTimeout(function () {
+      if (computeCols() !== cols) build();
+    }, 250);
+  });
+
+  build();
+})();
+
+buildQuiz();
+document.querySelector('.section-card').classList.add('open');
+updateProgress();
+</script>
+
+</body>
+</html>
