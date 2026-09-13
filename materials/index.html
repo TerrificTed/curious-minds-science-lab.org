@@ -1,0 +1,1723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Materials Science &amp; Nanotechnology Explorer — Age 10</title>
+<meta name="description" content="A free 1-hour guided science curriculum on materials science and nanotechnology for curious 10-year-olds: what everything is made of, why engineers pick one material over another, what a nanometre really is, three hands-on nano experiments you can do at home (graphene from a pencil, liquid crystals, water-repellent fabric), nanotech in real life, and a mini invention project — with eight built-in activities and a 10-question quiz.">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #070512;
+    --panel: #0e0b1f;
+    --border: #2b2352;
+    --accent: #ff5ec4;      /* ruby-magenta — the colour gold turns when it is nano-sized */
+    --lime: #c6ff4d;        /* graphene / lab green — second accent */
+    --gold: #ffd54f;
+    --green: #00e676;
+    --red: #ff5252;
+    --orange: #ff6d00;
+    --text: #e6e1f5;
+    --muted: #9a92bf;
+    --radius: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Faint "atoms in a lattice" background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(60% 45% at 50% -8%, rgba(255,94,196,0.10) 0%, transparent 100%),
+      radial-gradient(70% 40% at 50% 108%, rgba(198,255,77,0.07) 0%, transparent 100%),
+      radial-gradient(2px 2px at 14% 22%, rgba(255,255,255,0.20) 0%, transparent 100%),
+      radial-gradient(3px 3px at 37% 48%, rgba(255,94,196,0.18) 0%, transparent 100%),
+      radial-gradient(2px 2px at 62% 19%, rgba(255,255,255,0.16) 0%, transparent 100%),
+      radial-gradient(4px 4px at 84% 61%, rgba(198,255,77,0.15) 0%, transparent 100%),
+      radial-gradient(2px 2px at 24% 79%, rgba(255,255,255,0.14) 0%, transparent 100%),
+      radial-gradient(3px 3px at 73% 88%, rgba(255,94,196,0.14) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  /* HEADER */
+  header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    padding: 2.5rem 1rem 2rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, #140f2e 0%, #23164a 55%, #2e1230 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  header::after {
+    content: '⚛️';
+    font-size: 8rem;
+    position: absolute;
+    right: -1rem;
+    top: -1rem;
+    opacity: 0.08;
+    animation: spin 40s linear infinite;
+  }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  .badge {
+    display: inline-block;
+    background: var(--accent);
+    color: #2a0020;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1.6rem, 5vw, 2.6rem);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+  }
+
+  .header-topic {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    font-weight: 400;
+    color: var(--accent);
+    letter-spacing: 2px;
+    margin-bottom: 0.6rem;
+  }
+  .header-topic span {
+    border-bottom: 2px solid rgba(255,94,196,0.35);
+    padding-bottom: 2px;
+  }
+
+  .subtitle { color: var(--muted); font-size: 0.95rem; letter-spacing: 0.5px; }
+
+  .homelink {
+    display: inline-block;
+    margin-top: 1rem;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    color: var(--muted);
+    text-decoration: none;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 5px 14px;
+    position: relative;
+    z-index: 2;
+  }
+  .homelink:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .progress-label {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+  .progress-bar-outer { flex: 1; height: 8px; background: #1c1640; border-radius: 4px; overflow: hidden; }
+  .progress-bar-inner {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--lime), var(--accent));
+    border-radius: 4px; transition: width 0.5s ease;
+  }
+  .progress-time { font-family: 'Orbitron', monospace; font-size: 0.75rem; color: var(--gold); white-space: nowrap; }
+
+  /* SECTION CARDS */
+  .section-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .section-card:hover { border-color: var(--accent); }
+
+  .section-header {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 1.2rem 1.5rem;
+    cursor: pointer; user-select: none;
+    background: linear-gradient(90deg, #1b1440 0%, transparent 100%);
+  }
+  .section-num {
+    font-family: 'Orbitron', monospace; font-size: 0.7rem;
+    color: var(--accent); letter-spacing: 2px; min-width: 60px;
+  }
+  .section-title {
+    flex: 1; font-family: 'Orbitron', monospace;
+    font-size: 0.95rem; font-weight: 700; color: #fff;
+  }
+  .section-time { font-size: 0.78rem; color: var(--gold); font-weight: 600; }
+  .chevron { color: var(--muted); transition: transform 0.3s; font-size: 1.1rem; }
+  .section-card.open .chevron { transform: rotate(180deg); }
+
+  .section-body { display: none; padding: 0 1.5rem 1.5rem; border-top: 1px solid var(--border); }
+  .section-card.open .section-body { display: block; }
+
+  .section-intro { margin: 1rem 0 1.2rem; color: var(--text); font-size: 0.95rem; line-height: 1.7; }
+  .section-intro strong { color: #fff; font-weight: 600; }
+
+  /* RESOURCES */
+  .resource-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 0.9rem;
+    margin-bottom: 1.2rem;
+  }
+  .resource-card {
+    background: #0a0818;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .resource-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+  .resource-type {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 0.65rem; font-weight: 600; letter-spacing: 1.5px;
+    padding: 3px 8px; border-radius: 20px; margin-bottom: 0.5rem;
+  }
+  .type-video { background: rgba(255,82,82,0.14); color: #ff8a80; border: 1px solid rgba(255,82,82,0.32); }
+  .type-interactive { background: rgba(255,94,196,0.12); color: var(--accent); border: 1px solid rgba(255,94,196,0.34); }
+  .type-read { background: rgba(255,213,79,0.1); color: var(--gold); border: 1px solid rgba(255,213,79,0.3); }
+  .type-sim { background: rgba(198,255,77,0.1); color: var(--lime); border: 1px solid rgba(198,255,77,0.3); }
+
+  .resource-name { font-weight: 600; font-size: 0.9rem; color: #fff; margin-bottom: 0.3rem; line-height: 1.3; }
+  .resource-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+  .resource-link {
+    display: inline-block; margin-top: 0.5rem; font-size: 0.75rem;
+    color: var(--accent); text-decoration: none; font-weight: 600;
+  }
+  .resource-link:hover { text-decoration: underline; }
+
+  /* KEY CONCEPTS */
+  .concepts { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+  .concept-tag {
+    background: rgba(255,94,196,0.08);
+    border: 1px solid rgba(255,94,196,0.24);
+    color: var(--accent);
+    font-size: 0.78rem; padding: 4px 10px; border-radius: 20px;
+  }
+
+  /* QUIZ */
+  .quiz-section {
+    background: linear-gradient(135deg, #130e2a 0%, #241a3a 100%);
+    border: 1px solid var(--gold);
+    border-radius: var(--radius);
+    padding: 2rem; margin-top: 2rem;
+  }
+  .quiz-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; }
+  .quiz-icon { font-size: 2rem; }
+  .quiz-title { font-family: 'Orbitron', monospace; font-size: 1.3rem; font-weight: 700; color: var(--gold); }
+  .quiz-subtitle { font-size: 0.85rem; color: var(--muted); margin-top: 3px; }
+
+  .question-block {
+    background: #0a0818; border: 1px solid var(--border);
+    border-radius: 10px; padding: 1.3rem; margin-bottom: 1.2rem;
+    transition: border-color 0.3s;
+  }
+  .question-block.correct { border-color: var(--green); }
+  .question-block.wrong { border-color: var(--red); }
+
+  .question-num { font-family: 'Orbitron', monospace; font-size: 0.65rem; color: var(--muted); letter-spacing: 2px; margin-bottom: 0.5rem; }
+  .question-text { font-size: 0.95rem; font-weight: 600; color: #fff; margin-bottom: 1rem; line-height: 1.5; }
+
+  .options { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+  @media(max-width: 500px) { .options { grid-template-columns: 1fr; } }
+
+  .option-btn {
+    background: #120e28; border: 1px solid var(--border); color: var(--text);
+    font-family: 'Exo 2', sans-serif; font-size: 0.85rem;
+    padding: 0.7rem 1rem; border-radius: 7px; cursor: pointer;
+    text-align: left; transition: all 0.2s; line-height: 1.4;
+  }
+  .option-btn:hover:not(:disabled) { border-color: var(--accent); background: rgba(255,94,196,0.07); }
+  .option-btn.selected-correct { border-color: var(--green); background: rgba(0,230,118,0.1); color: var(--green); }
+  .option-btn.selected-wrong { border-color: var(--red); background: rgba(255,82,82,0.1); color: #ff9e9e; }
+  .option-btn.reveal-correct { border-color: var(--green); color: var(--green); }
+  .option-btn:disabled { cursor: default; }
+
+  .feedback { margin-top: 0.8rem; font-size: 0.85rem; line-height: 1.5; display: none; }
+  .feedback.show { display: block; }
+  .feedback.ok { color: var(--green); }
+  .feedback.bad { color: #ff9e9e; }
+
+  /* SCORE */
+  .score-wrap { margin-top: 1.5rem; text-align: center; display: none; }
+  .score-wrap.show { display: block; }
+  .score-display { font-family: 'Orbitron', monospace; font-size: 2.5rem; font-weight: 900; color: var(--gold); margin-bottom: 0.3rem; }
+  .score-label { color: var(--muted); font-size: 0.9rem; margin-bottom: 1rem; }
+  .score-bar-outer { height: 12px; background: #1c1640; border-radius: 6px; overflow: hidden; max-width: 400px; margin: 0 auto 1rem; }
+  .score-bar-inner { height: 100%; background: linear-gradient(90deg, var(--gold), var(--green)); border-radius: 6px; transition: width 1s ease; width: 0%; }
+  .score-message { font-size: 0.95rem; color: var(--text); max-width: 400px; margin: 0 auto; line-height: 1.6; }
+
+  .submit-btn {
+    display: block; width: 100%; max-width: 300px; margin: 1.5rem auto 0;
+    background: linear-gradient(90deg, var(--gold), var(--orange));
+    color: #000; border: none;
+    font-family: 'Orbitron', monospace; font-weight: 700; font-size: 0.85rem;
+    letter-spacing: 1px; padding: 0.9rem; border-radius: 8px; cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .submit-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+  .submit-btn:disabled { opacity: 0.4; cursor: default; transform: none; }
+
+  /* FUN FACT — lime on this page so it reads apart from the magenta accent */
+  .fun-fact {
+    background: rgba(198,255,77,0.05);
+    border: 1px solid rgba(198,255,77,0.26);
+    border-radius: 8px; padding: 0.9rem 1.1rem;
+    font-size: 0.85rem; color: var(--lime); margin-top: 1rem; line-height: 1.5;
+  }
+  .fun-fact::before { content: '⭐ Fun Fact: '; font-weight: 700; }
+
+  /* MYTH BUSTER box */
+  .myth {
+    background: rgba(255,82,82,0.05);
+    border: 1px solid rgba(255,82,82,0.26);
+    border-radius: 8px; padding: 0.9rem 1.1rem;
+    font-size: 0.85rem; color: #ffb4b4; margin-top: 1rem; line-height: 1.55;
+  }
+  .myth::before { content: '🚫 Myth Buster: '; font-weight: 700; color: var(--red); }
+  .myth strong { color: #fff; font-weight: 600; }
+
+  /* SAFETY box */
+  .safety {
+    background: rgba(255,213,79,0.06);
+    border: 1px solid rgba(255,213,79,0.35);
+    border-radius: 8px; padding: 0.9rem 1.1rem;
+    font-size: 0.85rem; color: #ffe9a3; margin: 1rem 0; line-height: 1.55;
+  }
+  .safety::before { content: '⚠️ Grown-up check: '; font-weight: 700; color: var(--gold); }
+
+  footer { text-align: center; margin-top: 3rem; font-size: 0.78rem; color: var(--muted); line-height: 1.7; }
+  footer a { color: var(--muted); }
+  footer a:hover { color: var(--accent); }
+
+  /* ===== Built-in activities ===== */
+  .tryit {
+    background: rgba(198,255,77,0.04);
+    border: 1px solid rgba(198,255,77,0.28);
+    border-radius: 10px; padding: 1.2rem; margin-bottom: 1.2rem; cursor: default;
+  }
+  .tryit-title { font-family: 'Orbitron', monospace; font-size: 0.68rem; letter-spacing: 0.18em; color: var(--lime); margin-bottom: 0.85rem; }
+  .tryit-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.7; margin-bottom: 0.85rem; }
+  .tryit-desc strong { color: var(--text); }
+  .tryit-out { margin-top: 0.75rem; font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
+  .tryit-out b { color: var(--accent); }
+  .tryit-btn {
+    font-family: 'Orbitron', monospace; font-size: 0.7rem; letter-spacing: 0.1em;
+    background: transparent; color: var(--accent);
+    border: 1px solid var(--accent); border-radius: 8px;
+    padding: 0.6rem 1.1rem; margin-top: 0.85rem; margin-right: 0.5rem;
+    cursor: pointer; transition: background .18s, color .18s;
+  }
+  .tryit-btn:hover { background: var(--accent); color: #2a0020; }
+  .tryit-btn:disabled { opacity: 0.35; cursor: default; }
+  .tryit-btn:disabled:hover { background: transparent; color: var(--accent); }
+
+  /* Generic matching rows */
+  .match-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 0.7rem; }
+  .match-row { display: flex; flex-direction: column; gap: 0.35rem; }
+  .match-part { font-family: 'Orbitron', monospace; font-size: 0.64rem; color: var(--text); letter-spacing: 0.04em; line-height: 1.5; }
+  .match-row select {
+    background: #0a0818; color: var(--text);
+    border: 1px solid var(--border); border-radius: 6px;
+    padding: 0.5rem 0.6rem; font-family: 'Exo 2', sans-serif; font-size: 0.85rem; width: 100%;
+  }
+  .match-row.correct select { border-color: var(--green); color: #a5ffd0; }
+  .match-row.wrong select { border-color: var(--red); color: #ffb3c1; }
+
+  /* Step-ordering relay */
+  .relay-steps { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .relay-step {
+    font-family: 'Exo 2', sans-serif; font-size: 0.82rem;
+    background: #0a0818; color: var(--text);
+    border: 1px solid var(--border); border-radius: 20px;
+    padding: 0.5rem 0.9rem; cursor: pointer; transition: all .15s; text-align: left;
+  }
+  .relay-step:hover { border-color: var(--accent); }
+  .relay-step.done { background: rgba(0,230,118,0.15); border-color: var(--green); color: #a5ffd0; cursor: default; }
+  .relay-step.bad { border-color: var(--red); color: #ffb3c1; }
+
+  /* Two-way sorter */
+  .sort-card {
+    background: #0a0818; border: 1px solid var(--border); border-radius: 8px;
+    padding: 1.1rem 1rem; min-height: 84px; text-align: center;
+    font-size: 0.95rem; color: var(--text); line-height: 1.6;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .sort-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.6rem; }
+  .sort-btns button {
+    font-family: 'Orbitron', monospace; font-size: 0.68rem; letter-spacing: 0.06em;
+    padding: 0.75rem 0.4rem; border-radius: 8px;
+    border: 1px solid var(--border); background: #0a0818; color: var(--text); cursor: pointer;
+  }
+  .sort-btns button:hover { border-color: var(--accent); }
+  .sort-btns button:disabled { opacity: 0.4; cursor: default; }
+
+  /* Slider labs */
+  .lab-controls { display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 0.9rem; }
+  .lab-controls label { font-size: 0.82rem; color: var(--muted); white-space: nowrap; }
+  .lab-controls input[type=range] { flex: 1; min-width: 170px; accent-color: var(--accent); }
+  .lab-val { font-family: 'Orbitron', monospace; color: var(--gold); font-size: 0.9rem; min-width: 5.2rem; text-align: right; }
+
+  /* Sugar cube cutter */
+  .cube-stage {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: center;
+    background: #0a0818; border: 1px solid var(--border); border-radius: 8px; padding: 1rem;
+  }
+  @media (max-width: 560px) { .cube-stage { grid-template-columns: 1fr; } }
+  .cube-grid {
+    display: grid; gap: 2px; width: 100%; max-width: 220px; aspect-ratio: 1; margin: 0 auto;
+    background: #1c1640; padding: 3px; border-radius: 6px;
+  }
+  .cube-cell { background: #fff4fb; border-radius: 1px; }
+  .cube-stats { font-size: 0.85rem; color: var(--muted); line-height: 1.8; }
+  .cube-stats b { color: var(--accent); font-family: 'Orbitron', monospace; font-size: 0.85rem; }
+  .meter { height: 10px; background: #1c1640; border-radius: 5px; overflow: hidden; margin-top: 0.4rem; }
+  .meter-in { height: 100%; width: 0%; background: linear-gradient(90deg, var(--lime), var(--accent)); transition: width .4s; }
+
+  /* Nano ruler */
+  .ruler-row { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; margin-bottom: 0.6rem; }
+  .ruler-row input[type=number] {
+    background: #0a0818; color: var(--text); border: 1px solid var(--border); border-radius: 6px;
+    padding: 0.5rem 0.6rem; font-family: 'Exo 2', sans-serif; font-size: 0.95rem; width: 130px;
+  }
+  .ruler-row select {
+    background: #0a0818; color: var(--text); border: 1px solid var(--border); border-radius: 6px;
+    padding: 0.5rem 0.6rem; font-family: 'Exo 2', sans-serif; font-size: 0.9rem;
+  }
+  .ruler-big { font-family: 'Orbitron', monospace; font-size: clamp(1.1rem, 4vw, 1.7rem); color: var(--accent); word-break: break-all; line-height: 1.3; margin: 0.5rem 0; }
+  .ruler-big small { font-size: 0.75rem; color: var(--muted); font-family: 'Exo 2', sans-serif; }
+  .chip-row { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.4rem; }
+  .chip {
+    font-family: 'Exo 2', sans-serif; font-size: 0.78rem; background: #0a0818; color: var(--text);
+    border: 1px solid var(--border); border-radius: 20px; padding: 0.35rem 0.75rem; cursor: pointer;
+  }
+  .chip:hover { border-color: var(--lime); color: var(--lime); }
+
+  /* Prediction cards (hands-on lab) */
+  .activity {
+    background: #0a0818; border: 1px solid var(--border); border-radius: 10px;
+    padding: 1.1rem 1.2rem; margin-bottom: 1rem;
+  }
+  .activity h4 { font-family: 'Orbitron', monospace; font-size: 0.78rem; color: var(--accent); letter-spacing: 0.08em; margin-bottom: 0.5rem; }
+  .activity .kit { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.6rem; }
+  .activity .kit b { color: var(--text); }
+  .activity ol { margin: 0.4rem 0 0.6rem 1.2rem; font-size: 0.88rem; line-height: 1.7; color: var(--text); }
+  .activity .why { font-size: 0.85rem; color: var(--lime); line-height: 1.6; margin-top: 0.5rem; }
+  .activity .why b { color: #fff; }
+  .predict { margin-top: 0.7rem; padding-top: 0.7rem; border-top: 1px dashed var(--border); font-size: 0.85rem; }
+  .predict-q { color: var(--text); margin-bottom: 0.4rem; }
+  .predict-btns { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+  .predict-btns button {
+    font-family: 'Orbitron', monospace; font-size: 0.64rem; letter-spacing: 0.06em;
+    padding: 0.5rem 0.8rem; border-radius: 8px;
+    border: 1px solid var(--border); background: #120e28; color: var(--text); cursor: pointer;
+  }
+  .predict-btns button:hover { border-color: var(--accent); }
+  .predict-btns button.picked-right { border-color: var(--green); color: var(--green); }
+  .predict-btns button.picked-wrong { border-color: var(--red); color: #ff9e9e; }
+  .predict-btns button:disabled { cursor: default; }
+  .predict-out { margin-top: 0.5rem; color: var(--muted); line-height: 1.6; display: none; }
+  .predict-out.show { display: block; }
+
+  /* Invention generator */
+  .invent-card {
+    background: linear-gradient(135deg, #1b1440 0%, #2e1230 100%);
+    border: 1px solid rgba(255,94,196,0.4); border-radius: 10px;
+    padding: 1.2rem; text-align: center; min-height: 110px;
+    display: flex; flex-direction: column; justify-content: center; gap: 0.4rem;
+  }
+  .invent-line { font-size: 0.8rem; color: var(--muted); letter-spacing: 0.1em; font-family: 'Orbitron', monospace; }
+  .invent-main { font-size: 1.05rem; color: #fff; line-height: 1.6; }
+  .invent-main b { color: var(--lime); }
+
+  /* Fact wall */
+  .factwall-section {
+    background: linear-gradient(135deg, #130e2a 0%, #241a3a 100%);
+    border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 2rem; margin-top: 2rem;
+  }
+  .factwall-head { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+  .factwall-icon { font-size: 2rem; }
+  .factwall-title { font-family: 'Orbitron', monospace; font-size: 1.1rem; font-weight: 700; color: var(--accent); }
+  .factwall-sub { font-size: 0.85rem; color: var(--muted); margin-top: 3px; }
+  .factwall { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 0.8rem; }
+  .factcard {
+    background: #0a0818; border: 1px solid var(--border); border-radius: 10px;
+    padding: 0.9rem 1rem; font-size: 0.85rem; line-height: 1.65; color: var(--text);
+  }
+  .factnum { font-family: 'Orbitron', monospace; display: block; font-size: 1.2rem; color: var(--accent); margin-bottom: 0.35rem; }
+
+  /* Takeaway box */
+  .takeaway {
+    background: rgba(255,94,196,0.06);
+    border: 1px solid rgba(255,94,196,0.35);
+    border-radius: 10px; padding: 1.1rem 1.2rem; margin-top: 1rem;
+    font-size: 0.9rem; color: var(--text); line-height: 1.8;
+  }
+  .takeaway h3 { font-family: 'Orbitron', monospace; font-size: 0.72rem; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 0.6rem; font-weight: 700; }
+  .takeaway b { color: #fff; }
+
+  /* Dated numbers box */
+  .dated {
+    background: rgba(255,213,79,0.05);
+    border: 1px dashed rgba(255,213,79,0.35);
+    border-radius: 10px; padding: 1.1rem 1.2rem; margin-top: 2rem;
+    font-size: 0.83rem; color: var(--muted); line-height: 1.8;
+  }
+  .dated h3 {
+    font-family: 'Orbitron', monospace; font-size: 0.72rem; letter-spacing: 0.15em;
+    color: var(--gold); margin-bottom: 0.7rem; font-weight: 700;
+  }
+  .dated b { color: var(--text); }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <header>
+    <div class="badge">SCIENCE EXPLORER</div>
+    <h1>Materials Science &amp; Nanotechnology</h1>
+    <p class="header-topic"><span>Why Small Things Play By Different Rules</span></p>
+    <p class="subtitle">A 1-hour guided curriculum · Age 10 · Beginner Friendly</p>
+    <a class="homelink" href="https://curious-minds-science-lab.org/">← ALL CURRICULA</a>
+  </header>
+
+  <div class="progress-wrap">
+    <span class="progress-label">PROGRESS</span>
+    <div class="progress-bar-outer"><div class="progress-bar-inner" id="progressBar"></div></div>
+    <span class="progress-time" id="progressTime">0 / 60 min</span>
+  </div>
+
+  <!-- ===== MODULE 01 ===== -->
+  <div class="section-card" onclick="toggleCard(this)">
+    <div class="section-header">
+      <span class="section-num">PART 01</span>
+      <span class="section-title">🧱 What Are Materials?</span>
+      <span class="section-time">10 min</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <p class="section-intro">Look at anything near you right now — this screen, the table, your own hand. Every single one of them is made of <strong>atoms</strong>: particles so small that a single full stop on a page holds more of them than there are people on Earth, many times over. There are only about <strong>90 kinds of atom</strong> found in nature (hydrogen, carbon, iron, gold, oxygen and so on — the elements), and every material in the universe is built from that short list, the way every LEGO model is built from the same handful of brick shapes.<br><br>Here is the twist that makes materials science a real subject. It is not only <em>which</em> atoms you use — it is <strong>how they are arranged</strong>. Take pure carbon atoms and stack them in flat sheets that slide over one another, and you get <strong>graphite</strong>, the soft grey stuff in a pencil. Take the <em>exact same</em> carbon atoms and lock each one to four neighbours in a rigid 3-D lattice, and you get <strong>diamond</strong>, the hardest natural material known. Same ingredients, different recipe, completely different result. Scientists sort materials into four big families — <strong>metals</strong> (atoms in a neat crystal with loose electrons, so they conduct and bend), <strong>ceramics</strong> like glass and pottery (atoms locked tight, so they are hard but snap), <strong>polymers</strong> like plastic and rubber (long spaghetti-chains of atoms, so they are light and bendy), and <strong>composites</strong> (two materials teamed up, like carbon fibre in a bike frame).<br><br>Try this in the kitchen before you go on. Put a spoon of <strong>coarse sugar</strong> in one glass of water and a spoon of <strong>fine caster sugar</strong> in another, stir both the same, and watch. The fine sugar vanishes first. But it is <em>exactly</em> the same material — same atoms, same arrangement. So why does it behave differently? Because there is more of it <strong>touching the water</strong>. Cut a lump into smaller pieces and you create new faces, and new faces mean more <strong>surface area</strong>. Keep that idea in your pocket — it is the single most important idea in the whole of nanotechnology, and you will meet it again in Part 03.</p>
+
+      <div class="tryit" onclick="event.stopPropagation()">
+        <div class="tryit-title">◈ TRY IT — THE SUGAR CUBE CUTTER</div>
+        <p class="tryit-desc">Start with one sugar cube, 1 cm on each side. Slide to chop it into smaller and smaller pieces and watch what happens to the total <strong>surface area</strong> — the amount of sugar actually touching the water. The amount of sugar never changes. The surface does.</p>
+        <div class="lab-controls">
+          <label for="cubeSlider">Pieces per side:</label>
+          <input type="range" id="cubeSlider" min="0" max="7" step="1" value="0">
+          <span class="lab-val" id="cubeVal">1</span>
+        </div>
+        <div class="cube-stage">
+          <div class="cube-grid" id="cubeGrid"></div>
+          <div class="cube-stats" id="cubeStats"></div>
+        </div>
+        <div class="tryit-out" id="cubeOut"></div>
+      </div>
+
+      <div class="tryit" onclick="event.stopPropagation()">
+        <div class="tryit-title">◈ TRY IT — WHICH FAMILY DOES IT BELONG TO?</div>
+        <p class="tryit-desc">Every material is a metal, a ceramic, a polymer or a composite. Sort these eight everyday objects into their families, then press Check.</p>
+        <div class="match-grid" id="famGrid"></div>
+        <button class="tryit-btn" id="famBtn">Check my answers</button>
+        <div class="tryit-out" id="famResult">Pick a family for every object.</div>
+      </div>
+
+      <div class="resource-grid">
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Kurzgesagt: How Small Is An Atom? Spoiler: Very Small.</div>
+          <div class="resource-desc">Five minutes that shrink you down until a single atom is the size of a football stadium — and then show you that the atom is almost entirely empty space. Start here.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=_lNF3_30lUE" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">TED-Ed: Just How Small Is an Atom?</div>
+          <div class="resource-desc">Jonathan Bergmann uses a grapefruit, a blueberry and a football stadium to make the size of an atom feel real. The classic — and a good pair with the Kurzgesagt one.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=yQP4UJhNn0I" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Crash Course Kids: What's Matter?</div>
+          <div class="resource-desc">Sabrina explains what "matter" means and why everything you can touch counts. Four minutes, no jargon.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=ELchwUIlWa8" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Crash Course Kids: Part(icles) of Your World</div>
+          <div class="resource-desc">The follow-up: how the same tiny particles, packed differently, make solids, liquids and gases.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=npv74D2MO6Q" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-sim">◈ SIMULATION</span>
+          <div class="resource-name">PhET: States of Matter</div>
+          <div class="resource-desc">Heat and cool a box of atoms and watch them go from a locked-together solid to a sliding liquid to a bouncing gas. Try neon, argon, oxygen and water — this is "arrangement changes everything" in real time.</div>
+          <a class="resource-link" href="https://phet.colorado.edu/sims/html/states-of-matter-basics/latest/states-of-matter-basics_all.html" target="_blank" rel="noopener">Run the simulation →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-sim">◈ SIMULATION</span>
+          <div class="resource-name">PhET: Build an Atom</div>
+          <div class="resource-desc">Drag protons, neutrons and electrons into the middle and see which element you have made. Add one proton to carbon and it becomes nitrogen — that is the whole periodic table in one idea.</div>
+          <a class="resource-link" href="https://phet.colorado.edu/sims/html/build-an-atom/latest/build-an-atom_all.html" target="_blank" rel="noopener">Build one →</a>
+        </div>
+      </div>
+
+      <div class="concepts">
+        <span class="concept-tag">Atoms</span>
+        <span class="concept-tag">Elements</span>
+        <span class="concept-tag">Arrangement</span>
+        <span class="concept-tag">Graphite vs Diamond</span>
+        <span class="concept-tag">Metals</span>
+        <span class="concept-tag">Ceramics</span>
+        <span class="concept-tag">Polymers</span>
+        <span class="concept-tag">Composites</span>
+        <span class="concept-tag">Surface Area</span>
+      </div>
+
+      <div class="myth">People say <strong>"solid things are, well, solid."</strong> They are not. An atom is a tiny, heavy nucleus surrounded by a cloud of electrons — and if the nucleus were the size of a marble sitting in the middle of a football stadium, the electrons would be buzzing around the outer seats. Everything in between is empty. A table feels solid only because the electron clouds of its atoms push back against the electron clouds of your hand. You have never actually <em>touched</em> anything in your life — not in the sense of two atoms bumping.</div>
+
+      <div class="fun-fact">A glass of water holds roughly <strong>10,000,000,000,000,000,000,000,000 water molecules</strong> — ten trillion trillion. That is so many that if you tipped the glass into the sea, waited for it to spread evenly through every ocean on Earth, and then scooped a fresh glass from anywhere, you would still get about a thousand of your original molecules back.</div>
+    </div>
+  </div>
+
+  <!-- ===== MODULE 02 ===== -->
+  <div class="section-card" onclick="toggleCard(this)">
+    <div class="section-header">
+      <span class="section-num">PART 02</span>
+      <span class="section-title">🔧 Material Properties: Why Engineers Choose</span>
+      <span class="section-time">10 min</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <p class="section-intro">Pick up a paperclip and bend it. It bends — and it <em>stays</em> bent. Now stretch a rubber band and let go. It snaps straight back. Both are "bendy", but in completely different ways, and materials scientists have a word for each. The paperclip is <strong>ductile</strong>: metal atoms sit in neat rows that can slide past each other and then settle into a new position. The rubber band is <strong>elastic</strong>: its long tangled polymer chains straighten out when you pull and coil back up when you let go. Bend the paperclip back and forth twenty times and it snaps — that is <strong>fatigue</strong>, and it is why aeroplane wings are checked so carefully.<br><br>Every material has a whole report card of <strong>properties</strong> like this. <strong>Strength</strong> — how much pulling or squashing it takes before it breaks. <strong>Hardness</strong> — how well it resists being scratched (diamond wins; talc loses). <strong>Toughness</strong> — whether it bends before breaking or shatters like glass. <strong>Density</strong> — how heavy a lump of it is. <strong>Conductivity</strong> — whether electricity and heat can flow through it (copper: yes, very; plastic: almost not at all). <strong>Transparency</strong>, <strong>melting point</strong>, and whether it rusts, rots or stays shiny for a thousand years.<br><br>This is where engineering starts: <strong>every design is a choice of material</strong>, and there is never a perfect one — only the best trade-off for the job. A bridge cable must be strong <em>and</em> tough (steel). A phone case must be light <em>and</em> not conduct electricity (polymer). A frying pan must conduct heat brilliantly (metal) but its handle must not (plastic or wood). A bulletproof vest must stop a bullet but still let you move (Kevlar, a polymer whose chains line up so neatly it is five times stronger than steel for its weight). Choose wrong and things break, melt, rust or electrocute someone. Choose cleverly and you get a bicycle that weighs less than a cat.</p>
+
+      <div class="tryit" onclick="event.stopPropagation()">
+        <div class="tryit-title">◈ TRY IT — CONDUCTOR OR INSULATOR?</div>
+        <p class="tryit-desc">Ten objects, shuffled. Would each one <strong>let electricity through</strong> (a conductor) or <strong>block it</strong> (an insulator)? Then, if you have a battery, a bulb or LED and two wires, test your answers for real — the setup is in the Science Buddies card below.</p>
+        <div class="sort-card" id="ciCard">Press Start to see the first object.</div>
+        <div class="sort-btns">
+          <button id="ciCond" disabled>⚡ CONDUCTOR</button>
+          <button id="ciIns" disabled>🚫 INSULATOR</button>
+        </div>
+        <button class="tryit-btn" id="ciStart">Start</button>
+        <div class="tryit-out" id="ciOut">No rounds played yet.</div>
+      </div>
+
+      <div class="tryit" onclick="event.stopPropagation()">
+        <div class="tryit-title">◈ TRY IT — BE THE ENGINEER</div>
+        <p class="tryit-desc">Eight jobs, eight materials. Match each job to the material a real engineer would pick — and think about <strong>which property</strong> made you choose it.</p>
+        <div class="match-grid" id="engGrid"></div>
+        <button class="tryit-btn" id="engBtn">Check my choices</button>
+        <div class="tryit-out" id="engResult">Choose a material for every job.</div>
+      </div>
+
+      <div class="safety">The battery-and-LED test in this part and in Part 04 uses a small <strong>1.5 V or 3 V battery</strong> (AA, AAA or a coin cell) — never a mains plug, never a car battery, and never a 9 V battery pressed against metal for long, because it can get hot. A grown-up sets up the circuit; you do the testing.</div>
+
+      <div class="resource-grid">
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Crash Course Kids: Hunting for Properties</div>
+          <div class="resource-desc">What a "property" actually is, and how scientists measure one — colour, hardness, texture, whether it floats. The words you need for the rest of this page.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=ZZYnERZe3Cg" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Crash Course Kids: Material World</div>
+          <div class="resource-desc">Meet the materials scientists and engineers whose whole job is choosing the right stuff for the right job — and inventing new stuff when nothing fits.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=tGfLhPslEjQ" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">TED-Ed: Why Is Glass Transparent?</div>
+          <div class="resource-desc">Materials scientist Mark Miodownik explains why light sails straight through a window but bounces off a brick — it all comes down to what the electrons are allowed to do. Four minutes.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=VwRLIt6jgdM" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-sim">◈ SIMULATION</span>
+          <div class="resource-name">PhET: Circuit Construction Kit</div>
+          <div class="resource-desc">Build a real circuit on screen, then open the <em>Lab</em> screen's grab bag and wire in a pencil, an eraser, a paperclip, a coin — even a dog — to see which ones light the bulb. No batteries needed and nothing can get hot.</div>
+          <a class="resource-link" href="https://phet.colorado.edu/sims/html/circuit-construction-kit-dc/latest/circuit-construction-kit-dc_all.html" target="_blank" rel="noopener">Run the simulation →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-interactive">◉ HANDS-ON</span>
+          <div class="resource-name">Science Buddies: Which Materials Conduct Electricity?</div>
+          <div class="resource-desc">A step-by-step guide to building a simple battery-and-bulb tester at home, then trying foil, plastic, coins, keys and a pencil. This is the "foil vs plastic" test — done properly.</div>
+          <a class="resource-link" href="https://www.sciencebuddies.org/stem-activities/which-materials-conduct-electricity" target="_blank" rel="noopener">Build the tester →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-interactive">◉ HANDS-ON</span>
+          <div class="resource-name">Exploratorium: Hand Battery</div>
+          <div class="resource-desc">Two different metals plus your own hands make a battery you can measure. Proof that metals are not all the same — and that you conduct too.</div>
+          <a class="resource-link" href="https://www.exploratorium.edu/snacks/hand-battery" target="_blank" rel="noopener">Try it →</a>
+        </div>
+      </div>
+
+      <div class="concepts">
+        <span class="concept-tag">Strength</span>
+        <span class="concept-tag">Hardness</span>
+        <span class="concept-tag">Toughness</span>
+        <span class="concept-tag">Ductile vs Elastic</span>
+        <span class="concept-tag">Fatigue</span>
+        <span class="concept-tag">Conductivity</span>
+        <span class="concept-tag">Insulator</span>
+        <span class="concept-tag">Density</span>
+        <span class="concept-tag">Trade-offs</span>
+      </div>
+
+      <div class="myth">People say <strong>"strong" and "hard" mean the same thing.</strong> They do not — and the difference matters. Diamond is the hardest natural material (nothing can scratch it) but hit it with a hammer and it shatters, because it is not <em>tough</em>. Spider silk is soft enough to squash between your fingers, yet for its weight it is stronger than steel, and it can stretch by nearly a third before it breaks. Hard means "resists scratching". Strong means "resists breaking under a pull". Tough means "bends and absorbs a whack instead of cracking". A good engineer needs all three words.</div>
+
+      <div class="fun-fact">Pure water is actually a <strong>poor</strong> conductor of electricity. What makes tap water, sea water and sweat conduct is the salt dissolved in them — the salt splits into charged particles called ions, and the ions carry the current. That is why you should never handle electrical things with wet hands: your wet skin has become a salty wire.</div>
+    </div>
+  </div>
+
+  <!-- ===== MODULE 03 ===== -->
+  <div class="section-card" onclick="toggleCard(this)">
+    <div class="section-header">
+      <span class="section-num">PART 03</span>
+      <span class="section-title">🔬 What Is Nano?</span>
+      <span class="section-time">10 min</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <p class="section-intro">A <strong>nanometre</strong> (nm) is <strong>one-billionth of a metre</strong>. Write it out: 0.000000001 m. That is so small it is hard to picture, so here is a ladder. A metre stick is <strong>1,000,000,000 nm</strong> long. Your hand — about 15 cm — is around <strong>150,000,000 nm</strong>. A single human hair is <strong>80,000–100,000 nm</strong> wide. A red blood cell is about 7,000 nm. A bacterium, 1,000–2,000 nm. A virus, around 100 nm. A strand of DNA is just 2 nm across. And a single atom is about a tenth of a nanometre. <strong>Nanotechnology</strong> is the science of building and using things in the range of roughly <strong>1 to 100 nm</strong> — bigger than an atom, smaller than a virus, and far, far too small to see with any ordinary microscope. Here is a fact to try on your family tonight: your fingernails grow at about <strong>1 nanometre every second</strong>.<br><br>Why does anyone care about a size? Because at the nanoscale, <strong>materials stop behaving the way they do in your hand</strong>. Two reasons. First, the sugar-cube idea from Part 01 goes into overdrive: chop a lump into nano-sized pieces and almost every atom ends up <em>on a surface</em>, with nothing above it. Surfaces are where all the action is — where things dissolve, react, stick and catch light — so nano-sized materials react faster, melt at lower temperatures and grab hold of things more fiercely than big lumps of the same stuff. Second, at a few nanometres the strange rules of <strong>quantum physics</strong> take over. Gold that is nano-sized is not gold-coloured at all: a jar of gold nanoparticles in water glows <strong>ruby red or purple</strong>, and the exact colour depends only on how big the particles are. Medieval glassmakers were using this without knowing it — the red in old cathedral windows is often gold nanoparticles.<br><br>Kurzgesagt has a brilliant way into this idea. An ant can fall from a skyscraper and walk away; a mouse would probably survive; an elephant… would not. It is not about being brave. It is about <strong>surface area versus volume</strong>: as something gets smaller, its surface (which catches the air) shrinks far more slowly than its weight. Shrink all the way down to nano and the surface completely takes over — which is exactly why nano is different.</p>
+
+      <div class="tryit" onclick="event.stopPropagation()">
+        <div class="tryit-title">◈ TRY IT — THE NANO RULER</div>
+        <p class="tryit-desc">Measure anything with a ruler, type in the length, and see it in <strong>nanometres</strong>. Then tap the chips to compare it with things you cannot see. Try your own hand, your height, the width of this screen.</p>
+        <div class="ruler-row">
+          <input type="number" id="rulerNum" value="15" min="0" step="any" inputmode="decimal">
+          <select id="rulerUnit">
+            <option value="1e6">millimetres (mm)</option>
+            <option value="1e7" selected>centimetres (cm)</option>
+            <option value="1e9">metres (m)</option>
+          </select>
+        </div>
+        <div class="ruler-big" id="rulerBig"></div>
+        <div class="chip-row" id="rulerChips"></div>
+        <div class="tryit-out" id="rulerOut"></div>
+      </div>
+
+      <div class="tryit" onclick="event.stopPropagation()">
+        <div class="tryit-title">◈ TRY IT — THE SIZE LADDER</div>
+        <p class="tryit-desc">Eight things, shuffled. Click them in order from <strong>smallest to biggest</strong>. Careful — the jumps between them are enormous, and two of them are much closer together than you think.</p>
+        <div class="relay-steps" id="ladderSteps"></div>
+        <div class="tryit-out" id="ladderTrack">Waiting for the smallest…</div>
+        <button class="tryit-btn" id="ladderReset">Shuffle &amp; Restart</button>
+      </div>
+
+      <div class="resource-grid">
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Kurzgesagt: What Happens If We Throw an Elephant From a Skyscraper?</div>
+          <div class="resource-desc">Life &amp; Size, part 1. Why an ant survives the fall, a mouse is dazed, and an elephant is… not. The surface-area-to-volume idea that makes the whole of nano make sense, told with animals. Nobody is harmed — it is a thought experiment.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=f7KSfjv4Oq0" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Kurzgesagt: How to Make an Elephant Explode – The Size of Life 2</div>
+          <div class="resource-desc">Part 2: why tiny animals live fast and hot, and why a mouse-sized elephant would cook itself. Same rule — surface area — pointed at heat instead of falling.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=MUWUHf-rzks" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Powers of Ten (Eames Office, 1977)</div>
+          <div class="resource-desc">The most famous nine minutes in science film. Start at a picnic, zoom out to the edge of the universe, then zoom <em>in</em> — through the skin, into a cell, into an atom, into its nucleus. Every ten seconds the picture is ten times smaller.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=0fKBhvDjuy0" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">iluli: The Tiny Guide to Nanotechnology</div>
+          <div class="resource-desc">A short, friendly animated explainer of what "nano" means and where you already meet it every day.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=YYxRi5rs2Gw" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-interactive">◉ INTERACTIVE</span>
+          <div class="resource-name">The Scale of the Universe</div>
+          <div class="resource-desc">Drag one slider from the whole universe down to the smallest things physics knows about. Stop at the nanometre and look at what is sitting there: DNA, viruses, transistors, the width of a cell wall.</div>
+          <a class="resource-link" href="https://scaleofuniverse.com/" target="_blank" rel="noopener">Open the slider →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-interactive">◉ INTERACTIVE</span>
+          <div class="resource-name">Cell Size and Scale (University of Utah)</div>
+          <div class="resource-desc">Zoom from a coffee bean to a carbon atom, with a grain of rice, a skin cell, a virus and a water molecule along the way. The best single picture of where "nano" sits.</div>
+          <a class="resource-link" href="https://learn.genetics.utah.edu/content/cells/scale/" target="_blank" rel="noopener">Zoom in →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">NISE Network: Intro to Nano</div>
+          <div class="resource-desc">A three-minute animation made by science museums for exactly your age. What nano is, why it matters, and where it is hiding. (Plays on the museum network's page.)</div>
+          <a class="resource-link" href="https://www.nisenet.org/catalog/intro-nano-video" target="_blank" rel="noopener">▶ Watch it →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-read">◆ READ</span>
+          <div class="resource-name">Nanooze: What Is Nanotechnology?</div>
+          <div class="resource-desc">A free kids' science magazine from Cornell University's nano lab. Issue 1 is the perfect four-page starter, and there are twenty more issues after it.</div>
+          <a class="resource-link" href="https://www.nanooze.org/issue_1/" target="_blank" rel="noopener">Read the magazine →</a>
+        </div>
+      </div>
+
+      <div class="concepts">
+        <span class="concept-tag">Nanometre</span>
+        <span class="concept-tag">One-Billionth</span>
+        <span class="concept-tag">1–100 nm</span>
+        <span class="concept-tag">Surface Area vs Volume</span>
+        <span class="concept-tag">Quantum Effects</span>
+        <span class="concept-tag">Gold Nanoparticles</span>
+        <span class="concept-tag">Scale</span>
+      </div>
+
+      <div class="myth">People say <strong>"nano just means really small."</strong> Not quite. Lots of things are really small — a grain of flour, a speck of dust, a red blood cell — and none of them are nano. Nano is a specific band, about 1 to 100 nanometres, and it earns its own name because that is the size where materials <em>change their behaviour</em>: colour, melting point, strength, how they react. A speck of dust is just a small rock. A nanoparticle of the same rock is a new material.</div>
+
+      <div class="fun-fact">The Romans made a cup in the 4th century — the <strong>Lycurgus Cup</strong>, now in the British Museum — that looks jade green in ordinary light but glows <strong>blood red</strong> when you shine a light through it. In 1990 scientists worked out why: the glass contains tiny particles of gold and silver about 50–100 nm across. The Romans had made a nanomaterial 1,600 years before anyone had a word for it.</div>
+    </div>
+  </div>
+
+  <!-- ===== MODULE 04 ===== -->
+  <div class="section-card" onclick="toggleCard(this)">
+    <div class="section-header">
+      <span class="section-num">PART 04</span>
+      <span class="section-title">⚡ Hands-On Nano Lab</span>
+      <span class="section-time">15 min</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <p class="section-intro">Time to stop reading and start doing. Below are three real experiments with real nanomaterials, all using things already in the house. <strong>Pick any two</strong> (each takes 5–8 minutes), and for each one <strong>make your prediction first</strong> — press the button under the experiment before you touch anything. Scientists always guess first, then test. Being wrong is allowed; being surprised is the whole point.</p>
+
+      <div class="safety">Only the small battery from Part 02 is used here. Nothing sharp, nothing hot. A grown-up sets up the LED circuit; if an LED does not light, try turning it round — LEDs only work one way.</div>
+
+      <div class="activity" onclick="event.stopPropagation()">
+        <h4>ACTIVITY A · MAKE GRAPHENE WITH A PENCIL (8 min)</h4>
+        <div class="kit"><b>You need:</b> a soft pencil (6B, 4B or 2B is best; an ordinary HB works but is fainter), a sheet of paper, a small battery (a 3 V coin cell is perfect), an LED, and two short wires or strips of kitchen foil.</div>
+        <ol>
+          <li>Scribble hard on the paper until you have a solid, shiny dark patch about the size of a matchbox. Go over it at least ten times — thickness matters.</li>
+          <li>Connect the battery's + side to the LED's long leg with one wire. Touch the LED's short leg to <em>one end</em> of your patch, and the battery's − side to the <em>other end</em>.</li>
+          <li>Watch the LED. Then slide the two contact points closer together, and further apart. Draw a long thin line instead of a patch and try again.</li>
+        </ol>
+        <div class="why"><b>What is going on:</b> pencil "lead" is not lead — it is <b>graphite</b>, a stack of carbon sheets each just one atom thick. A single one of those sheets is <b>graphene</b>: the thinnest material ever made, about 200 times stronger than steel for its weight, and a better conductor of electricity than copper. Every time you write with a pencil you are shearing off stacks of graphene layers and leaving them on the paper — and because they conduct, your scribble is a real wire. In 2004 two scientists in Manchester peeled single graphene layers off a lump of graphite using nothing but sticky tape, and won the <b>Nobel Prize</b> for it in 2010. The longer and thinner your line, the harder the electrons find it to get through, so the LED dims — you have built a dimmer switch out of carbon.</div>
+        <div class="predict">
+          <div class="predict-q">Prediction: when you connect the LED through the graphite patch, will it light?</div>
+          <div class="predict-btns" data-pid="pA">
+            <button data-ans="0">YES — BRIGHT</button>
+            <button data-ans="1">YES — DIM</button>
+            <button data-ans="2">NO</button>
+          </div>
+          <div class="predict-out" id="pA_out"></div>
+        </div>
+      </div>
+
+      <div class="activity" onclick="event.stopPropagation()">
+        <h4>ACTIVITY B · LIQUID CRYSTALS THAT CHANGE COLOUR (5 min)</h4>
+        <div class="kit"><b>You need:</b> a forehead strip thermometer, a mood ring, a colour-changing "thermochromic" sticker, mug or spoon — any one of these — plus a warm hand and something cold from the fridge.</div>
+        <ol>
+          <li>Look at its colour at room temperature. Now hold it firmly in your fist for 20 seconds and watch it change.</li>
+          <li>Press it against the cold thing from the fridge. Which way does the colour go now?</li>
+          <li>Breathe warm air on it. Try a friend's hand. Does everyone make the same colour?</li>
+        </ol>
+        <div class="why"><b>What is going on:</b> inside is a <b>liquid crystal</b> — a material that flows like a liquid but whose rod-shaped molecules line up in neat order like a crystal. In the kind used here the molecules stack in a gentle spiral, and the spiral's spacing is a few hundred nanometres — the same size as a wavelength of light. So the spiral reflects one exact colour. Warm it up and the molecules jostle, the spiral tightens, and the colour it reflects shifts (usually towards blue); cool it and it shifts back (towards red). That is a nano-sized structure changing shape, and you are watching it with your bare eyes. The same trick, controlled by electricity instead of heat, is how every <b>LCD</b> screen — laptops, calculators, older TVs — draws its picture.</div>
+        <div class="predict">
+          <div class="predict-q">Prediction: when you warm it in your fist, what happens?</div>
+          <div class="predict-btns" data-pid="pB">
+            <button data-ans="0">IT CHANGES COLOUR</button>
+            <button data-ans="1">IT GLOWS</button>
+            <button data-ans="2">NOTHING — IT NEEDS A BATTERY</button>
+          </div>
+          <div class="predict-out" id="pB_out"></div>
+        </div>
+      </div>
+
+      <div class="activity" onclick="event.stopPropagation()">
+        <h4>ACTIVITY C · THE WATER THAT WON'T STICK (5 min)</h4>
+        <div class="kit"><b>You need:</b> a dropper or teaspoon of water, an old cotton T-shirt, a rain jacket or umbrella, and — if you can find one — a cabbage leaf, nasturtium leaf or lotus leaf from the garden.</div>
+        <ol>
+          <li>Drip one drop of water onto the cotton. Watch what it does over ten seconds.</li>
+          <li>Drip one drop onto the rain jacket. Tilt the fabric gently. Does the drop roll, or spread?</li>
+          <li>Try the leaf. Sprinkle a little dust or cocoa powder on it first, then drip water on it and tilt.</li>
+        </ol>
+        <div class="why"><b>What is going on:</b> the cotton is <b>hydrophilic</b> — "water-loving" — its fibres pull the water in and it soaks. The jacket is <b>hydrophobic</b> — "water-fearing" — it has been given a coating a few nanometres thick that water molecules cannot grip, so the drop stays a ball and rolls away. The leaf is the champion, and it is the reason this science exists. A lotus leaf is covered in tiny bumps, and each bump is coated in even tinier crystals of wax, only nanometres across. The water drop can only touch the tips of the bumps, so it sits on a cushion of air, rolls off at the slightest tilt — <b>and picks up the dirt as it goes</b>. This is the <b>lotus effect</b>, and engineers copied it to make self-cleaning windows, paint and fabric. The bigger the drop's bounce, the more nano the surface.</div>
+        <div class="predict">
+          <div class="predict-q">Prediction: the drop on the rain jacket will…</div>
+          <div class="predict-btns" data-pid="pC">
+            <button data-ans="0">SOAK IN SLOWLY</button>
+            <button data-ans="1">STAY A BALL AND ROLL</button>
+            <button data-ans="2">SPREAD INTO A FLAT PUDDLE</button>
+          </div>
+          <div class="predict-out" id="pC_out"></div>
+        </div>
+      </div>
+
+      <div class="resource-grid">
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">SciShow: Graphene — The Next Big (But Thin) Thing</div>
+          <div class="resource-desc">Hank Green on the sticky-tape discovery, why a material one atom thick can be the strongest ever measured, and what people hope to build with it. Five minutes.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=Mcg9_ML2mXY" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Reactions (ACS): Why Superhydrophobic Materials Never Get Wet</div>
+          <div class="resource-desc">Slow-motion water drops bouncing clean off treated surfaces, and the nano-bumps that make it happen. From the American Chemical Society.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=YR4uCvy7wOA" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Evan &amp; Katelyn: Make ANYTHING a Mood Ring with This Liquid</div>
+          <div class="resource-desc">Two makers paint liquid-crystal ink onto ordinary objects and watch them change colour under a warm hand. Pure fun, and exactly what Activity B is doing.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=oSGlCNZUMcw" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-read">◆ READ</span>
+          <div class="resource-name">The Nobel Prize: Graphene — the Sticky-Tape Story</div>
+          <div class="resource-desc">The official popular-science account of the 2010 Physics prize: how Geim and Novoselov peeled a lump of graphite ten or twenty times with tape until only one layer was left. Includes the "gecko tape" side story.</div>
+          <a class="resource-link" href="https://www.nobelprize.org/prizes/physics/2010/popular-information/" target="_blank" rel="noopener">Read it →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-interactive">◉ HANDS-ON</span>
+          <div class="resource-name">UW-Madison: Liquid Crystal Activity</div>
+          <div class="resource-desc">A university materials lab's classroom activity on liquid crystals — what they are, how displays use them, and more things to try with a thermometer strip.</div>
+          <a class="resource-link" href="https://education.mrsec.wisc.edu/liquid-crystal-and-crystal-solutions-2/" target="_blank" rel="noopener">Explore →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-interactive">◉ HANDS-ON</span>
+          <div class="resource-name">Science Buddies: Pencil-Lead Dimmer Switch</div>
+          <div class="resource-desc">Takes Activity A further: measure how the brightness changes as you slide the contact along a graphite line, and graph it.</div>
+          <a class="resource-link" href="https://www.sciencebuddies.org/science-fair-projects/project-ideas/Elec_p056/electricity-electronics/dimmer-switch-basic-circuits" target="_blank" rel="noopener">Go further →</a>
+        </div>
+      </div>
+
+      <div class="concepts">
+        <span class="concept-tag">Graphite</span>
+        <span class="concept-tag">Graphene</span>
+        <span class="concept-tag">Sticky-Tape Method</span>
+        <span class="concept-tag">Liquid Crystal</span>
+        <span class="concept-tag">Thermochromic</span>
+        <span class="concept-tag">Hydrophobic</span>
+        <span class="concept-tag">Lotus Effect</span>
+        <span class="concept-tag">Self-Cleaning</span>
+        <span class="concept-tag">Predict → Test</span>
+      </div>
+
+      <div class="myth">People say <strong>pencils contain lead, and lead is poisonous, so don't chew your pencil.</strong> Half right. Pencils have never contained lead — when a huge deposit of graphite was found in England in the 1500s, people thought it was a kind of lead ore and the name stuck. The "lead" is graphite mixed with clay: more clay makes a harder, paler pencil (H), more graphite makes a softer, darker one (B). Graphite is harmless carbon. The don't-chew-it rule is still good advice, though — for the paint.</div>
+
+      <div class="fun-fact">Liquid crystals were discovered in <strong>1888</strong> by an Austrian botanist, Friedrich Reinitzer, who was studying a substance from carrots and noticed it had <em>two</em> melting points — first into a cloudy liquid, then into a clear one. For nearly a century they were a curiosity with no use at all. Today there is a liquid-crystal display in almost every calculator, watch, petrol pump and microwave on Earth.</div>
+    </div>
+  </div>
+
+  <!-- ===== MODULE 05 ===== -->
+  <div class="section-card" onclick="toggleCard(this)">
+    <div class="section-header">
+      <span class="section-num">PART 05</span>
+      <span class="section-title">🌍 Nanotechnology in Real Life</span>
+      <span class="section-time">10 min</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <p class="section-intro">You met nanotechnology before breakfast today, and you will meet it a dozen more times before bed. <strong>Sunscreen</strong>: the old kind was a thick white paste of zinc oxide — lifeguards' noses. Grind the same zinc oxide into nanoparticles and it turns transparent on your skin while still bouncing away the sun's ultraviolet light. <strong>Your phone screen</strong>: the reason fingerprints wipe off so easily is a coating just a few nanometres thick that grease cannot grip — the same hydrophobic idea from Activity C, pointed at finger-oil. <strong>Socks and sports kit</strong>: some contain silver nanoparticles, because at that size silver is brilliant at killing the bacteria that make feet smell. <strong>Your TV</strong>: if it says "QLED", its colours come from <strong>quantum dots</strong> — crystals a few nanometres across whose colour is set purely by their size (the gold-nanoparticle trick from Part 03, done on purpose). The three scientists who worked out how to make them won the <strong>2023 Nobel Prize in Chemistry</strong>.<br><br>The biggest one is invisible. Inside every phone and computer is a chip holding <strong>billions of transistors</strong> — tiny switches that flick on and off billions of times a second — and the important parts of each switch are only <strong>tens of nanometres</strong> across. The very first transistor, built in 1947, was the size of your palm. A modern phone chip packs well over <strong>15 billion</strong> of them into a square the size of your fingernail. Every video game, every video call and every word on this page exists because engineers learned to build at the nanoscale.<br><br>And then there is <strong>medicine</strong>. You may have heard of "nano-robots" swimming through your blood to fix things. Real, tiny, swimming robots that make decisions are still <strong>science fiction — for now</strong>; scientists have built simple prototypes in labs, but none is treating patients yet. What <em>is</em> real is almost as good: doctors wrap medicine inside <strong>nanoparticles</strong> about 100 nm across that carry it through the body and release it in the right place, so a cancer drug reaches the tumour instead of everywhere. The vaccines that ended the COVID pandemic delivered their instructions inside fat-bubble nanoparticles exactly like this — nanotechnology has already been injected into billions of arms. Nano is not the future. It is the present, and it is already in your pocket.</p>
+
+      <div class="tryit" onclick="event.stopPropagation()">
+        <div class="tryit-title">◈ TRY IT — NANO OR NOT (YET)?</div>
+        <p class="tryit-desc">Ten claims, shuffled. Some describe nanotechnology you can buy today; some are still science fiction or lab-only. Which is which? This one is harder than it looks.</p>
+        <div class="sort-card" id="nnCard">Press Start to see the first claim.</div>
+        <div class="sort-btns">
+          <button id="nnReal" disabled>✅ REAL TODAY</button>
+          <button id="nnFic" disabled>🚀 NOT YET</button>
+        </div>
+        <button class="tryit-btn" id="nnStart">Start</button>
+        <div class="tryit-out" id="nnOut">No rounds played yet.</div>
+      </div>
+
+      <div class="resource-grid">
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Crash Course Engineering: The Mighty Power of Nanomaterials</div>
+          <div class="resource-desc">Nine minutes on the nanomaterials engineers already use — in sunscreen, in medicine, in carbon nanotubes stronger than steel — and the ones they are still dreaming about. Made for teenagers, but the pictures do the work.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=IkYimZBzguw" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Kurzgesagt: Space Elevator — Science Fiction or the Future of Mankind?</div>
+          <div class="resource-desc">To build a cable from Earth to space you would need a material stronger than anything that exists — and the best candidate is carbon nanotubes, graphene rolled into a straw. A nanomaterial's biggest possible job.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=qPQQwqGWktE" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Reactions (ACS): How Does Sunscreen Work?</div>
+          <div class="resource-desc">The chemistry of what is in the bottle, and why the mineral kind works by bouncing light away instead of soaking it up.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=Te5S-TCf7iQ" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">NISE Network: Intro to Nanomedicine</div>
+          <div class="resource-desc">A two-and-a-half-minute museum animation on how doctors are using nano-sized particles to carry medicine to exactly the right place. Made for age 7 and up.</div>
+          <a class="resource-link" href="https://www.nisenet.org/catalog/intro-nanomedicine-video" target="_blank" rel="noopener">▶ Watch it →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-read">◆ READ</span>
+          <div class="resource-name">Frontiers for Young Minds: What Are Nano-Based Products?</div>
+          <div class="resource-desc">A real science article, reviewed by kids your age before it was published: silver socks, quantum-dot TVs, drug delivery and more.</div>
+          <a class="resource-link" href="https://kids.frontiersin.org/articles/10.3389/frym.2025.1414735" target="_blank" rel="noopener">Read it →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-read">◆ READ</span>
+          <div class="resource-name">Frontiers for Young Minds: Sizes, Shapes and Types of Nanomaterials</div>
+          <div class="resource-desc">Dots, tubes, sheets and shells — the different shapes nanomaterials come in, and why the shape changes what they can do. Mentions your pencil.</div>
+          <a class="resource-link" href="https://kids.frontiersin.org/articles/10.3389/frym.2024.1356284" target="_blank" rel="noopener">Read it →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-read">◆ READ</span>
+          <div class="resource-name">Explain That Stuff: Nanotechnology for Kids</div>
+          <div class="resource-desc">A longer, friendly read that builds the whole subject up from LEGO bricks. Good for a rainy afternoon after this page.</div>
+          <a class="resource-link" href="https://www.explainthatstuff.com/nanotechnologyforkids.html" target="_blank" rel="noopener">Read it →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">SciShow: There's a Big Problem With Silicon. What's Next?</div>
+          <div class="resource-desc">For older explorers: why transistors cannot keep shrinking forever, and the new nanomaterials that might take over from silicon.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=07ZqPmhZ1mw" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+      </div>
+
+      <div class="concepts">
+        <span class="concept-tag">Nano Sunscreen</span>
+        <span class="concept-tag">Nano-Coatings</span>
+        <span class="concept-tag">Quantum Dots</span>
+        <span class="concept-tag">Transistors</span>
+        <span class="concept-tag">Nanoparticle Medicine</span>
+        <span class="concept-tag">Lipid Nanoparticles</span>
+        <span class="concept-tag">Carbon Nanotubes</span>
+        <span class="concept-tag">Silver Nanoparticles</span>
+      </div>
+
+      <div class="myth">People say a new chip is built with <strong>"3-nanometre transistors."</strong> That number is a <em>name</em>, not a measurement. The real switches inside a "3 nm" chip are more like 10–20 nm across — still staggeringly small, but the label stopped matching the ruler years ago and now works more like a model year on a car. Also: a nanometre-scale transistor is not a "nano-robot". It cannot move or decide anything on its own. It is a very, very small light switch — and a chip is a few billion of them wired together.</div>
+
+      <div class="fun-fact">The idea of nanotechnology was first proposed in a talk in <strong>1959</strong> by the physicist Richard Feynman, called "There's Plenty of Room at the Bottom". He offered a $1,000 prize to anyone who could shrink a page of a book down 25,000 times — small enough to fit the entire Encyclopædia Britannica on the head of a pin. It took until 1985 for a student to claim it, using an electron beam. Today's chips write far, far smaller than that, billions of times a day.</div>
+    </div>
+  </div>
+
+  <!-- ===== MODULE 06 ===== -->
+  <div class="section-card" onclick="toggleCard(this)">
+    <div class="section-header">
+      <span class="section-num">PART 06</span>
+      <span class="section-title">🚀 Mini Project &amp; Wrap-Up</span>
+      <span class="section-time">5 min</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <p class="section-intro">Nanotechnology is really an <strong>invention subject</strong>. Every material on this page — graphene, liquid crystals, self-cleaning surfaces, quantum dots — was once somebody's sketch. So finish by inventing something. Grab paper and pencils (you already know what the pencil is made of), pick <strong>one</strong> of the three challenges below, and spend five minutes drawing it. Label the nanomaterials you used and write one sentence about <em>why</em> each one is the right choice — that sentence is the engineering.<br><br><strong>Challenge 1 — A nano-powered invention.</strong> Anything at all: a self-cleaning school bag, shoes that never get wet, a window that makes electricity. Stuck? Hit the Idea Machine below.<br><strong>Challenge 2 — A superhero suit made of nanomaterials.</strong> Graphene armour that is one atom thick, a lotus-effect cape that sheds rain and mud, quantum-dot lights that change colour, silver-nanoparticle lining so it never smells. What does each part <em>do</em>?<br><strong>Challenge 3 — A nano-robot that helps doctors.</strong> Remember: real ones don't exist yet, so you get to decide how it works. How does it find the sick cell? How does it carry the medicine? How does it know when to stop? How does it get out?</p>
+
+      <div class="tryit" onclick="event.stopPropagation()">
+        <div class="tryit-title">◈ TRY IT — THE NANO IDEA MACHINE</div>
+        <p class="tryit-desc">Stuck for an idea? Press the button. It pairs a real nanomaterial with a random object and a random person who needs help. Keep pressing until one makes you laugh — then draw <em>that</em> one.</p>
+        <div class="invent-card">
+          <div class="invent-line" id="inventLine">YOUR MISSION</div>
+          <div class="invent-main" id="inventMain">Press the button to get your first invention brief.</div>
+        </div>
+        <button class="tryit-btn" id="inventBtn">Give me an idea</button>
+        <div class="tryit-out" id="inventOut"></div>
+      </div>
+
+      <div class="takeaway">
+        <h3>◆ THE THREE THINGS TO REMEMBER</h3>
+        <b>1. Everything is atoms, and the arrangement is the recipe.</b> Same carbon atoms make a pencil or a diamond. Same sugar dissolves fast or slow depending only on how finely it is cut.<br>
+        <b>2. Materials behave differently at tiny scales.</b> Shrink something to the nanoscale and its surface takes over: it reacts faster, changes colour, gets stronger, grips harder — gold goes red, zinc oxide goes transparent, a pencil line becomes a wire.<br>
+        <b>3. Nanotechnology lets us design materials on purpose.</b> Nature did it first with the lotus leaf and the gecko's foot. Now engineers do it in sunscreen, chips, screens, medicine and vaccines — and the next material is waiting for someone to sketch it.
+      </div>
+
+      <div class="fun-fact">A gecko can hang from a glass ceiling by one toe. Its feet are not sticky and have no suckers — each toe is covered in millions of hairs that split into nano-sized tips, so many of them touching the glass that the tiny pull every atom feels for every other atom adds up to enough to hold the whole lizard. Scientists have copied it into a reusable "gecko tape" — one of the discoverers of graphene worked on it first.</div>
+    </div>
+  </div>
+
+  <!-- ===== FACT WALL ===== -->
+  <div class="factwall-section">
+    <div class="factwall-head">
+      <div class="factwall-icon">🤯</div>
+      <div>
+        <div class="factwall-title">Eight Facts To Amaze Everyone At Dinner</div>
+        <div class="factwall-sub">Checked against the US National Nanotechnology Initiative, the Nobel Foundation, the British Museum and NIST.</div>
+      </div>
+    </div>
+    <div class="factwall">
+      <div class="factcard"><span class="factnum">1 nm / sec</span>How fast your fingernails grow. In the time it takes to read this card, they have grown about the width of a strand of DNA.</div>
+      <div class="factcard"><span class="factnum">1,000,000,000</span>Nanometres in one metre. A human hair is about 90,000 nm wide — so a nanometre is roughly a hundred-thousandth of a hair.</div>
+      <div class="factcard"><span class="factnum">1 atom</span>The thickness of graphene, the material in every pencil line. It is about 200 times stronger than steel for its weight — and was first isolated with sticky tape.</div>
+      <div class="factcard"><span class="factnum">Ruby red</span>The colour of gold when it is nano-sized. Roman glassmakers used it 1,600 years ago in the Lycurgus Cup without knowing why it worked.</div>
+      <div class="factcard"><span class="factnum">15,000,000,000+</span>Transistors in a single modern phone chip. The first one, in 1947, was the size of your palm.</div>
+      <div class="factcard"><span class="factnum">6,000 m²</span>The surface area of one 1 cm sugar cube if you cut it into nanometre-sized pieces — nearly a football pitch, from a single sugar lump.</div>
+      <div class="factcard"><span class="factnum">1959</span>The year Richard Feynman gave the talk that started it all — fifteen years before anyone even had the word "nanotechnology".</div>
+      <div class="factcard"><span class="factnum">~100 nm</span>The size of the fat-bubble nanoparticles that carried the COVID vaccines into billions of arms — nanomedicine's biggest job so far.</div>
+    </div>
+  </div>
+
+  <!-- ===== QUIZ ===== -->
+  <div class="quiz-section">
+    <div class="quiz-header">
+      <div class="quiz-icon">🧪</div>
+      <div>
+        <div class="quiz-title">Knowledge Check</div>
+        <div class="quiz-subtitle">10 questions · See how much you've learned!</div>
+      </div>
+    </div>
+
+    <div id="quizContainer"></div>
+
+    <button class="submit-btn" id="submitBtn" onclick="submitQuiz()" disabled>Submit Answers</button>
+
+    <div class="score-wrap" id="scoreWrap">
+      <div class="score-display" id="scoreDisplay"></div>
+      <div class="score-label">correct answers</div>
+      <div class="score-bar-outer"><div class="score-bar-inner" id="scoreBar"></div></div>
+      <div class="score-message" id="scoreMsg"></div>
+    </div>
+  </div>
+
+  <!-- ===== DATED NUMBERS ===== -->
+  <div class="dated">
+    <h3>◷ LATEST NUMBERS — CHECKED SEPTEMBER 2026</h3>
+    Nanotechnology moves fast, so the numbers most likely to go out of date live in this box.<br><br>
+    <b>Transistors per phone chip:</b> the best phone chips of 2025–26 hold roughly 15–20 billion transistors; the biggest AI chips hold over 200 billion.<br>
+    <b>Chip "node" names:</b> "2 nm" chips began shipping in 2025–26. Remember the myth-buster in Part 05 — the name is not the size.<br>
+    <b>Nano-robots in medicine:</b> still laboratory prototypes as of 2026 — none approved for treating patients. Nanoparticle drug carriers, on the other hand, have been in clinics since the 1990s.<br>
+    <b>Graphene:</b> found in some tennis rackets, running shoes, bike tyres, headphones and phone cooling systems, and in a small number of concrete and battery products. Not yet the "everything material" it was once promised to be.<br>
+    <b>Quantum dots:</b> the 2023 Nobel Prize in Chemistry (Bawendi, Brus and Ekimov) — now standard in QLED televisions and monitors.
+  </div>
+
+  <footer>
+    Curriculum designed for curious minds · All linked resources are free and educational<br>
+    Videos: Kurzgesagt – In a Nutshell / TED-Ed / Crash Course Kids / CrashCourse / SciShow / Reactions (American Chemical Society) / Eames Office / iluli / Evan &amp; Katelyn · Interactives: PhET Interactive Simulations (University of Colorado Boulder) · Scale of the Universe · Genetic Science Learning Center (University of Utah) · Science Buddies · Exploratorium · NISE Network · Nanooze (Cornell NanoScale Facility) · UW–Madison MRSEC · Frontiers for Young Minds · Explain That Stuff · The Nobel Prize<br>
+    Figures checked September 2026 against the US National Nanotechnology Initiative (nano.gov), the Nobel Foundation, NIST and the British Museum.<br>
+    <a href="https://curious-minds-science-lab.org/">← Back to all curricula</a>
+  </footer>
+
+</div>
+
+<script>
+const questions = [
+  {
+    q: "A pencil's graphite and a diamond are both made of pure carbon atoms. Why are they so different?",
+    options: ["Diamond has more atoms in it", "The atoms are arranged differently", "Diamond's atoms are bigger", "Graphite contains lead"],
+    answer: 1,
+    explanation: "Same atoms, different recipe. In graphite the carbon sits in flat sheets that slide over each other (soft, grey, conducts). In diamond every carbon is locked to four neighbours in a rigid 3-D lattice (hardest natural material). Arrangement is everything — and there has never been any lead in a pencil."
+  },
+  {
+    q: "Fine sugar dissolves faster than coarse sugar. What is the reason?",
+    options: ["Fine sugar is a different chemical", "Fine sugar is lighter", "Smaller pieces have more surface touching the water", "Fine sugar is warmer"],
+    answer: 2,
+    explanation: "Cutting a lump into smaller pieces creates new faces, and more faces means more surface area — more sugar in contact with the water at once. It is exactly the same material. This idea, taken to the extreme, is why nanomaterials react so fast."
+  },
+  {
+    q: "You bend a paperclip and it stays bent. You stretch a rubber band and it springs back. The paperclip is…",
+    options: ["Elastic", "Ductile", "Brittle", "Transparent"],
+    answer: 1,
+    explanation: "Ductile — metal atoms slide into new positions and stay there. The rubber band is elastic: its long polymer chains straighten when pulled and coil back when released. Bend the paperclip back and forth enough times and it snaps: that is fatigue."
+  },
+  {
+    q: "Which of these is a good CONDUCTOR of electricity?",
+    options: ["A plastic ruler", "A rubber band", "A strip of kitchen foil", "A glass marble"],
+    answer: 2,
+    explanation: "Foil is aluminium, a metal — and metals have loose electrons that can flow as a current. Plastic, rubber and glass hold their electrons tightly, so they are insulators. That is why wires are metal on the inside and plastic on the outside."
+  },
+  {
+    q: "How many nanometres are there in one metre?",
+    options: ["One thousand", "One million", "One billion", "One trillion"],
+    answer: 2,
+    explanation: "One billion — 1,000,000,000. A nanometre is one-billionth of a metre. Your hand is about 150 million nm long, and a human hair is about 80,000–100,000 nm wide."
+  },
+  {
+    q: "Roughly how wide is a single human hair, in nanometres?",
+    options: ["About 10 nm", "About 100 nm", "About 1,000 nm", "About 80,000–100,000 nm"],
+    answer: 3,
+    explanation: "Around 80,000 to 100,000 nm. A virus is about 100 nm, a bacterium 1,000–2,000 nm, a red blood cell about 7,000 nm — so you could line up nearly a thousand viruses across the width of one hair."
+  },
+  {
+    q: "What happens to gold when it is made into nanoparticles?",
+    options: ["It turns ruby red or purple", "It stops being gold", "It becomes magnetic", "It melts at room temperature"],
+    answer: 0,
+    explanation: "At the nanoscale gold interacts with light completely differently and appears ruby red or purple, with the exact colour set by particle size. The Romans used this in the Lycurgus Cup 1,600 years ago; medieval cathedral windows used it too. Nano-gold is still gold — its behaviour changes, not its atoms."
+  },
+  {
+    q: "Graphene is a single sheet of carbon one atom thick. How was it first isolated, in 2004?",
+    options: ["With a laser", "With sticky tape and a lump of graphite", "By melting a diamond", "By growing it in a plant"],
+    answer: 1,
+    explanation: "Geim and Novoselov in Manchester pressed sticky tape onto graphite and peeled it, again and again, until only one layer was left. It won the 2010 Nobel Prize in Physics. Every pencil line you draw leaves stacks of graphene on the page — which is why it conducts."
+  },
+  {
+    q: "Why does water roll straight off a lotus leaf (and a rain jacket) instead of soaking in?",
+    options: ["The leaf is perfectly smooth", "The surface is covered in nano-sized bumps and wax that water cannot grip", "The leaf is very cold", "The water is repelled by chlorophyll"],
+    answer: 1,
+    explanation: "The opposite of smooth. Tiny bumps coated in nano-sized wax crystals mean the drop only touches the very tips, sits on a cushion of air, stays a ball and rolls off — picking up dirt as it goes. This is the lotus effect, and engineers copied it for self-cleaning glass, paint and fabric."
+  },
+  {
+    q: "Which of these nanotechnologies is REAL and in use today?",
+    options: ["Nano-robots that swim through your blood making decisions", "Nanoparticles that carry medicine and vaccines to the right place in the body", "Nano-paint that makes a car invisible", "A space elevator made of carbon nanotubes"],
+    answer: 1,
+    explanation: "Nanoparticle carriers have been in clinics since the 1990s, and the COVID vaccines were delivered inside fat-bubble nanoparticles about 100 nm across. Decision-making nano-robots are still lab prototypes, invisibility paint is fiction, and the space elevator is waiting for a cable we cannot yet make."
+  }
+];
+
+let answered = {};
+
+function buildQuiz() {
+  const container = document.getElementById('quizContainer');
+  questions.forEach((q, qi) => {
+    const block = document.createElement('div');
+    block.className = 'question-block';
+    block.id = 'q' + qi;
+    let optionsHtml = q.options.map((opt, oi) =>
+      '<button class="option-btn" id="q' + qi + 'o' + oi + '" onclick="selectOption(' + qi + ', ' + oi + ')">' + opt + '</button>'
+    ).join('');
+    block.innerHTML =
+      '<div class="question-num">QUESTION ' + (qi + 1) + ' OF ' + questions.length + '</div>' +
+      '<div class="question-text">' + q.q + '</div>' +
+      '<div class="options">' + optionsHtml + '</div>' +
+      '<div class="feedback" id="fb' + qi + '"></div>';
+    container.appendChild(block);
+  });
+}
+
+function selectOption(qi, oi) {
+  if (answered[qi] !== undefined) return;
+  answered[qi] = oi;
+  const correct = questions[qi].answer;
+  const block = document.getElementById('q' + qi);
+  const fb = document.getElementById('fb' + qi);
+  questions[qi].options.forEach(function (_, i) {
+    document.getElementById('q' + qi + 'o' + i).disabled = true;
+  });
+  if (oi === correct) {
+    document.getElementById('q' + qi + 'o' + oi).classList.add('selected-correct');
+    block.classList.add('correct');
+    fb.className = 'feedback show ok';
+    fb.textContent = '✓ ' + questions[qi].explanation;
+  } else {
+    document.getElementById('q' + qi + 'o' + oi).classList.add('selected-wrong');
+    document.getElementById('q' + qi + 'o' + correct).classList.add('reveal-correct');
+    block.classList.add('wrong');
+    fb.className = 'feedback show bad';
+    fb.textContent = '✗ Not quite. ' + questions[qi].explanation;
+  }
+  updateSubmitBtn();
+}
+
+function updateSubmitBtn() {
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = Object.keys(answered).length < questions.length;
+  const pct = Math.round((Object.keys(answered).length / questions.length) * 30 + 70);
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressTime').textContent = '~' + Math.round(pct * 0.6) + ' / 60 min';
+}
+
+function submitQuiz() {
+  const score = Object.entries(answered).filter(function (e) { return questions[e[0]].answer === e[1]; }).length;
+  const total = questions.length;
+  const pct = Math.round((score / total) * 100);
+  document.getElementById('scoreDisplay').textContent = score + ' / ' + total;
+  document.getElementById('scoreWrap').classList.add('show');
+  setTimeout(function () { document.getElementById('scoreBar').style.width = pct + '%'; }, 100);
+  let msg;
+  if (pct === 100) msg = "🏆 Perfect score! You understand the nanoscale better than most adults do. Go and tell someone that pencils have never contained lead.";
+  else if (pct >= 80) msg = "⭐ Excellent work! Atoms, properties, nano — you have the whole ladder. Look again at the ones you missed and you are an expert.";
+  else if (pct >= 60) msg = "👍 Good effort! The core ideas are in. The trickiest bits are usually surface area and 'real vs not yet' — go back to Parts 03 and 05 and play the sorters again.";
+  else msg = "🔬 Keep exploring! This is a subject where the rules change as things get smaller, and that takes a couple of passes. Open the parts again, run the Sugar Cube Cutter, and try the quiz once more.";
+  document.getElementById('scoreMsg').textContent = msg;
+  document.getElementById('submitBtn').disabled = true;
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('progressTime').textContent = '60 / 60 min ✓';
+}
+
+function toggleCard(card) {
+  card.classList.toggle('open');
+  updateProgress();
+}
+
+function updateProgress() {
+  const open = document.querySelectorAll('.section-card.open').length;
+  const total = document.querySelectorAll('.section-card').length;
+  const pct = Math.min(70, Math.round((open / total) * 70));
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressTime').textContent = '~' + Math.round(pct * 0.6) + ' / 60 min';
+}
+
+/* ===== Shared helpers ===== */
+function shuffleArr(a) {
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+
+function fmtInt(n) {
+  if (n !== 0 && Math.abs(n) < 1) return n.toLocaleString('en-US', { maximumFractionDigits: 2 });
+  return Math.round(n).toLocaleString('en-US', { maximumFractionDigits: 0 });
+}
+
+/* Generic two-way sorter */
+function buildSorter(cfg) {
+  var card = document.getElementById(cfg.cardId);
+  var aBtn = document.getElementById(cfg.aBtnId);
+  var bBtn = document.getElementById(cfg.bBtnId);
+  var startBtn = document.getElementById(cfg.startId);
+  var out = document.getElementById(cfg.outId);
+  if (!card || !aBtn || !bBtn || !startBtn || !out) return;
+
+  var deck = [], idx = 0, right = 0;
+
+  function render() {
+    if (idx >= deck.length) {
+      card.textContent = 'Round complete.';
+      aBtn.disabled = true; bBtn.disabled = true;
+      startBtn.disabled = false;
+      startBtn.textContent = 'Shuffle & Play Again';
+      var verdict;
+      if (right === deck.length) verdict = cfg.winMsg;
+      else if (right >= Math.ceil(deck.length * 0.7)) verdict = 'Solid. Read the ones you missed again and go round once more.';
+      else verdict = 'Worth another go — reread the part above first, then shuffle and try again.';
+      out.innerHTML = '<b>' + right + ' / ' + deck.length + '</b> — ' + verdict;
+      return;
+    }
+    card.textContent = deck[idx].text;
+    aBtn.disabled = false; bBtn.disabled = false;
+    out.innerHTML = 'Item <b>' + (idx + 1) + '</b> of ' + deck.length + ' · score so far: <b>' + right + '</b>';
+  }
+
+  function answer(choice) {
+    if (idx >= deck.length) return;
+    var item = deck[idx];
+    var ok = (choice === item.ans);
+    if (ok) right++;
+    idx++;
+    out.innerHTML = (ok ? '✅ Correct. ' : '❌ Not this time — it is <b>' + (item.ans === 'a' ? cfg.aName : cfg.bName) + '</b>. ') + item.why;
+    aBtn.disabled = true; bBtn.disabled = true;
+    setTimeout(render, 1600);
+  }
+
+  startBtn.addEventListener('click', function () {
+    deck = shuffleArr(cfg.items.slice());
+    idx = 0; right = 0;
+    startBtn.disabled = true;
+    render();
+  });
+  aBtn.addEventListener('click', function () { answer('a'); });
+  bBtn.addEventListener('click', function () { answer('b'); });
+}
+
+/* Generic ordering relay */
+function buildRelay(cfg) {
+  var grid = document.getElementById(cfg.gridId);
+  var track = document.getElementById(cfg.trackId);
+  var reset = document.getElementById(cfg.resetId);
+  if (!grid || !track || !reset) return;
+  var next = 0;
+
+  function draw() {
+    next = 0;
+    grid.innerHTML = '';
+    track.innerHTML = cfg.startMsg;
+    shuffleArr(cfg.steps.map(function (s, i) { return { text: s, order: i }; })).forEach(function (s) {
+      var b = document.createElement('button');
+      b.className = 'relay-step';
+      b.type = 'button';
+      b.textContent = s.text;
+      b.addEventListener('click', function () {
+        if (b.classList.contains('done')) return;
+        if (s.order === next) {
+          b.classList.remove('bad');
+          b.classList.add('done');
+          next++;
+          if (next === cfg.steps.length) {
+            track.innerHTML = '<b>All ' + cfg.steps.length + ' in the right order!</b> ' + cfg.doneMsg;
+          } else {
+            track.innerHTML = 'Step <b>' + next + '</b> of ' + cfg.steps.length + ' — keep going.' + (cfg.stepNotes && cfg.stepNotes[next - 1] ? ' ' + cfg.stepNotes[next - 1] : '');
+          }
+        } else {
+          b.classList.add('bad');
+          track.innerHTML = 'Not yet. ' + cfg.hint;
+          setTimeout(function () { b.classList.remove('bad'); }, 900);
+        }
+      });
+      grid.appendChild(b);
+    });
+  }
+
+  reset.addEventListener('click', draw);
+  draw();
+}
+
+/* Generic dropdown matcher */
+function buildMatcher(cfg) {
+  var grid = document.getElementById(cfg.gridId);
+  var btn = document.getElementById(cfg.btnId);
+  var out = document.getElementById(cfg.outId);
+  if (!grid || !btn || !out) return;
+
+  var answers = [];
+  cfg.pairs.forEach(function (p) { if (answers.indexOf(p.job) === -1) answers.push(p.job); });
+  answers.sort();
+
+  cfg.pairs.forEach(function (p) {
+    var row = document.createElement('div');
+    row.className = 'match-row';
+    row.dataset.answer = p.job;
+    var label = document.createElement('div');
+    label.className = 'match-part';
+    label.textContent = p.part;
+    var sel = document.createElement('select');
+    sel.innerHTML = '<option value="">' + cfg.placeholder + '</option>' +
+      answers.map(function (j) { return '<option>' + j + '</option>'; }).join('');
+    row.appendChild(label);
+    row.appendChild(sel);
+    grid.appendChild(row);
+  });
+
+  btn.addEventListener('click', function () {
+    var rows = grid.querySelectorAll('.match-row');
+    var right = 0, blank = 0;
+    rows.forEach(function (r) {
+      var sel = r.querySelector('select');
+      r.classList.remove('correct', 'wrong');
+      if (!sel.value) { blank++; return; }
+      if (sel.value === r.dataset.answer) { r.classList.add('correct'); right++; }
+      else { r.classList.add('wrong'); }
+    });
+    if (blank === rows.length) {
+      out.innerHTML = 'Have a go at all ' + rows.length + ' first!';
+    } else if (right === rows.length) {
+      out.innerHTML = '<b>' + right + ' / ' + rows.length + '</b> — ' + cfg.winMsg;
+    } else {
+      out.innerHTML = '<b>' + right + ' / ' + rows.length + '</b> correct. Green rows are right, red ones need another try.' +
+        (blank ? ' (' + blank + ' still empty.)' : '');
+    }
+  });
+}
+
+/* ===== P01 · Sugar Cube Cutter ===== */
+(function () {
+  var slider = document.getElementById('cubeSlider');
+  var val = document.getElementById('cubeVal');
+  var grid = document.getElementById('cubeGrid');
+  var stats = document.getElementById('cubeStats');
+  var out = document.getElementById('cubeOut');
+  if (!slider || !grid) return;
+
+  // steps: 1, 2, 5, 10, 100, 10,000, 1,000,000, 10,000,000 pieces per side (1 cm cube → 1 nm pieces)
+  var levels = [
+    { n: 1, size: '1 cm', draw: 1, note: 'One whole sugar cube. Six faces touch the water.' },
+    { n: 2, size: '5 mm', draw: 2, note: 'Cut it in half each way: 8 pieces. Every cut makes two brand-new faces.' },
+    { n: 5, size: '2 mm', draw: 5, note: 'Coarse sugar. 125 grains, and five times the surface.' },
+    { n: 10, size: '1 mm', draw: 10, note: 'Caster sugar. A thousand grains, ten times the surface — this is why the fine sugar wins the race.' },
+    { n: 100, size: '0.1 mm', draw: 16, note: 'Icing sugar. A million specks. Surface area of a big dinner table, from one cube.' },
+    { n: 10000, size: '1 µm (1,000 nm)', draw: 16, note: 'Bacteria-sized. A trillion pieces. The surface is now the floor of a large room.' },
+    { n: 1000000, size: '10 nm', draw: 16, note: 'Now we are nano. Nearly every atom is on a surface.' },
+    { n: 10000000, size: '1 nm', draw: 16, note: 'One-nanometre pieces. The same sugar cube now has the surface area of a football pitch.' }
+  ];
+
+  function render() {
+    var k = parseInt(slider.value, 10);
+    var L = levels[k];
+    var pieces = Math.pow(L.n, 3);
+    var areaCm2 = 6 * L.n; // total surface area in cm²
+    val.textContent = fmtInt(L.n);
+    grid.innerHTML = '';
+    grid.style.gridTemplateColumns = 'repeat(' + L.draw + ', 1fr)';
+    for (var i = 0; i < L.draw * L.draw; i++) {
+      var c = document.createElement('div');
+      c.className = 'cube-cell';
+      grid.appendChild(c);
+    }
+    var areaText;
+    if (areaCm2 < 10000) areaText = fmtInt(areaCm2) + ' cm²';
+    else areaText = fmtInt(areaCm2 / 10000) + ' m²';
+    var speed = Math.min(100, Math.round((k / 7) * 100));
+    stats.innerHTML =
+      'Piece size: <b>' + L.size + '</b><br>' +
+      'Number of pieces: <b>' + fmtInt(pieces) + (k === 7 ? ' (a thousand billion billion)' : '') + '</b><br>' +
+      'Amount of sugar: <b>1 cm³ (never changes)</b><br>' +
+      'Total surface area: <b>' + areaText + '</b><br>' +
+      'Dissolving / reacting speed:' +
+      '<div class="meter"><div class="meter-in" style="width:' + speed + '%"></div></div>';
+    out.innerHTML = L.note + (k === 7 ? ' <b>That is what "nano" does: it turns the inside of a material into outside.</b>' : '');
+  }
+
+  slider.addEventListener('input', render);
+  render();
+})();
+
+/* ===== P01 · Which family? ===== */
+buildMatcher({
+  gridId: 'famGrid', btnId: 'famBtn', outId: 'famResult',
+  placeholder: '— choose a family —',
+  winMsg: 'Perfect. You can already sort the material world.',
+  pairs: [
+    { part: 'A steel spoon', job: 'Metal' },
+    { part: 'A LEGO brick', job: 'Polymer (plastic or rubber)' },
+    { part: 'A coffee mug', job: 'Ceramic (pottery or glass)' },
+    { part: 'A carbon-fibre bike frame', job: 'Composite (two materials teamed up)' },
+    { part: 'A rubber band', job: 'Polymer (plastic or rubber)' },
+    { part: 'Copper wire', job: 'Metal' },
+    { part: 'A window pane', job: 'Ceramic (pottery or glass)' },
+    { part: 'Plywood (thin wood layers glued together)', job: 'Composite (two materials teamed up)' }
+  ]
+});
+
+/* ===== P02 · Conductor or Insulator? ===== */
+buildSorter({
+  cardId: 'ciCard', aBtnId: 'ciCond', bBtnId: 'ciIns',
+  startId: 'ciStart', outId: 'ciOut',
+  aName: 'a conductor', bName: 'an insulator',
+  winMsg: 'Perfect. You could wire a house. (Please do not wire a house.)',
+  items: [
+    { text: 'A strip of kitchen foil', ans: 'a', why: 'Aluminium is a metal — loose electrons carry the current.' },
+    { text: 'A plastic ruler', ans: 'b', why: 'Plastic holds its electrons tightly. Nothing flows.' },
+    { text: 'The graphite in a pencil', ans: 'a', why: 'Graphite is the one common non-metal that conducts — each carbon atom donates a loose electron. You will prove this in Part 04.' },
+    { text: 'A rubber band', ans: 'b', why: 'Rubber is a polymer and an excellent insulator — that is why it coats wires.' },
+    { text: 'A copper coin', ans: 'a', why: 'Copper is one of the best conductors there is.' },
+    { text: 'A glass marble', ans: 'b', why: 'Glass is a ceramic; its electrons are locked in place.' },
+    { text: 'Salty water', ans: 'a', why: 'Pure water barely conducts, but dissolved salt splits into ions that carry current. Sea water and sweat both conduct.' },
+    { text: 'A dry wooden pencil (the outside)', ans: 'b', why: 'Dry wood is an insulator. Wet wood is a different story.' },
+    { text: 'A steel paperclip', ans: 'a', why: 'Steel is mostly iron, a metal. Straighten one out and it makes a fine test probe.' },
+    { text: 'A balloon', ans: 'b', why: 'Rubber again — it can hold static charge on its surface, but it will not let a current flow through it.' }
+  ]
+});
+
+/* ===== P02 · Be the Engineer ===== */
+buildMatcher({
+  gridId: 'engGrid', btnId: 'engBtn', outId: 'engResult',
+  placeholder: '— choose a material —',
+  winMsg: 'Perfect. Every choice was a property: strength, toughness, conductivity, weight, transparency.',
+  pairs: [
+    { part: 'The cable holding up a bridge', job: 'Steel — strong AND tough' },
+    { part: 'The inside of an electrical wire', job: 'Copper — conducts electricity brilliantly' },
+    { part: 'The outside of that same wire', job: 'Plastic — does not conduct, bends easily' },
+    { part: 'A frying pan (the bottom)', job: 'Aluminium or iron — conducts heat fast' },
+    { part: 'A bulletproof vest', job: 'Kevlar — 5× stronger than steel for its weight' },
+    { part: 'A window', job: 'Glass — hard, weatherproof, lets light through' },
+    { part: 'A racing-bike frame', job: 'Carbon fibre — very strong, very light' },
+    { part: 'The tyres on that bike', job: 'Rubber — grips, squashes, springs back' }
+  ]
+});
+
+/* ===== P03 · Nano Ruler ===== */
+(function () {
+  var num = document.getElementById('rulerNum');
+  var unit = document.getElementById('rulerUnit');
+  var big = document.getElementById('rulerBig');
+  var chips = document.getElementById('rulerChips');
+  var out = document.getElementById('rulerOut');
+  if (!num || !unit || !big) return;
+
+  var refs = [
+    { name: 'a metre stick', nm: 1e9 },
+    { name: 'a human hair (width)', nm: 90000 },
+    { name: 'a sheet of paper (thickness)', nm: 100000 },
+    { name: 'a red blood cell', nm: 7000 },
+    { name: 'a bacterium', nm: 1500 },
+    { name: 'a virus', nm: 100 },
+    { name: 'a strand of DNA (width)', nm: 2 },
+    { name: 'a single atom', nm: 0.2 }
+  ];
+
+  function totalNm() {
+    var v = parseFloat(num.value);
+    if (isNaN(v) || v < 0) v = 0;
+    return v * parseFloat(unit.value);
+  }
+
+  function render() {
+    var nm = totalNm();
+    big.innerHTML = fmtInt(nm) + ' <small>nanometres</small>';
+    out.innerHTML = nm > 0
+      ? 'That is <b>' + fmtInt(nm) + '</b> nm. Tap a chip to see how many of that thing would fit along it.'
+      : 'Type a length above.';
+  }
+
+  refs.forEach(function (r) {
+    var c = document.createElement('button');
+    c.className = 'chip';
+    c.type = 'button';
+    c.textContent = r.name;
+    c.addEventListener('click', function () {
+      var nm = totalNm();
+      if (nm <= 0) { out.innerHTML = 'Type a length above first.'; return; }
+      var count = nm / r.nm;
+      var phrase;
+      if (count >= 1) phrase = 'About <b>' + fmtInt(count) + '</b> of them would fit along it, side by side.';
+      else phrase = 'It is only <b>' + (count * 100).toFixed(1) + '%</b> the size of ' + r.name.replace(/ \(.*\)/, '') + '.';
+      out.innerHTML = fmtInt(nm) + ' nm compared with ' + r.name + ' (' + fmtInt(r.nm) + ' nm): ' + phrase;
+    });
+    chips.appendChild(c);
+  });
+
+  num.addEventListener('input', render);
+  unit.addEventListener('change', render);
+  render();
+})();
+
+/* ===== P03 · Size Ladder ===== */
+buildRelay({
+  gridId: 'ladderSteps', trackId: 'ladderTrack', resetId: 'ladderReset',
+  startMsg: 'Click the <b>smallest</b> thing first.',
+  hint: 'Something smaller is still waiting. Think in nanometres: an atom is a fraction of one, a hair is about 90,000.',
+  doneMsg: 'An ant is about 5,000,000 nm. From a water molecule to an ant is a jump of more than ten million times — and "nano" is only the bottom three rungs.',
+  steps: [
+    'A water molecule',
+    'The width of a DNA strand',
+    'A virus',
+    'A bacterium',
+    'A red blood cell',
+    'The width of a human hair',
+    'A grain of sand',
+    'An ant'
+  ],
+  stepNotes: [
+    'A water molecule is about 0.3 nm — below the nanoscale.',
+    'DNA is 2 nm wide — right at the bottom of "nano".',
+    'A virus is about 100 nm — the top edge of nano.',
+    'A bacterium is about 1,500 nm — past nano, and over ten times bigger than a virus.',
+    'A red blood cell is about 7,000 nm — still invisible without a microscope.',
+    'A hair is about 90,000 nm wide — the first thing on the ladder you can actually see.',
+    'A grain of sand is about 500,000 nm — five or six hairs wide.',
+    ''
+  ]
+});
+
+/* ===== P04 · Predict-first buttons ===== */
+(function () {
+  var answersText = {
+    pA: [
+      'Bright is unusual — the graphite in a pencil line is a fairly reluctant conductor, so expect a dim glow rather than a blaze. If yours is bright, your patch is thick and your contacts are close together. Now try a long thin line and watch it fade.',
+      'Spot on. Graphite conducts, but a pencil patch is a thin, scrappy layer, so the LED usually glows dimly. Move the contacts closer and it brightens; draw a long line and it dims. You have made a carbon dimmer switch.',
+      'It should light — dimly. Graphite is one of the few non-metals that conducts electricity, because every carbon atom in its flat sheets has a spare electron free to move. If nothing happens: press harder, thicken the patch, check the LED is the right way round.'
+    ],
+    pB: [
+      'Correct. The spiral stack of liquid-crystal molecules changes its spacing by a few nanometres as it warms, and that changes the exact colour of light it reflects. No power needed — your hand is the power.',
+      'Not glowing — it makes no light of its own. It reflects one colour of the light already in the room, and warming it changes which colour. Try it in a dark room: nothing to see.',
+      'No battery needed. The change is driven by heat alone: warm molecules jostle, the nano-sized spiral inside tightens, and the reflected colour shifts. LCD screens use electricity to do the same thing on purpose.'
+    ],
+    pC: [
+      'That is what the cotton does — its fibres are hydrophilic and wick the water in. The rain jacket is the opposite: a nanometres-thick coating water molecules cannot grip. The drop stays a bead and rolls.',
+      'Correct. The jacket is hydrophobic — "water-fearing". A coating only nanometres thick gives water nothing to grip, so the drop stays a ball. Tilt it and it rolls away. A lotus leaf does this even better, with bumps instead of a coating.',
+      'A flat puddle is what you get on clean glass, which water likes. The jacket has been treated so water cannot spread: the drop pulls itself into a tight bead and rolls off at the first tilt.'
+    ]
+  };
+  var correct = { pA: 1, pB: 0, pC: 1 };
+
+  document.querySelectorAll('.predict-btns').forEach(function (group) {
+    var pid = group.dataset.pid;
+    var outEl = document.getElementById(pid + '_out');
+    var btns = group.querySelectorAll('button');
+    btns.forEach(function (b) {
+      b.addEventListener('click', function () {
+        var pick = parseInt(b.dataset.ans, 10);
+        btns.forEach(function (x) { x.disabled = true; });
+        b.classList.add(pick === correct[pid] ? 'picked-right' : 'picked-wrong');
+        outEl.innerHTML = (pick === correct[pid] ? '✅ ' : '🤔 ') + answersText[pid][pick] + ' <b style="color:var(--lime)">Now go and test it.</b>';
+        outEl.classList.add('show');
+      });
+    });
+  });
+})();
+
+/* ===== P05 · Nano or Not (yet)? ===== */
+buildSorter({
+  cardId: 'nnCard', aBtnId: 'nnReal', bBtnId: 'nnFic',
+  startId: 'nnStart', outId: 'nnOut',
+  aName: 'real today', bName: 'not yet',
+  winMsg: 'Perfect. You can tell the lab from the movies — a rare skill.',
+  items: [
+    { text: 'Sunscreen that is see-through on your skin because its zinc oxide is nano-sized', ans: 'a', why: 'Real and on the shelf. Nano-sized zinc oxide and titanium dioxide still block UV but no longer look like white paste.' },
+    { text: 'Tiny robots swimming through your blood, deciding which cells to fix', ans: 'b', why: 'Not yet. Lab prototypes exist, but nothing that makes decisions is treating any patient. Nanoparticle medicine carriers, on the other hand, are real.' },
+    { text: 'Vaccines delivered inside fat-bubble nanoparticles about 100 nm across', ans: 'a', why: 'Real — the COVID mRNA vaccines worked exactly this way, in billions of arms.' },
+    { text: 'A TV whose colours come from crystals a few nanometres wide', ans: 'a', why: 'Real. Quantum dots — "QLED" TVs — and the 2023 Nobel Prize in Chemistry.' },
+    { text: 'Paint that makes a car completely invisible', ans: 'b', why: 'Fiction. Some nano "metamaterials" can bend certain wavelengths around tiny objects in a lab — nothing bends all visible light around a car.' },
+    { text: 'Socks with silver nanoparticles to stop them smelling', ans: 'a', why: 'Real and in shops. Nano-silver kills the bacteria that cause the smell.' },
+    { text: 'A space elevator with a carbon-nanotube cable to orbit', ans: 'b', why: 'Not yet. Carbon nanotubes are strong enough in theory, but nobody can make a flawless one longer than a few tens of centimetres, let alone 36,000 km.' },
+    { text: 'A phone screen with a nanometres-thin coating that fingerprints wipe straight off', ans: 'a', why: 'Real — almost every phone has one. It is a hydrophobic and "oleophobic" (oil-fearing) coating.' },
+    { text: 'Self-cleaning windows that use sunlight and rain to wash themselves', ans: 'a', why: 'Real since the early 2000s. A nano-thin titanium dioxide layer breaks down dirt in sunlight, and rain sheets it away.' },
+    { text: 'A "nano-assembler" that builds any object atom by atom, like a 3-D printer for anything', ans: 'b', why: 'Not yet — and many scientists doubt it ever will be. Scientists can move single atoms one at a time (the first time was 1989, spelling "IBM" with 35 atoms), but building a whole object that way is a fantasy for now.' }
+  ]
+});
+
+/* ===== P06 · Nano Idea Machine ===== */
+(function () {
+  var btn = document.getElementById('inventBtn');
+  var line = document.getElementById('inventLine');
+  var main = document.getElementById('inventMain');
+  var out = document.getElementById('inventOut');
+  if (!btn) return;
+
+  var materials = [
+    { name: 'graphene', power: 'one atom thick, 200× stronger than steel, conducts electricity' },
+    { name: 'a lotus-effect coating', power: 'water and dirt roll straight off' },
+    { name: 'quantum dots', power: 'glow any colour you choose, set by their size' },
+    { name: 'liquid crystals', power: 'change colour with heat or electricity' },
+    { name: 'silver nanoparticles', power: 'kill germs on contact' },
+    { name: 'carbon nanotubes', power: 'stronger than steel, lighter than plastic' },
+    { name: 'gecko-foot nano-hairs', power: 'stick to anything, come off cleanly' },
+    { name: 'nano zinc oxide', power: 'blocks the Sun’s UV while staying invisible' },
+    { name: 'nanoparticle capsules', power: 'carry something and release it only in the right place' },
+    { name: 'a titanium-dioxide nano-film', power: 'uses sunlight to break down dirt and germs' }
+  ];
+  var objects = ['a school bag', 'a pair of trainers', 'a bicycle helmet', 'a water bottle', 'a football', 'a window', 'a pair of glasses', 'a tent', 'a fishing rod', 'a pencil case', 'a skateboard', 'a lunch box', 'a T-shirt', 'a bandage', 'a kite', 'a dog collar', 'a swimming costume', 'an umbrella'];
+  var people = ['a firefighter', 'an astronaut on Mars', 'a deep-sea diver', 'a doctor in a jungle clinic', 'a goalkeeper', 'your grandmother', 'a mountain rescuer', 'a farmer in a drought', 'a kid who hates getting wet', 'a scientist in Antarctica', 'a rainforest explorer', 'a cyclist in the rain', 'a chef', 'a lifeguard'];
+
+  var count = 0;
+  btn.addEventListener('click', function () {
+    var m = materials[Math.floor(Math.random() * materials.length)];
+    var o = objects[Math.floor(Math.random() * objects.length)];
+    var p = people[Math.floor(Math.random() * people.length)];
+    count++;
+    line.textContent = 'MISSION ' + count;
+    main.innerHTML = 'Design <b>' + o + '</b> for <b>' + p + '</b> using <b>' + m.name + '</b> <span style="color:var(--muted)">(' + m.power + ')</span>.';
+    out.innerHTML = 'Draw it. Label where the ' + m.name + ' goes, and write one sentence on <b>why</b> that property helps ' + p + '. Not feeling it? Press again.';
+    btn.textContent = 'Another idea';
+  });
+})();
+
+/* ===== Init ===== */
+buildQuiz();
+</script>
+
+</body>
+</html>
