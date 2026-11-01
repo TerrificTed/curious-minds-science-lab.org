@@ -1,0 +1,2101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Water: Earth&#39;s Precious Resource — Age 10</title>
+<meta name="description" content="A free 2-hour guided science curriculum on fresh water for curious 10-year-olds, built on the PYP theme Sharing the Planet: how Singapore supplies clean water through its Four National Taps (imported water, local catchments, NEWater and desalination), Earth's four systems and erosion, finite versus renewable resources and global demand, and the science protecting fresh water — with built-in activities, home experiments and a 10-question quiz.">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #03111a;
+    --panel: #071c27;
+    --border: #16405a;
+    --accent: #2ee6d0;      /* reservoir teal — clean water in a Singapore reservoir */
+    --rain: #7cc4ff;        /* rain blue — second accent */
+    --gold: #ffd54f;
+    --green: #00e676;
+    --red: #ff5252;
+    --orange: #ff6d00;
+    --text: #e3f4f8;
+    --muted: #8db4c4;
+    --radius: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Faint "raindrops" background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(60% 45% at 50% -8%, rgba(46,230,208,0.10) 0%, transparent 100%),
+      radial-gradient(70% 40% at 50% 108%, rgba(124,196,255,0.07) 0%, transparent 100%),
+      radial-gradient(2px 2px at 14% 22%, rgba(255,255,255,0.20) 0%, transparent 100%),
+      radial-gradient(3px 3px at 37% 48%, rgba(46,230,208,0.18) 0%, transparent 100%),
+      radial-gradient(2px 2px at 62% 19%, rgba(255,255,255,0.16) 0%, transparent 100%),
+      radial-gradient(4px 4px at 84% 61%, rgba(124,196,255,0.15) 0%, transparent 100%),
+      radial-gradient(2px 2px at 24% 79%, rgba(255,255,255,0.14) 0%, transparent 100%),
+      radial-gradient(3px 3px at 73% 88%, rgba(46,230,208,0.14) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  /* HEADER */
+  header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    padding: 2.5rem 1rem 2rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, #062433 0%, #0b3d52 55%, #0a2a45 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  header::after {
+    content: '💧';
+    font-size: 8rem;
+    position: absolute;
+    right: -1rem;
+    top: -1rem;
+    opacity: 0.08;
+    animation: bob 6s ease-in-out infinite;
+  }
+  @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
+
+  .badge {
+    display: inline-block;
+    background: var(--accent);
+    color: #00302a;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1.6rem, 5vw, 2.6rem);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+  }
+
+  .header-topic {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    font-weight: 400;
+    color: var(--accent);
+    letter-spacing: 2px;
+    margin-bottom: 0.6rem;
+  }
+  .header-topic span {
+    border-bottom: 2px solid rgba(46,230,208,0.35);
+    padding-bottom: 2px;
+  }
+
+  .subtitle { color: var(--muted); font-size: 0.95rem; letter-spacing: 0.5px; }
+
+  .homelink {
+    display: inline-block;
+    margin-top: 1rem;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    color: var(--muted);
+    text-decoration: none;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 5px 14px;
+    position: relative;
+    z-index: 2;
+  }
+  .homelink:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .progress-label {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+  .progress-bar-outer { flex: 1; height: 8px; background: #0f3044; border-radius: 4px; overflow: hidden; }
+  .progress-bar-inner {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--rain), var(--accent));
+    border-radius: 4px; transition: width 0.5s ease;
+  }
+  .progress-time { font-family: 'Orbitron', monospace; font-size: 0.75rem; color: var(--gold); white-space: nowrap; }
+
+  /* SECTION CARDS */
+  .section-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .section-card:hover { border-color: var(--accent); }
+
+  .section-header {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 1.2rem 1.5rem;
+    cursor: pointer; user-select: none;
+    background: linear-gradient(90deg, #0a2c3c 0%, transparent 100%);
+  }
+  .section-num {
+    font-family: 'Orbitron', monospace; font-size: 0.7rem;
+    color: var(--accent); letter-spacing: 2px; min-width: 60px;
+  }
+  .section-title {
+    flex: 1; font-family: 'Orbitron', monospace;
+    font-size: 0.95rem; font-weight: 700; color: #fff;
+  }
+  .section-time { font-size: 0.78rem; color: var(--gold); font-weight: 600; }
+  .chevron { color: var(--muted); transition: transform 0.3s; font-size: 1.1rem; }
+  .section-card.open .chevron { transform: rotate(180deg); }
+
+  .section-body { display: none; padding: 0 1.5rem 1.5rem; border-top: 1px solid var(--border); }
+  .section-card.open .section-body { display: block; }
+
+  .section-intro { margin: 1rem 0 1.2rem; color: var(--text); font-size: 0.95rem; line-height: 1.7; }
+  .section-intro strong { color: #fff; font-weight: 600; }
+
+  /* RESOURCES */
+  .resource-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 0.9rem;
+    margin-bottom: 1.2rem;
+  }
+  .resource-card {
+    background: #041620;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .resource-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+  .resource-type {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 0.65rem; font-weight: 600; letter-spacing: 1.5px;
+    padding: 3px 8px; border-radius: 20px; margin-bottom: 0.5rem;
+  }
+  .type-video { background: rgba(255,82,82,0.14); color: #ff8a80; border: 1px solid rgba(255,82,82,0.32); }
+  .type-interactive { background: rgba(46,230,208,0.12); color: var(--accent); border: 1px solid rgba(46,230,208,0.34); }
+  .type-read { background: rgba(255,213,79,0.1); color: var(--gold); border: 1px solid rgba(255,213,79,0.3); }
+  .type-sim { background: rgba(124,196,255,0.1); color: var(--rain); border: 1px solid rgba(124,196,255,0.3); }
+
+  .resource-name { font-weight: 600; font-size: 0.9rem; color: #fff; margin-bottom: 0.3rem; line-height: 1.3; }
+  .resource-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+  .resource-link {
+    display: inline-block; margin-top: 0.5rem; font-size: 0.75rem;
+    color: var(--accent); text-decoration: none; font-weight: 600;
+  }
+  .resource-link:hover { text-decoration: underline; }
+
+  /* KEY CONCEPTS */
+  .concepts { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+  .concept-tag {
+    background: rgba(46,230,208,0.08);
+    border: 1px solid rgba(46,230,208,0.24);
+    color: var(--accent);
+    font-size: 0.78rem; padding: 4px 10px; border-radius: 20px;
+  }
+
+  /* QUIZ */
+  .quiz-section {
+    background: linear-gradient(135deg, #06202c 0%, #0d3346 100%);
+    border: 1px solid var(--gold);
+    border-radius: var(--radius);
+    padding: 2rem; margin-top: 2rem;
+  }
+  .quiz-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; }
+  .quiz-icon { font-size: 2rem; }
+  .quiz-title { font-family: 'Orbitron', monospace; font-size: 1.3rem; font-weight: 700; color: var(--gold); }
+  .quiz-subtitle { font-size: 0.85rem; color: var(--muted); margin-top: 3px; }
+
+  .question-block {
+    background: #041620; border: 1px solid var(--border);
+    border-radius: 10px; padding: 1.3rem; margin-bottom: 1.2rem;
+    transition: border-color 0.3s;
+  }
+  .question-block.correct { border-color: var(--green); }
+  .question-block.wrong { border-color: var(--red); }
+
+  .question-num { font-family: 'Orbitron', monospace; font-size: 0.65rem; color: var(--muted); letter-spacing: 2px; margin-bottom: 0.5rem; }
+  .question-text { font-size: 0.95rem; font-weight: 600; color: #fff; margin-bottom: 1rem; line-height: 1.5; }
+
+  .options { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+  @media(max-width: 500px) { .options { grid-template-columns: 1fr; } }
+
+  .option-btn {
+    background: #082230; border: 1px solid var(--border); color: var(--text);
+    font-family: 'Exo 2', sans-serif; font-size: 0.85rem;
+    padding: 0.7rem 1rem; border-radius: 7px; cursor: pointer;
+    text-align: left; transition: all 0.2s; line-height: 1.4;
+  }
+  .option-btn:hover:not(:disabled) { border-color: var(--accent); background: rgba(46,230,208,0.07); }
+  .option-btn.selected-correct { border-color: var(--green); background: rgba(0,230,118,0.1); color: var(--green); }
+  .option-btn.selected-wrong { border-color: var(--red); background: rgba(255,82,82,0.1); color: #ff9e9e; }
+  .option-btn.reveal-correct { border-color: var(--green); color: var(--green); }
+  .option-btn:disabled { cursor: default; }
+
+  .feedback { margin-top: 0.8rem; font-size: 0.85rem; line-height: 1.5; display: none; }
+  .feedback.show { display: block; }
+  .feedback.ok { color: var(--green); }
+  .feedback.bad { color: #ff9e9e; }
+
+  /* SCORE */
+  .score-wrap { margin-top: 1.5rem; text-align: center; display: none; }
+  .score-wrap.show { display: block; }
+  .score-display { font-family: 'Orbitron', monospace; font-size: 2.5rem; font-weight: 900; color: var(--gold); margin-bottom: 0.3rem; }
+  .score-label { color: var(--muted); font-size: 0.9rem; margin-bottom: 1rem; }
+  .score-bar-outer { height: 12px; background: #0f3044; border-radius: 6px; overflow: hidden; max-width: 400px; margin: 0 auto 1rem; }
+  .score-bar-inner { height: 100%; background: linear-gradient(90deg, var(--gold), var(--green)); border-radius: 6px; transition: width 1s ease; width: 0%; }
+  .score-message { font-size: 0.95rem; color: var(--text); max-width: 400px; margin: 0 auto; line-height: 1.6; }
+
+  .submit-btn {
+    display: block; width: 100%; max-width: 300px; margin: 1.5rem auto 0;
+    background: linear-gradient(90deg, var(--gold), var(--orange));
+    color: #000; border: none;
+    font-family: 'Orbitron', monospace; font-weight: 700; font-size: 0.85rem;
+    letter-spacing: 1px; padding: 0.9rem; border-radius: 8px; cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .submit-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+  .submit-btn:disabled { opacity: 0.4; cursor: default; transform: none; }
+
+  /* FUN FACT — rain blue on this page so it reads apart from the teal accent */
+  .fun-fact {
+    background: rgba(124,196,255,0.05);
+    border: 1px solid rgba(124,196,255,0.26);
+    border-radius: 8px; padding: 0.9rem 1.1rem;
+    font-size: 0.85rem; color: var(--rain); margin-top: 1rem; line-height: 1.5;
+  }
+  .fun-fact::before { content: '⭐ Fun Fact: '; font-weight: 700; }
+
+  /* MYTH BUSTER box */
+  .myth {
+    background: rgba(255,82,82,0.05);
+    border: 1px solid rgba(255,82,82,0.26);
+    border-radius: 8px; padding: 0.9rem 1.1rem;
+    font-size: 0.85rem; color: #ffb4b4; margin-top: 1rem; line-height: 1.55;
+  }
+  .myth::before { content: '🚫 Myth Buster: '; font-weight: 700; color: var(--red); }
+  .myth strong { color: #fff; font-weight: 600; }
+
+  /* SAFETY box */
+  .safety {
+    background: rgba(255,213,79,0.06);
+    border: 1px solid rgba(255,213,79,0.35);
+    border-radius: 8px; padding: 0.9rem 1.1rem;
+    font-size: 0.85rem; color: #ffe9a3; margin: 1rem 0; line-height: 1.55;
+  }
+  .safety::before { content: '⚠️ Grown-up check: '; font-weight: 700; color: var(--gold); }
+
+  footer { text-align: center; margin-top: 3rem; font-size: 0.78rem; color: var(--muted); line-height: 1.7; }
+  footer a { color: var(--muted); }
+  footer a:hover { color: var(--accent); }
+
+  /* ===== Built-in activities ===== */
+  .tryit {
+    background: rgba(124,196,255,0.04);
+    border: 1px solid rgba(124,196,255,0.28);
+    border-radius: 10px; padding: 1.2rem; margin-bottom: 1.2rem; cursor: default;
+  }
+  .tryit-title { font-family: 'Orbitron', monospace; font-size: 0.68rem; letter-spacing: 0.18em; color: var(--rain); margin-bottom: 0.85rem; }
+  .tryit-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.7; margin-bottom: 0.85rem; }
+  .tryit-desc strong { color: var(--text); }
+  .tryit-out { margin-top: 0.75rem; font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
+  .tryit-out b { color: var(--accent); }
+  .tryit-btn {
+    font-family: 'Orbitron', monospace; font-size: 0.7rem; letter-spacing: 0.1em;
+    background: transparent; color: var(--accent);
+    border: 1px solid var(--accent); border-radius: 8px;
+    padding: 0.6rem 1.1rem; margin-top: 0.85rem; margin-right: 0.5rem;
+    cursor: pointer; transition: background .18s, color .18s;
+  }
+  .tryit-btn:hover { background: var(--accent); color: #00302a; }
+  .tryit-btn:disabled { opacity: 0.35; cursor: default; }
+  .tryit-btn:disabled:hover { background: transparent; color: var(--accent); }
+
+  /* Generic matching rows */
+  .match-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 0.7rem; }
+  .match-row { display: flex; flex-direction: column; gap: 0.35rem; }
+  .match-part { font-family: 'Orbitron', monospace; font-size: 0.64rem; color: var(--text); letter-spacing: 0.04em; line-height: 1.5; }
+  .match-row select {
+    background: #041620; color: var(--text);
+    border: 1px solid var(--border); border-radius: 6px;
+    padding: 0.5rem 0.6rem; font-family: 'Exo 2', sans-serif; font-size: 0.85rem; width: 100%;
+  }
+  .match-row.correct select { border-color: var(--green); color: #a5ffd0; }
+  .match-row.wrong select { border-color: var(--red); color: #ffb3c1; }
+
+  /* Step-ordering relay */
+  .relay-steps { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .relay-step {
+    font-family: 'Exo 2', sans-serif; font-size: 0.82rem;
+    background: #041620; color: var(--text);
+    border: 1px solid var(--border); border-radius: 20px;
+    padding: 0.5rem 0.9rem; cursor: pointer; transition: all .15s; text-align: left;
+  }
+  .relay-step:hover { border-color: var(--accent); }
+  .relay-step.done { background: rgba(0,230,118,0.15); border-color: var(--green); color: #a5ffd0; cursor: default; }
+  .relay-step.bad { border-color: var(--red); color: #ffb3c1; }
+
+  /* Two-way sorter */
+  .sort-card {
+    background: #041620; border: 1px solid var(--border); border-radius: 8px;
+    padding: 1.1rem 1rem; min-height: 84px; text-align: center;
+    font-size: 0.95rem; color: var(--text); line-height: 1.6;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .sort-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.6rem; }
+  .sort-btns button {
+    font-family: 'Orbitron', monospace; font-size: 0.68rem; letter-spacing: 0.06em;
+    padding: 0.75rem 0.4rem; border-radius: 8px;
+    border: 1px solid var(--border); background: #041620; color: var(--text); cursor: pointer;
+  }
+  .sort-btns button:hover { border-color: var(--accent); }
+  .sort-btns button:disabled { opacity: 0.4; cursor: default; }
+
+  /* Slider labs */
+  .lab-controls { display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 0.9rem; }
+  .lab-controls label { font-size: 0.82rem; color: var(--muted); white-space: nowrap; }
+  .lab-controls input[type=range] { flex: 1; min-width: 170px; accent-color: var(--accent); }
+  .lab-val { font-family: 'Orbitron', monospace; color: var(--gold); font-size: 0.9rem; min-width: 5.2rem; text-align: right; }
+
+  /* Prediction cards (hands-on lab) */
+  .activity {
+    background: #041620; border: 1px solid var(--border); border-radius: 10px;
+    padding: 1.1rem 1.2rem; margin-bottom: 1rem;
+  }
+  .activity h4 { font-family: 'Orbitron', monospace; font-size: 0.78rem; color: var(--accent); letter-spacing: 0.08em; margin-bottom: 0.5rem; }
+  .activity .kit { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.6rem; }
+  .activity .kit b { color: var(--text); }
+  .activity ol { margin: 0.4rem 0 0.6rem 1.2rem; font-size: 0.88rem; line-height: 1.7; color: var(--text); }
+  .activity .why { font-size: 0.85rem; color: var(--rain); line-height: 1.6; margin-top: 0.5rem; }
+  .activity .why b { color: #fff; }
+  .predict { margin-top: 0.7rem; padding-top: 0.7rem; border-top: 1px dashed var(--border); font-size: 0.85rem; }
+  .predict-q { color: var(--text); margin-bottom: 0.4rem; }
+  .predict-btns { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+  .predict-btns button {
+    font-family: 'Orbitron', monospace; font-size: 0.64rem; letter-spacing: 0.06em;
+    padding: 0.5rem 0.8rem; border-radius: 8px;
+    border: 1px solid var(--border); background: #082230; color: var(--text); cursor: pointer;
+  }
+  .predict-btns button:hover { border-color: var(--accent); }
+  .predict-btns button.picked-right { border-color: var(--green); color: var(--green); }
+  .predict-btns button.picked-wrong { border-color: var(--red); color: #ff9e9e; }
+  .predict-btns button:disabled { cursor: default; }
+  .predict-out { margin-top: 0.5rem; color: var(--muted); line-height: 1.6; display: none; }
+  .predict-out.show { display: block; }
+
+  /* Fact wall */
+  .factwall-section {
+    background: linear-gradient(135deg, #06202c 0%, #0d3346 100%);
+    border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 2rem; margin-top: 2rem;
+  }
+  .factwall-head { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+  .factwall-icon { font-size: 2rem; }
+  .factwall-title { font-family: 'Orbitron', monospace; font-size: 1.1rem; font-weight: 700; color: var(--accent); }
+  .factwall-sub { font-size: 0.85rem; color: var(--muted); margin-top: 3px; }
+  .factwall { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 0.8rem; }
+  .factcard {
+    background: #041620; border: 1px solid var(--border); border-radius: 10px;
+    padding: 0.9rem 1rem; font-size: 0.85rem; line-height: 1.65; color: var(--text);
+  }
+  .factnum { font-family: 'Orbitron', monospace; display: block; font-size: 1.2rem; color: var(--accent); margin-bottom: 0.35rem; }
+
+  /* Takeaway box */
+  .takeaway {
+    background: rgba(46,230,208,0.06);
+    border: 1px solid rgba(46,230,208,0.35);
+    border-radius: 10px; padding: 1.1rem 1.2rem; margin-top: 1rem;
+    font-size: 0.9rem; color: var(--text); line-height: 1.8;
+  }
+  .takeaway h3 { font-family: 'Orbitron', monospace; font-size: 0.72rem; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 0.6rem; font-weight: 700; }
+  .takeaway b { color: #fff; }
+
+  /* Dated numbers box */
+  .dated {
+    background: rgba(255,213,79,0.05);
+    border: 1px dashed rgba(255,213,79,0.35);
+    border-radius: 10px; padding: 1.1rem 1.2rem; margin-top: 2rem;
+    font-size: 0.83rem; color: var(--muted); line-height: 1.8;
+  }
+  .dated h3 {
+    font-family: 'Orbitron', monospace; font-size: 0.72rem; letter-spacing: 0.15em;
+    color: var(--gold); margin-bottom: 0.7rem; font-weight: 700;
+  }
+  .dated b { color: var(--text); }
+
+  /* ===== Water page additions ===== */
+
+  /* Unit of inquiry panel (PYP) */
+  .uoi {
+    background: linear-gradient(135deg, #062433 0%, #0a2a45 100%);
+    border: 1px solid rgba(46,230,208,0.35);
+    border-radius: var(--radius);
+    padding: 1.4rem 1.5rem; margin-bottom: 2rem;
+  }
+  .uoi-title { font-family: 'Orbitron', monospace; font-size: 0.72rem; letter-spacing: 0.18em; color: var(--accent); margin-bottom: 0.9rem; font-weight: 700; }
+  .uoi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0.8rem; }
+  .uoi-item { background: #041620; border: 1px solid var(--border); border-radius: 8px; padding: 0.8rem 0.95rem; }
+  .uoi-label { font-family: 'Orbitron', monospace; font-size: 0.6rem; letter-spacing: 0.14em; color: var(--muted); margin-bottom: 0.35rem; }
+  .uoi-value { font-size: 0.9rem; color: var(--text); line-height: 1.55; }
+  .uoi-value b { color: #fff; font-weight: 600; }
+  .uoi-lines { margin-top: 0.9rem; font-size: 0.85rem; color: var(--muted); line-height: 1.75; }
+  .uoi-lines b { color: var(--rain); font-weight: 600; }
+  .uoi-note { margin-top: 0.8rem; font-size: 0.8rem; color: var(--muted); line-height: 1.6; }
+
+  .module-label {
+    font-family: 'Orbitron', monospace; font-size: 0.66rem; letter-spacing: 0.22em;
+    color: var(--muted); margin: 2.2rem 0 0.8rem; padding-bottom: 0.45rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .module-label b { color: var(--accent); font-weight: 700; }
+  .module-label span { float: right; color: var(--gold); letter-spacing: 0.1em; }
+
+  .inquiry {
+    border-left: 3px solid var(--rain); padding: 0.5rem 0.9rem; margin: 1rem 0 0.4rem;
+    font-size: 0.88rem; color: var(--rain); line-height: 1.6; background: rgba(124,196,255,0.05);
+  }
+  .inquiry::before { content: '🔍 Line of inquiry: '; font-weight: 700; }
+
+  .think {
+    background: rgba(255,213,79,0.05);
+    border: 1px solid rgba(255,213,79,0.3);
+    border-radius: 8px; padding: 0.9rem 1.1rem;
+    font-size: 0.85rem; color: #ffe9a3; margin-top: 1rem; line-height: 1.6;
+  }
+  .think::before { content: '💭 Think about it: '; font-weight: 700; color: var(--gold); }
+
+  .lab-controls input[type=checkbox] { accent-color: var(--accent); width: 18px; height: 18px; }
+  .check-row { display: flex; gap: 1.2rem; flex-wrap: wrap; margin-bottom: 0.9rem; font-size: 0.85rem; color: var(--text); }
+  .check-row label { display: flex; align-items: center; gap: 0.45rem; cursor: pointer; }
+  .check-row input { accent-color: var(--accent); width: 18px; height: 18px; }
+
+  /* Rain-to-reservoir simulator */
+  .sim-stage {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: center;
+    background: #041620; border: 1px solid var(--border); border-radius: 8px; padding: 1rem;
+  }
+  @media (max-width: 560px) { .sim-stage { grid-template-columns: 1fr; } }
+  .reservoir {
+    height: 150px; border-radius: 8px; position: relative; overflow: hidden;
+    background: #0a2230; border: 1px solid var(--border);
+  }
+  .reservoir-water {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 30%;
+    background: #1fa3c4; transition: height .5s ease, background .5s ease;
+  }
+  .reservoir-label {
+    position: absolute; top: 8px; left: 10px; font-family: 'Orbitron', monospace;
+    font-size: 0.6rem; letter-spacing: 0.12em; color: #fff; text-shadow: 0 1px 3px #000;
+  }
+  .sim-stats { font-size: 0.85rem; color: var(--muted); line-height: 1.85; }
+  .sim-stats b { color: var(--accent); font-family: 'Orbitron', monospace; font-size: 0.8rem; }
+  .meter { height: 10px; background: #0f3044; border-radius: 5px; overflow: hidden; margin-top: 0.3rem; }
+  .meter-in { height: 100%; width: 0%; background: linear-gradient(90deg, var(--rain), var(--accent)); transition: width .4s; }
+  .meter-in.silt { background: linear-gradient(90deg, #c9a46a, #8a5a2b); }
+
+  /* 100 cups */
+  .cups { display: grid; grid-template-columns: repeat(20, 1fr); gap: 3px; max-width: 520px; margin: 0.8rem 0; }
+  .cup { aspect-ratio: 1; border-radius: 3px; background: #0f3044; border: 1px solid #16405a; transition: background .25s; }
+  .cup.salt { background: #1565c0; border-color: #1e88e5; }
+  .cup.ice { background: #e3f2fd; border-color: #ffffff; }
+  .cup.fresh { background: var(--accent); border-color: #fff; box-shadow: 0 0 10px var(--accent); }
+  .cup-key { display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.8rem; color: var(--muted); }
+  .cup-key span::before { content: ''; display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
+  .cup-key .k-salt::before { background: #1565c0; }
+  .cup-key .k-ice::before { background: #e3f2fd; }
+  .cup-key .k-fresh::before { background: var(--accent); }
+
+  /* Molecule journey */
+  .journey {
+    background: linear-gradient(135deg, #0a2c3c 0%, #0a2a45 100%);
+    border: 1px solid rgba(46,230,208,0.4); border-radius: 10px;
+    padding: 1.2rem; min-height: 130px;
+    display: flex; flex-direction: column; justify-content: center; gap: 0.45rem;
+  }
+  .journey-step { font-family: 'Orbitron', monospace; font-size: 0.62rem; letter-spacing: 0.14em; color: var(--muted); }
+  .journey-main { font-size: 0.98rem; color: #fff; line-height: 1.65; }
+  .journey-spheres { font-size: 0.8rem; color: var(--rain); }
+  .journey-spheres b { color: var(--accent); }
+
+  /* Simple bars */
+  .bars { display: flex; flex-direction: column; gap: 0.5rem; margin: 0.6rem 0; }
+  .bar-row { display: grid; grid-template-columns: 9.5rem 1fr 5.2rem; gap: 0.6rem; align-items: center; font-size: 0.82rem; color: var(--text); }
+  @media (max-width: 520px) { .bar-row { grid-template-columns: 6.5rem 1fr 4.6rem; font-size: 0.75rem; } }
+  .bar-track { height: 14px; background: #0f3044; border-radius: 7px; overflow: hidden; }
+  .bar-fill { height: 100%; width: 0%; background: var(--accent); border-radius: 7px; transition: width .7s ease; }
+  .bar-val { font-family: 'Orbitron', monospace; font-size: 0.72rem; color: var(--gold); text-align: right; }
+
+  /* Water day calculator */
+  .calc-row { display: grid; grid-template-columns: 1fr 170px 4.4rem; gap: 0.7rem; align-items: center; margin-bottom: 0.55rem; font-size: 0.85rem; color: var(--text); }
+  @media (max-width: 560px) { .calc-row { grid-template-columns: 1fr; gap: 0.25rem; margin-bottom: 0.9rem; } }
+  .calc-row input[type=range] { width: 100%; accent-color: var(--accent); }
+  .calc-row select {
+    background: #041620; color: var(--text); border: 1px solid var(--border); border-radius: 6px;
+    padding: 0.4rem 0.5rem; font-family: 'Exo 2', sans-serif; font-size: 0.85rem; width: 100%;
+  }
+  .calc-val { font-family: 'Orbitron', monospace; font-size: 0.75rem; color: var(--gold); text-align: right; }
+  .calc-total { font-family: 'Orbitron', monospace; font-size: clamp(1.2rem, 4vw, 1.7rem); color: var(--accent); margin: 0.6rem 0 0.2rem; }
+  .calc-total small { font-family: 'Exo 2', sans-serif; font-size: 0.8rem; color: var(--muted); }
+
+  /* Pledge list */
+  .pledges { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 0.5rem; }
+  .pledges label {
+    display: flex; gap: 0.55rem; align-items: flex-start; cursor: pointer;
+    background: #041620; border: 1px solid var(--border); border-radius: 8px;
+    padding: 0.6rem 0.75rem; font-size: 0.84rem; color: var(--text); line-height: 1.5;
+  }
+  .pledges input { accent-color: var(--accent); margin-top: 3px; }
+  .pledges label.on { border-color: var(--accent); background: rgba(46,230,208,0.07); }
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+  <header>
+    <div class="badge">SCIENCE EXPLORER</div>
+    <h1>Water: Earth&#39;s Precious Resource</h1>
+    <p class="header-topic"><span>How a Tiny Island Learned to Save Every Drop</span></p>
+    <p class="subtitle">A 2-hour guided curriculum · Age 10 · Four modules · Beginner Friendly</p>
+    <a class="homelink" href="https://curious-minds-science-lab.org/">← ALL CURRICULA</a>
+  </header>
+
+  <div class="progress-wrap">
+    <span class="progress-label">PROGRESS</span>
+    <div class="progress-bar-outer"><div class="progress-bar-inner" id="progressBar"></div></div>
+    <span class="progress-time" id="progressTime">0 / 120 min</span>
+  </div>
+
+  <!-- ===== UNIT OF INQUIRY ===== -->
+  <div class="uoi">
+    <div class="uoi-title">◆ UNIT OF INQUIRY · PYP</div>
+    <div class="uoi-grid">
+      <div class="uoi-item">
+        <div class="uoi-label">TRANSDISCIPLINARY THEME</div>
+        <div class="uoi-value"><b>Sharing the Planet</b> — the rights and responsibilities we have when we share Earth&#39;s limited resources with other people and other living things.</div>
+      </div>
+      <div class="uoi-item">
+        <div class="uoi-label">CENTRAL IDEA</div>
+        <div class="uoi-value"><b>Scientific understanding informs the preservation of Earth&#39;s resources.</b></div>
+      </div>
+      <div class="uoi-item">
+        <div class="uoi-label">KEY CONCEPTS</div>
+        <div class="uoi-value"><b>Change</b> · <b>Causation</b> · <b>Responsibility</b> · <b>Systems</b></div>
+      </div>
+    </div>
+    <div class="uoi-lines">
+      <b>Module 1 —</b> How does scientific understanding help a country with almost no rivers supply clean water to everyone? <em>(Systems, Responsibility)</em><br>
+      <b>Module 2 —</b> How many of Earth&#39;s major systems exist, and how do natural processes like erosion shape them? <em>(Systems, Change)</em><br>
+      <b>Module 3 —</b> What are finite and infinite resources, and how does global demand affect them? <em>(Causation, Change)</em><br>
+      <b>Module 4 —</b> How are scientists protecting fresh water, and how can we help? <em>(Responsibility)</em>
+    </div>
+    <div class="uoi-note">Open each card below to start. Every module ends with something to <em>do</em> — that is the PYP &quot;action&quot; part. You do not have to finish all two hours in one sitting: Module 1 makes a good first session, Modules 2–4 a good second.</div>
+  </div>
+
+  <!-- ================================================================ -->
+  <div class="module-label"><b>MODULE 1</b> · CASE STUDY: FRESH WATER IN SINGAPORE <span>55 MIN</span></div>
+
+  <!-- ===== 1A ===== -->
+  <div class="section-card" onclick="toggleCard(this)">
+    <div class="section-header">
+      <span class="section-num">1 · A</span>
+      <span class="section-title">🇸🇬 The Island With No Big Rivers — Tap 1: Imported Water</span>
+      <span class="section-time">10 min</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="inquiry">How does scientific understanding help a country with almost no rivers supply clean water to everyone?</div>
+      <p class="section-intro">Imagine a country so small you could drive right across it in under an hour. That is <strong>Singapore</strong>: an island of about <strong>735 square kilometres</strong> at the tip of the Malay Peninsula, home to <strong>more than 6 million people</strong>. It has no big natural lakes, no long rivers and no huge underground stores of water. And yet when anyone in Singapore turns on a tap, clean water you can drink comes out — every time, for everyone.<br><br>The strange thing is that Singapore is not dry at all. It gets about <strong>2,500 mm of rain a year</strong> — nearly four times as much as London. The problem is <strong>storage</strong>: on a small, crowded island there is very little room to keep the rain before it runs off into the sea. In <strong>1963–64</strong> a long dry spell meant water had to be <strong>rationed</strong> — taps in many homes were turned off for part of the day for months. Singapore&#39;s leaders decided that must never happen again, and they turned to scientists and engineers for the answer.<br><br>The answer is called the <strong>Four National Taps</strong>: four completely different ways of getting water, run together as one system, so that if one tap struggles the others can make up the difference. Today Singapore uses about <strong>440 million gallons a day</strong> — around <strong>2 billion litres</strong>, enough to fill roughly <strong>800 Olympic swimming pools every single day</strong> — and that could almost double by 2065. Here are the four taps: <strong>(1) imported water</strong>, <strong>(2) local catchments</strong> (rain collected on the island), <strong>(3) NEWater</strong> (used water made ultra-clean) and <strong>(4) desalinated water</strong> (seawater made fresh). We start with the oldest.<br><br><strong>Tap 1 — Imported water.</strong> Just across a narrow strait to the north is the Malaysian state of <strong>Johor</strong>, which has a big river, the Johor River. Huge pipelines carry water from Johor alongside the <strong>Causeway</strong> — the road-and-rail bridge that joins the two countries. Under an agreement signed in <strong>1962</strong>, Singapore may draw up to <strong>250 million gallons a day</strong> from the Johor River until <strong>2061</strong>. Singapore&#39;s water agency runs the waterworks in Johor that cleans the water, and it sends some treated water back to Johor too. Sharing a river between two countries takes trust, rules and good science — and it is exactly why Singapore built three more taps: a smart system never depends on just one source.</p>
+
+      <div class="tryit" onclick="event.stopPropagation()">
+        <div class="tryit-title">◈ TRY IT — WHICH TAP IS IT?</div>
+        <p class="tryit-desc">Eight clues, four taps. Read each clue and pick the tap it describes, then press Check. Some clues are about taps you will explore in the next three cards — make your best guess now and see if you were right later.</p>
+        <div class="match-grid" id="tapGrid"></div>
+        <button class="tryit-btn" id="tapBtn">Check my answers</button>
+        <div class="tryit-out" id="tapResult">Pick a tap for every clue.</div>
+      </div>
+
+      <div class="resource-grid">
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">PUB: The Singapore Water Story</div>
+          <div class="resource-desc">Four minutes from Singapore&#39;s own water agency: how a country with polluted rivers and little land built four water sources and joined them into one system. Start here.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=5BGUT7BjPl0" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">PUB: Learning About Water from Kids — Four National Taps</div>
+          <div class="resource-desc">Under a minute. A preschooler explains the Four National Taps — if a five-year-old can name all four, so can you.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=ZjrOSgNtqLc" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-read">📖 READ</span>
+          <div class="resource-name">Ministry of Sustainability and the Environment: Water</div>
+          <div class="resource-desc">The official one-page summary of how Singapore gets its water — the Four National Taps, the 1962 Water Agreement, and how much water the country uses each day.</div>
+          <a class="resource-link" href="https://www.mse.gov.sg/policies/water/" target="_blank" rel="noopener">Read it →</a>
+        </div>
+      </div>
+
+      <div class="concepts">
+        <span class="concept-tag">Four National Taps</span>
+        <span class="concept-tag">Imported Water</span>
+        <span class="concept-tag">Water Agreement</span>
+        <span class="concept-tag">Water Security</span>
+        <span class="concept-tag">Systems</span>
+        <span class="concept-tag">Responsibility</span>
+      </div>
+
+      <div class="think">Singapore&#39;s main water agreement with Johor ends in 2061. You will be in your forties. If you were in charge, which of the other three taps would you build up most to be ready — and why? Keep your answer and see if you change your mind after the next three cards.</div>
+
+      <div class="fun-fact">Singapore has a <strong>water agency, PUB</strong>, that looks after the whole water loop — rain, drains, reservoirs, taps, used water and the sea walls that protect the coast. Most countries split those jobs between lots of different organisations. Running it all as one loop is a big part of why Singapore&#39;s system works.</div>
+    </div>
+  </div>
+
+  <!-- ===== 1B ===== -->
+  <div class="section-card" onclick="toggleCard(this)">
+    <div class="section-header">
+      <span class="section-num">1 · B</span>
+      <span class="section-title">🌧️ Tap 2: Local Catchments — Catching Every Raindrop</span>
+      <span class="section-time">25 min</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <p class="section-intro">This is the tap that makes Singapore truly unusual. A <strong>catchment</strong> is any area of land where the rain that falls is collected and flows to the same place. In most countries, catchments are forests and hills far from the city. In Singapore, the <strong>city itself is the catchment</strong>. About <strong>two-thirds of the island&#39;s land</strong> is water catchment, and rain that falls on roofs, roads, playgrounds and car parks is channelled through drains, canals and rivers into <strong>17 reservoirs</strong>. Think of the whole country as a giant funnel.<br><br>There are two kinds of catchment. <strong>Protected catchments</strong> are nature reserves in the middle of the island, where forest is kept on purpose so the rain running off it stays clean. <strong>MacRitchie Reservoir</strong>, built in <strong>1868</strong>, is the oldest — you can still walk the forest trails around it. <strong>Urban catchments</strong> are everywhere else: the busy city, where the rain must be collected from streets and buildings through thousands of kilometres of drains. Rivers were dammed at their mouths to turn them into reservoirs, and in <strong>2008</strong> the biggest of these projects opened: the <strong>Marina Barrage</strong>, a dam across the mouth of the Marina Channel right in the city centre. Behind it, the salty sea water was slowly flushed out and replaced by rain until the bay became a <strong>freshwater lake</strong> — Singapore&#39;s 15th reservoir, collecting rain from a catchment of <strong>10,000 hectares</strong> (about 14,000 football pitches of city). The barrage does a second job too: in a big storm at high tide, its gates and giant pumps push excess water out to sea so the low-lying city centre does not flood.<br><br>Here is the problem with collecting rain from a city: <strong>whatever the rain washes off the ground ends up in the reservoir</strong>. Litter, oil from roads — and, biggest of all, <strong>soil</strong>. When land is left bare, for example on a building site, raindrops smash into the loose earth and wash it away. This is <strong>soil erosion</strong>, and the muddy water it makes is full of <strong>silt</strong> (very fine soil particles). Silt is bad news: it <strong>clogs drains</strong> so they overflow and flood; it makes reservoir water <strong>cloudy</strong> and harder and more expensive to clean; it slowly <strong>fills up reservoirs</strong> so they hold less water; and it smothers the fish and plants that live in them. So every building site in Singapore must use <strong>Earth Control Measures</strong>: covering bare soil with sheets or grass, putting up silt fences, building settling ponds so mud sinks before water leaves the site, and washing lorry wheels before they drive out. The water agency even uses <strong>cameras that watch drains</strong> for muddy water and alert inspectors.<br><br>Since 2006, Singapore has gone one step further with the <strong>ABC Waters</strong> programme — Active, Beautiful, Clean. Instead of hiding rainwater in straight concrete channels, engineers turn some of them back into natural-looking rivers lined with plants. At <strong>Bishan–Ang Mo Kio Park</strong>, a straight concrete canal was dug up and replaced by a winding river with grassy banks, finished in 2012. The plants slow the water down, their roots <strong>hold the soil in place</strong>, and their leaves and stems filter out dirt before it reaches the reservoir. Otters moved back in. Rainwater, it turns out, is easier to keep clean when people can see it, enjoy it and care about it — that is <strong>responsibility</strong> built into the design of a city.</p>
+
+      <div class="tryit" onclick="event.stopPropagation()">
+        <div class="tryit-title">◈ TRY IT — A RAINDROP&#39;S JOURNEY TO YOUR TAP</div>
+        <p class="tryit-desc">A raindrop lands on the roof of a block of flats in Singapore. Click the stops in the right order to get it all the way to a kitchen tap.</p>
+        <div class="relay-steps" id="dropSteps"></div>
+        <div class="tryit-out" id="dropTrack">Where does the raindrop go first?</div>
+        <button class="tryit-btn" id="dropReset">Shuffle &amp; Restart</button>
+      </div>
+
+      <div class="tryit" onclick="event.stopPropagation()">
+        <div class="tryit-title">◈ TRY IT — THE RAIN-TO-RESERVOIR SIMULATOR</div>
+        <p class="tryit-desc">You are in charge of Singapore&#39;s catchments for one big storm. Choose how much rain falls and how much of the island is catchment, then decide whether building sites use <strong>Earth Control Measures</strong> and whether bare slopes are <strong>planted with grass and trees</strong>. Watch how much water you collect — and how muddy it is. <em>(This is a simple model, not an exact forecast.)</em></p>
+        <div class="lab-controls">
+          <label for="rainSlider">Storm rainfall:</label>
+          <input type="range" id="rainSlider" min="5" max="120" step="5" value="40">
+          <span class="lab-val" id="rainVal">40 mm</span>
+        </div>
+        <div class="lab-controls">
+          <label for="catchSlider">Island used as catchment:</label>
+          <input type="range" id="catchSlider" min="10" max="90" step="1" value="67">
+          <span class="lab-val" id="catchVal">67%</span>
+        </div>
+        <div class="check-row">
+          <label><input type="checkbox" id="ecmBox" checked> Building sites use Earth Control Measures</label>
+          <label><input type="checkbox" id="plantBox" checked> Bare slopes planted with grass &amp; trees</label>
+        </div>
+        <div class="sim-stage">
+          <div class="reservoir"><div class="reservoir-water" id="resWater"></div><div class="reservoir-label" id="resLabel">RESERVOIR</div></div>
+          <div class="sim-stats" id="simStats"></div>
+        </div>
+        <div class="tryit-out" id="simOut"></div>
+      </div>
+
+      <div class="activity" onclick="event.stopPropagation()">
+        <h4>HANDS-ON · THE BOTTLE EROSION TEST (8 min, or set up today and test tomorrow)</h4>
+        <div class="kit"><b>You need:</b> three empty plastic drinks bottles (same size), scissors (grown-up job), soil from the garden, a handful of leaves, twigs or bark, a small patch of grass or moss with its roots (or seeds sown a week earlier), three clear cups and a jug of water.</div>
+        <ol>
+          <li>Lay each bottle on its side and cut a big window out of the top side, so each one becomes a long tray. Keep the lids <em>off</em> — the neck is the spout.</li>
+          <li>Fill bottle 1 with <b>bare soil</b>. Fill bottle 2 with soil covered in <b>leaves, twigs and bark</b>. Fill bottle 3 with soil plus the <b>grass or moss</b>, roots and all.</li>
+          <li>Line them up on a table edge with the necks hanging over and a cup under each neck. Tilt them slightly downhill.</li>
+          <li>Pour the <b>same amount of water</b>, slowly, onto the far end of each tray — a raincloud in a jug. Then compare the three cups.</li>
+        </ol>
+        <div class="why"><b>What is going on:</b> raindrops hitting bare soil knock loose particles free, and running water carries them away — erosion, in miniature. Leaves and bark act like an umbrella that softens each drop. Roots act like a net, gripping the soil so it cannot move. That is exactly why Singapore covers building sites and plants its riverbanks: <b>the clearer the water that reaches the reservoir, the less work it takes to make it drinkable</b>.</div>
+        <div class="predict">
+          <div class="predict-q">Prediction: which cup will have the muddiest water?</div>
+          <div class="predict-btns" data-pid="pErode">
+            <button data-ans="0">BARE SOIL</button>
+            <button data-ans="1">LEAVES &amp; BARK</button>
+            <button data-ans="2">GRASS WITH ROOTS</button>
+          </div>
+          <div class="predict-out" id="pErode_out"></div>
+        </div>
+      </div>
+
+      <div class="resource-grid">
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">PUB: Building a Barrage, Creating an Icon</div>
+          <div class="resource-desc">The engineers who built the Marina Barrage explain how they turned a bay of seawater into a freshwater reservoir in the middle of the city — and made it a flood defence at the same time.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=6HrDA6yzZAU" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">ABC Waters: Kallang River @ Bishan–Ang Mo Kio Park</div>
+          <div class="resource-desc">See a concrete drain become a living river. Watch for the plants on the banks — they are there to hold the soil and clean the water, not just to look nice.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=SLvOSrw9jP4" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-read">📖 READ</span>
+          <div class="resource-name">PUB: Marina Barrage</div>
+          <div class="resource-desc">The official page for the barrage — how its gates and pumps work, and what you can see if you visit (the green roof is a famous kite-flying spot).</div>
+          <a class="resource-link" href="https://www.pub.gov.sg/Public/Places-of-Interest/Marina-Barrage" target="_blank" rel="noopener">Read it →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-read">📖 READ</span>
+          <div class="resource-name">PUB: Earth Control Measures</div>
+          <div class="resource-desc">Written for builders, so it is grown-up reading — but it explains in plain words why silt from building sites is a danger to drains and reservoirs. Read it with an adult.</div>
+          <a class="resource-link" href="https://www.pub.gov.sg/Professionals/Requirements/Earth-Control-Measures" target="_blank" rel="noopener">Read it →</a>
+        </div>
+      </div>
+
+      <div class="concepts">
+        <span class="concept-tag">Catchment</span>
+        <span class="concept-tag">Reservoir</span>
+        <span class="concept-tag">Urban Drainage</span>
+        <span class="concept-tag">Marina Barrage</span>
+        <span class="concept-tag">Soil Erosion</span>
+        <span class="concept-tag">Silt</span>
+        <span class="concept-tag">Earth Control Measures</span>
+        <span class="concept-tag">ABC Waters</span>
+      </div>
+
+      <div class="myth">People think <strong>"rain is free water, so collecting it is easy."</strong> Catching rain is the easy bit. Keeping it clean is the hard bit. Every drain in a city is connected to a reservoir, which is why in Singapore you will see signs saying not to throw litter or pour anything into drains — <strong>only rain down the drain</strong>.</div>
+
+      <div class="fun-fact">During a heavy storm at high tide, the Marina Barrage switches on giant pumps that push rainwater out to sea. Each one can empty an Olympic swimming pool in about a minute — and there are seven of them.</div>
+    </div>
+  </div>
+
+  <!-- ===== 1C ===== -->
+  <div class="section-card" onclick="toggleCard(this)">
+    <div class="section-header">
+      <span class="section-num">1 · C</span>
+      <span class="section-title">♻️ Tap 3: NEWater — Used Water Made Ultra-Clean</span>
+      <span class="section-time">10 min</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <p class="section-intro">Every time you shower, wash your hands, brush your teeth or flush the toilet, the water goes down the plughole and away. In most places it is cleaned just enough to pour into the sea. Singapore asked a bold question: <strong>what if we cleaned it so well that we could use it again?</strong> The answer is <strong>NEWater</strong>, first supplied in <strong>2003</strong>.<br><br>Used water from homes travels through sewers into the <strong>Deep Tunnel Sewerage System</strong> — a 206 km network of giant tunnels deep underground that carries it, mostly by gravity, to huge <strong>water reclamation plants</strong>. There it gets a normal clean-up: screens catch rubbish, grit sinks, and helpful bacteria eat most of the dissolved waste. Then the cleaned-up water goes to a <strong>NEWater factory</strong> for three extra steps.<br><strong>Step 1 — Microfiltration.</strong> Water is pushed through membranes full of tiny holes, about a five-hundredth of the width of a hair. Bacteria, tiny particles and anything bigger are stopped.<br><strong>Step 2 — Reverse osmosis.</strong> The water is squeezed under pressure through a membrane so fine that almost only <strong>water molecules</strong> get through. Viruses, salts, and leftover chemicals such as traces of medicines are left behind.<br><strong>Step 3 — Ultraviolet (UV) light.</strong> As a final safety check, the water flows past strong UV lamps. UV light scrambles the DNA of any microbe that might somehow have slipped through, so it cannot make anyone ill.<br><br>The result is water so pure it is checked against around <strong>300 different tests</strong> and beats the World Health Organization&#39;s standards for drinking water. Most NEWater goes to <strong>factories</strong> — especially those making computer chips, which need water purer than tap water — and to cooling systems in big buildings. In dry spells, some is added to reservoirs, where it mixes with rainwater and is treated again before reaching taps. NEWater can already meet <strong>up to 40%</strong> of Singapore&#39;s water needs, and that is planned to rise to more than half by 2060. Water that used to be thrown away is now one of the country&#39;s biggest sources.</p>
+
+      <div class="tryit" onclick="event.stopPropagation()">
+        <div class="tryit-title">◈ TRY IT — WHERE DOES IT GET STOPPED?</div>
+        <p class="tryit-desc">Eight things are in used water heading for a NEWater factory. For each one, choose the step that stops it (or deals with it). One of them gets through every step — that is the point!</p>
+        <div class="match-grid" id="newGrid"></div>
+        <button class="tryit-btn" id="newBtn">Check my answers</button>
+        <div class="tryit-out" id="newResult">Pick a step for every item.</div>
+      </div>
+
+      <div class="resource-grid">
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">PUB: NEWater — A Singapore Success Story</div>
+          <div class="resource-desc">How used water becomes NEWater, and why it is now one of Singapore&#39;s Four National Taps. Look out for the membranes and the UV step.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=DWWU-8_4wu0" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-read">📖 READ</span>
+          <div class="resource-name">PUB: NEWater Quality</div>
+          <div class="resource-desc">The water agency&#39;s own page on how NEWater is made with membranes and UV light, and how it is tested to beat international drinking-water standards.</div>
+          <a class="resource-link" href="https://www.pub.gov.sg/Public/WaterLoop/Water-Quality/NEWater" target="_blank" rel="noopener">Read it →</a>
+        </div>
+      </div>
+
+      <div class="concepts">
+        <span class="concept-tag">Used Water</span>
+        <span class="concept-tag">Water Reclamation</span>
+        <span class="concept-tag">Membranes</span>
+        <span class="concept-tag">Microfiltration</span>
+        <span class="concept-tag">Reverse Osmosis</span>
+        <span class="concept-tag">UV Disinfection</span>
+        <span class="concept-tag">Reuse</span>
+      </div>
+
+      <div class="myth">Some people call it <strong>"toilet water"</strong> and pull a face. But <em>all</em> water on Earth is recycled — the water in your glass has been through clouds, rivers, oceans, plants and animals for billions of years (you will meet this idea again in Module 2). NEWater just does the cleaning in days instead of letting nature take months or years, and it is tested far more carefully than a mountain stream ever is.</div>
+
+      <div class="fun-fact">When NEWater was introduced in 2002, tens of thousands of people at Singapore&#39;s National Day Parade — including the Prime Minister — raised bottles of it and drank it together, to show everyone it was safe.</div>
+    </div>
+  </div>
+
+  <!-- ===== 1D ===== -->
+  <div class="section-card" onclick="toggleCard(this)">
+    <div class="section-header">
+      <span class="section-num">1 · D</span>
+      <span class="section-title">🌊 Tap 4: Desalination — Turning the Sea Into Drinking Water</span>
+      <span class="section-time">10 min</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <p class="section-intro">Singapore is surrounded by water — it just happens to be salty. Every litre of seawater has about <strong>35 grams of salt</strong> dissolved in it, roughly seven teaspoons. Drink it and your body has to use even more water to get rid of the salt, so you end up thirstier than before. <strong>Desalination</strong> means taking the salt out.<br><br>There are two main ways to do it. The old way is to <strong>boil</strong> seawater and collect the steam, which is pure water — the salt stays behind. It works, but boiling huge amounts of water takes enormous amounts of energy. The modern way, used in Singapore, is <strong>reverse osmosis</strong> — the same idea as the second step in NEWater, but harder. Seawater is pumped at very high pressure, more than <strong>twenty-five times the pressure in a car tyre</strong>, against special membranes. Water molecules are forced through; salt is left behind as extra-salty water called <strong>brine</strong>, which is carefully mixed back into the sea.<br><br>Singapore opened its first desalination plant in <strong>2005</strong> and now has <strong>five</strong>. The newest are clever: the <strong>Keppel Marina East</strong> plant (2020) can treat seawater in dry weather <em>or</em> rainwater from Marina Reservoir in wet weather, and it hides its machinery underground beneath a grassy roof where people can walk. Desalination has one huge advantage — <strong>the sea never runs dry</strong>, even in a drought — and one big drawback: it needs a lot of electricity, about <strong>3.5 kilowatt-hours for every 1,000 litres</strong>. That makes it the most expensive of the four taps, so scientists in Singapore are working hard to find membranes and methods that use less energy. That is why desalination is the back-up that never fails, rather than the only tap.</p>
+
+      <div class="activity" onclick="event.stopPropagation()">
+        <h4>HANDS-ON · BUILD A SOLAR DESALINATOR (set up 5 min, then leave in the sun for a few hours)</h4>
+        <div class="kit"><b>You need:</b> a large bowl, a short heavy cup or glass that fits inside it, warm water, two teaspoons of salt, cling film, a small stone or coin, and a sunny windowsill or garden spot.</div>
+        <ol>
+          <li>Stir the salt into about 3 cm of warm water in the big bowl. Taste a tiny drop on your finger — that is your &quot;seawater&quot;.</li>
+          <li>Stand the empty cup in the middle of the bowl. The salty water must not reach the top of the cup.</li>
+          <li>Stretch cling film tightly over the bowl. Put the stone on the film right above the cup so the film dips in the middle.</li>
+          <li>Leave it in strong sunshine for a few hours. Then carefully lift the film and taste the water that has collected in the cup.</li>
+        </ol>
+        <div class="why"><b>What is going on:</b> the Sun warms the water, and some of it <b>evaporates</b> — only the water molecules float off as vapour; the salt is far too heavy to come with them. The vapour hits the cooler cling film, <b>condenses</b> into drops, runs down to the lowest point and drips into the cup. You have built a tiny version of the old &quot;boil and collect&quot; desalination, powered by sunshine — and a tiny version of the water cycle you will meet in Module 2.</div>
+        <div class="predict">
+          <div class="predict-q">Prediction: what will the water in the cup taste like?</div>
+          <div class="predict-btns" data-pid="pSolar">
+            <button data-ans="0">JUST AS SALTY</button>
+            <button data-ans="1">A BIT LESS SALTY</button>
+            <button data-ans="2">NOT SALTY AT ALL</button>
+          </div>
+          <div class="predict-out" id="pSolar_out"></div>
+        </div>
+      </div>
+
+      <div class="tryit" onclick="event.stopPropagation()">
+        <div class="tryit-title">◈ TRY IT — WHICH TAP USES THE MOST ENERGY?</div>
+        <p class="tryit-desc">Making 1,000 litres of drinking water always takes some energy — for pumping, filtering and cleaning. Predict which tap needs the <strong>most</strong> energy, then see the comparison.</p>
+        <div class="predict-btns" data-pid="pEnergy">
+          <button data-ans="0">LOCAL CATCHMENT</button>
+          <button data-ans="1">NEWATER</button>
+          <button data-ans="2">DESALINATION</button>
+        </div>
+        <div class="predict-out" id="pEnergy_out"></div>
+        <div class="bars" id="energyBars" style="display:none">
+          <div class="bar-row"><span>Rain from a reservoir</span><div class="bar-track"><div class="bar-fill" data-w="10"></div></div><span class="bar-val">lowest</span></div>
+          <div class="bar-row"><span>NEWater</span><div class="bar-track"><div class="bar-fill" data-w="30"></div></div><span class="bar-val">~1 kWh</span></div>
+          <div class="bar-row"><span>Desalination</span><div class="bar-track"><div class="bar-fill" data-w="100"></div></div><span class="bar-val">~3.5 kWh</span></div>
+        </div>
+      </div>
+
+      <div class="resource-grid">
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">TED-Ed: Why don&#39;t we get our drinking water from the ocean?</div>
+          <div class="resource-desc">An animated lesson on how desalination works, why it costs so much energy, and what happens to all that leftover salt. The perfect partner to this card.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=jdOjB0j329g" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-read">📖 READ</span>
+          <div class="resource-name">PUB: Desalinated Water</div>
+          <div class="resource-desc">Singapore&#39;s five desalination plants, from the first one in 2005 to the dual-mode Marina East plant, and how reverse osmosis turns seawater into drinking water.</div>
+          <a class="resource-link" href="https://www.pub.gov.sg/Public/WaterLoop/OurWaterStory/DesalinatedWater" target="_blank" rel="noopener">Read it →</a>
+        </div>
+      </div>
+
+      <div class="concepts">
+        <span class="concept-tag">Desalination</span>
+        <span class="concept-tag">Reverse Osmosis</span>
+        <span class="concept-tag">Brine</span>
+        <span class="concept-tag">Evaporation</span>
+        <span class="concept-tag">Energy Cost</span>
+        <span class="concept-tag">Drought-Proof</span>
+      </div>
+
+      <div class="takeaway">
+        <h3>◆ MODULE 1 IN ONE BREATH</h3>
+        Singapore has lots of rain but almost nowhere to keep it, so it built <b>four taps</b> that work as <b>one system</b>: water shared with a neighbour, rain caught from a whole city (and kept clean by stopping soil erosion), used water purified with membranes and UV light, and seawater made fresh. No single tap could do the job. Together, guided by science, they keep water flowing for over 6 million people.
+      </div>
+
+      <div class="fun-fact">Some of the clever thinking in membranes is borrowed from nature. Every cell in your body has special channels called <strong>aquaporins</strong> that let water molecules through one at a time and block almost everything else. Scientists — including a team in Singapore — have been building membranes with aquaporins inside them to make water purification use less energy.</div>
+    </div>
+  </div>
+
+  <!-- ================================================================ -->
+  <div class="module-label"><b>MODULE 2</b> · EARTH&#39;S SYSTEMS AND HOW WATER FLOWS <span>25 MIN</span></div>
+
+  <div class="section-card" onclick="toggleCard(this)">
+    <div class="section-header">
+      <span class="section-num">2</span>
+      <span class="section-title">🌍 Earth&#39;s Four Systems — and the Water That Joins Them</span>
+      <span class="section-time">25 min</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="inquiry">How many of Earth&#39;s major systems exist, and how do natural processes like erosion shape them?</div>
+      <p class="section-intro">Singapore&#39;s water works because it is a <strong>system</strong> — lots of parts connected so that a change in one affects the others. Earth itself works the same way. Scientists divide our planet into <strong>four major systems</strong>, sometimes called the four &quot;spheres&quot;:<br><strong>🌊 The hydrosphere</strong> — all of Earth&#39;s water: oceans, rivers, lakes, rain, water underground, and the frozen water in glaciers and ice caps.<br><strong>⛰️ The geosphere</strong> — the solid Earth: rocks, mountains, sand, soil and the hot layers deep inside.<br><strong>☁️ The atmosphere</strong> — the blanket of air around the planet, including the water vapour that makes clouds.<br><strong>🌿 The biosphere</strong> — every living thing: plants, animals, fungi, bacteria — and you.<br><br>These four are not separate boxes. They are constantly swapping things with each other, and <strong>water is the great connector</strong>. The Sun warms the ocean and water <strong>evaporates</strong> into the atmosphere (hydrosphere → atmosphere). It cools, <strong>condenses</strong> into clouds and falls as <strong>rain</strong> (atmosphere → hydrosphere and geosphere). Some soaks into the soil and rock as <strong>groundwater</strong>; some runs off into rivers. Plants drink it through their roots and breathe it out through their leaves — <strong>transpiration</strong> (geosphere → biosphere → atmosphere). This never-ending loop is the <strong>water cycle</strong>, and it has been running for around four billion years. There is about the same amount of water on Earth now as when the dinosaurs lived, which means some of the water in your glass has probably passed through a dinosaur.<br><br>As water travels, it <strong>reshapes the land</strong>. First comes <strong>weathering</strong>: rain, frost, plant roots and even chemicals in water slowly crack and crumble rock into smaller pieces. Then comes <strong>erosion</strong>: moving water, wind and ice carry those pieces away. Finally there is <strong>deposition</strong>: when the water slows down, it drops what it was carrying — which is how beaches, river deltas and new land form. Give erosion enough time and it can carve the Grand Canyon. Give it a rainstorm and a bare building site, and it fills a drain with mud, as you saw in Singapore.<br><br>The most precious thing erosion moves is <strong>soil</strong>. Soil is not just dirt: it is crumbled rock mixed with rotting leaves, air, water, fungi and billions of tiny living things — a meeting point of all four spheres. Healthy soil acts like a <strong>sponge and a filter</strong>, soaking up rain, slowly releasing it into rivers and cleaning it on the way to underground water. It forms incredibly slowly: according to the UN Food and Agriculture Organization, making just <strong>1 cm of soil can take up to 1,000 years</strong> — but a single storm can wash it away from bare ground in an afternoon. When people cut down forests or leave land bare, soil erodes, rivers turn brown, reservoirs fill with silt, and the land holds less water. Protecting soil is protecting water.</p>
+
+      <div class="tryit" onclick="event.stopPropagation()">
+        <div class="tryit-title">◈ TRY IT — WHICH SPHERE?</div>
+        <p class="tryit-desc">Put each of these into the Earth system it belongs to. Careful: frozen water still counts as water.</p>
+        <div class="match-grid" id="sphereGrid"></div>
+        <button class="tryit-btn" id="sphereBtn">Check my answers</button>
+        <div class="tryit-out" id="sphereResult">Pick a sphere for every item.</div>
+      </div>
+
+      <div class="tryit" onclick="event.stopPropagation()">
+        <div class="tryit-title">◈ TRY IT — FOLLOW ONE WATER MOLECULE</div>
+        <p class="tryit-desc">Ride along with a single water molecule starting in the sea off Singapore. Press the button to move to its next stop and see which systems it travels between.</p>
+        <div class="journey">
+          <div class="journey-step" id="jStep">STOP 0 OF 9</div>
+          <div class="journey-main" id="jMain">You are a water molecule floating in the warm sea near Singapore. Press the button to begin your journey.</div>
+          <div class="journey-spheres" id="jSpheres"></div>
+        </div>
+        <button class="tryit-btn" id="jBtn">Next stop →</button>
+        <button class="tryit-btn" id="jReset">Start again</button>
+      </div>
+
+      <div class="tryit" onclick="event.stopPropagation()">
+        <div class="tryit-title">◈ TRY IT — SPEEDS UP EROSION OR SLOWS IT DOWN?</div>
+        <p class="tryit-desc">Ten things people and nature do to the land. Does each one <strong>speed up</strong> soil erosion or <strong>slow it down</strong>? Think about causation: what does it do to the soil when rain hits?</p>
+        <div class="sort-card" id="erCard">Press Start to see the first one.</div>
+        <div class="sort-btns">
+          <button id="erFast" disabled>⚠️ SPEEDS IT UP</button>
+          <button id="erSlow" disabled>🌱 SLOWS IT DOWN</button>
+        </div>
+        <button class="tryit-btn" id="erStart">Start</button>
+        <div class="tryit-out" id="erOut">No rounds played yet.</div>
+      </div>
+
+      <div class="resource-grid">
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Crash Course Kids: Four Spheres Part 1 (Geo and Bio)</div>
+          <div class="resource-desc">Sabrina introduces the geosphere and biosphere and how they fit into Earth&#39;s bigger system. Four minutes.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=VMxjzWHbyFM" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Crash Course Kids: Four Spheres Part 2 (Hydro and Atmo)</div>
+          <div class="resource-desc">The other two — the hydrosphere and atmosphere, and what is in each one. Watch straight after Part 1.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=UXh_7wbnS3A" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Crash Course Kids: The Great Aqua Adventure</div>
+          <div class="resource-desc">Follow water around the water cycle — evaporation, condensation, precipitation and back again.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=z5G4NCwWUxY" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Crash Course Kids: Dinosaur Pee?</div>
+          <div class="resource-desc">Is the water you drink really billions of years old? The follow-up that explains why the water cycle means Earth never gets &quot;new&quot; water.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=o_bbQ0m3wuM" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Crash Course Kids: Weathering and Erosion</div>
+          <div class="resource-desc">Weathering is the mess-maker and erosion is the clean-up crew. How water and land shape each other.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=R-Iak3Wvh9c" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-read">📖 READ</span>
+          <div class="resource-name">USGS Water Science School: Where Is Earth&#39;s Water?</div>
+          <div class="resource-desc">The US Geological Survey&#39;s guide to where all the water on Earth is stored — oceans, ice, underground and rivers — with clear charts. You will need these numbers in Module 3.</div>
+          <a class="resource-link" href="https://www.usgs.gov/special-topics/water-science-school/science/where-earths-water" target="_blank" rel="noopener">Read it →</a>
+        </div>
+      </div>
+
+      <div class="concepts">
+        <span class="concept-tag">Hydrosphere</span>
+        <span class="concept-tag">Geosphere</span>
+        <span class="concept-tag">Atmosphere</span>
+        <span class="concept-tag">Biosphere</span>
+        <span class="concept-tag">Water Cycle</span>
+        <span class="concept-tag">Transpiration</span>
+        <span class="concept-tag">Weathering</span>
+        <span class="concept-tag">Erosion</span>
+        <span class="concept-tag">Deposition</span>
+        <span class="concept-tag">Soil</span>
+      </div>
+
+      <div class="think">Pick one thing that happened in Module 1 — the Marina Barrage, a muddy building site, or NEWater. Which of the four spheres did it involve, and how did a change in one sphere cause a change in another?</div>
+
+      <div class="fun-fact">Mangrove trees, which grow along Singapore&#39;s coast, are erosion superheroes. Their tangled roots trap mud washed down by rivers and slow the waves, so instead of losing land to the sea, mangrove coastlines can actually <strong>build new land</strong> over time.</div>
+    </div>
+  </div>
+
+  <!-- ================================================================ -->
+  <div class="module-label"><b>MODULE 3</b> · FINITE VS INFINITE RESOURCES &amp; GLOBAL DEMAND <span>25 MIN</span></div>
+
+  <div class="section-card" onclick="toggleCard(this)">
+    <div class="section-header">
+      <span class="section-num">3</span>
+      <span class="section-title">⚖️ Finite or Infinite? Water and a Thirsty World</span>
+      <span class="section-time">25 min</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="inquiry">What are finite and infinite resources, and how does global demand impact them?</div>
+      <p class="section-intro">A <strong>resource</strong> is anything from nature that people use. Scientists sort resources into two big groups. <strong>Infinite</strong> (or <strong>renewable</strong>) resources will not run out however much we use them, because nature keeps supplying them: <strong>sunlight</strong>, <strong>wind</strong> and the <strong>tides</strong> will keep coming for billions of years. <strong>Finite</strong> (or <strong>non-renewable</strong>) resources exist in a fixed amount, or form so slowly that once we use them up they are effectively gone: <strong>coal</strong>, <strong>oil</strong> and <strong>gas</strong> took millions of years to form; metals like gold and copper are only in the ground once.<br><br>Water is a puzzle. On one hand, the total amount of water on Earth hardly changes, and the water cycle keeps cleaning and returning it as rain — so water is <strong>renewable</strong>. On the other hand, the <strong>useful</strong> part is tiny, and if we take fresh water from a river, lake or underground store faster than rain can refill it, it behaves exactly like a finite resource. Some deep underground water stores, called <strong>aquifers</strong>, filled up over thousands of years; pump them out in a few decades and they will not be back in your lifetime. So the best way to describe fresh water is: <strong>renewable, but limited</strong> — it is only renewable if we use it wisely.<br><br><strong>Interactive thinking task.</strong> Here is how Earth&#39;s water is shared out. Out of all of it, about <strong>97% is salty ocean water</strong>. About <strong>2% is frozen</strong> in glaciers and ice caps. Only about <strong>1%</strong> is fresh water that people, farms and wildlife can actually reach — and most of that 1% is hidden underground. Every person, every farm, every factory, every river creature on the planet shares that one small slice. Try the 100 Cups activity below before you read on.<br><br><strong>Why demand matters.</strong> In 1950 there were about 2.5 billion people on Earth. Today there are over <strong>8 billion</strong>, and every one of them needs water to drink, cook, wash and — above all — to <strong>grow food</strong>: farming uses about <strong>70%</strong> of all the fresh water people take from rivers, lakes and the ground. Factories need water to make almost everything, from cars to computer chips to clothes. As the population grows and countries build more industry, the demand for that same 1% climbs and climbs. Already, according to the World Health Organization and UNICEF, about <strong>1 in 4 people in the world</strong> do not have safe drinking water at home.<br><br>There is a brand-new kind of demand, too. <strong>Artificial intelligence (AI)</strong> runs on enormous buildings full of computers called <strong>data centres</strong>, and those computer chips get very hot. Many data centres cool them with water that <strong>evaporates</strong> in cooling towers — about 80% of the water they take is lost to the air. A single large data centre can use as much water in a day as a town of <strong>10,000 to 50,000 people</strong>, and companies around the world are planning to build many more of them for AI. Engineers are working on answers — sealed &quot;closed-loop&quot; cooling that reuses the same water, cooling with recycled water instead of drinking water, or building in cooler places — but it is a perfect example of <strong>causation</strong>: a new technology causes a new strain on an old resource.</p>
+
+      <div class="tryit" onclick="event.stopPropagation()">
+        <div class="tryit-title">◈ TRY IT — EARTH&#39;S WATER IN 100 CUPS</div>
+        <p class="tryit-desc">Imagine all the water on Earth poured into <strong>100 cups</strong>. First, guess: how many of those cups are fresh water that people can actually use? Set your guess, then press Reveal.</p>
+        <div class="lab-controls">
+          <label for="cupGuess">My guess:</label>
+          <input type="range" id="cupGuess" min="0" max="100" step="1" value="30">
+          <span class="lab-val" id="cupGuessVal">30 cups</span>
+        </div>
+        <div class="cups" id="cupGrid"></div>
+        <div class="cup-key"><span class="k-salt">Salty ocean</span><span class="k-ice">Frozen ice</span><span class="k-fresh">Fresh water we can reach</span></div>
+        <button class="tryit-btn" id="cupBtn">Reveal</button>
+        <div class="tryit-out" id="cupOut">Move the slider to make your guess — the cups show it in teal.</div>
+      </div>
+
+      <div class="activity" onclick="event.stopPropagation()">
+        <h4>HANDS-ON · ALL THE WATER IN THE WORLD IN A JUG (5 min)</h4>
+        <div class="kit"><b>You need:</b> a 1-litre jug of water, a measuring cup or kitchen scales, a small glass, a teaspoon, an ice-cube tray, salt, and a dropper or straw.</div>
+        <ol>
+          <li>Your 1 litre of water is <b>all the water on Earth</b>. Pour out <b>970 ml</b> into a bowl and stir in a spoon of salt: that is the <b>ocean</b>.</li>
+          <li>Pour <b>20 ml</b> into the ice-cube tray and put it in the freezer: that is the water locked in <b>glaciers and ice caps</b>.</li>
+          <li>The <b>10 ml</b> left (two teaspoons) is all the fresh water people can reach. Most of it is <b>underground</b>.</li>
+          <li>Now use a dropper or straw to take out <b>a single drop</b>. That drop is roughly all the water in the world&#39;s lakes and rivers.</li>
+        </ol>
+        <div class="why"><b>What is going on:</b> the jug makes the 97–2–1 split something you can see and hold. Look at the bowl of seawater next to your two teaspoons. Now imagine 8 billion people, every farm and every factory sharing those two teaspoons — and remember that the water cycle refills them only as fast as it rains. That is why using fresh water wisely matters so much.</div>
+      </div>
+
+      <div class="tryit" onclick="event.stopPropagation()">
+        <div class="tryit-title">◈ TRY IT — FINITE OR INFINITE?</div>
+        <p class="tryit-desc">Ten resources, shuffled. Will each one keep coming <strong>(renewable / infinite)</strong>, or is there a fixed amount that can run out <strong>(finite)</strong>? Two of them are tricky — read the explanation after each answer.</p>
+        <div class="sort-card" id="fiCard">Press Start to see the first resource.</div>
+        <div class="sort-btns">
+          <button id="fiInf" disabled>♾️ RENEWABLE</button>
+          <button id="fiFin" disabled>⛏️ FINITE</button>
+        </div>
+        <button class="tryit-btn" id="fiStart">Start</button>
+        <div class="tryit-out" id="fiOut">No rounds played yet.</div>
+      </div>
+
+      <div class="tryit" onclick="event.stopPropagation()">
+        <div class="tryit-title">◈ TRY IT — THE HIDDEN WATER DETECTIVE</div>
+        <p class="tryit-desc">Everything we eat and use took water to make — to grow the crops, feed the animals, and run the factories. Scientists call this <strong>hidden</strong> or <strong>virtual water</strong>. Match each item to the amount of water it took to produce. Prepare to be surprised.</p>
+        <div class="match-grid" id="hidGrid"></div>
+        <button class="tryit-btn" id="hidBtn">Check my answers</button>
+        <div class="tryit-out" id="hidResult">Pick an amount for every item.</div>
+      </div>
+
+      <div class="tryit" onclick="event.stopPropagation()">
+        <div class="tryit-title">◈ TRY IT — HOW MANY PEOPLE SHARE THE WATER?</div>
+        <p class="tryit-desc">The amount of reachable fresh water on Earth has stayed about the same. The number of people sharing it has not. Press the button to grow the bars.</p>
+        <div class="bars" id="popBars">
+          <div class="bar-row"><span>1950</span><div class="bar-track"><div class="bar-fill" data-w="26"></div></div><span class="bar-val">2.5 bn</span></div>
+          <div class="bar-row"><span>2000</span><div class="bar-track"><div class="bar-fill" data-w="63"></div></div><span class="bar-val">6.2 bn</span></div>
+          <div class="bar-row"><span>Today</span><div class="bar-track"><div class="bar-fill" data-w="85"></div></div><span class="bar-val">8.2 bn</span></div>
+          <div class="bar-row"><span>2050 (forecast)</span><div class="bar-track"><div class="bar-fill" data-w="100"></div></div><span class="bar-val">~9.7 bn</span></div>
+        </div>
+        <button class="tryit-btn" id="popBtn">Grow the bars</button>
+        <div class="tryit-out" id="popOut">Population figures: United Nations.</div>
+      </div>
+
+      <div class="resource-grid">
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Crash Course Kids: The Basics of Freshwater</div>
+          <div class="resource-desc">Where Earth&#39;s fresh water actually is — and why so little of it is easy to use.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=oaQCiwzjnCM" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">TED-Ed: Where We Get Our Fresh Water</div>
+          <div class="resource-desc">Christiana Peppard explains rivers, lakes and underground aquifers, and what happens when we pump water out faster than nature puts it back.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=Pz6AQXQGupQ" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Crash Course Kids: H2O-NO! Fresh Water Problems</div>
+          <div class="resource-desc">What happens when people use fresh water faster than it can be replaced — the problem behind this whole module.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=jNOc7mHr5gI" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-interactive">◈ INTERACTIVE</span>
+          <div class="resource-name">Water Footprint Calculator</div>
+          <div class="resource-desc">Answer questions about your home, food and shopping and see your family&#39;s total water footprint — including all the hidden water. Do it with a grown-up.</div>
+          <a class="resource-link" href="https://www.watercalculator.org/" target="_blank" rel="noopener">Find your footprint →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-read">📖 READ</span>
+          <div class="resource-name">WHO &amp; UNICEF: 1 in 4 People Lack Safe Drinking Water</div>
+          <div class="resource-desc">The 2025 report on how many people around the world still do not have safe water at home. Short and clear.</div>
+          <a class="resource-link" href="https://www.who.int/news/item/26-08-2025-1-in-4-people-globally-still-lack-access-to-safe-drinking-water---who--unicef" target="_blank" rel="noopener">Read it →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-read">📖 READ</span>
+          <div class="resource-name">EESI: Data Centers and Water Consumption</div>
+          <div class="resource-desc">Grown-up reading on why AI data centres need so much water for cooling and what engineers are doing about it. Good for a family discussion.</div>
+          <a class="resource-link" href="https://www.eesi.org/articles/view/data-centers-and-water-consumption" target="_blank" rel="noopener">Read it →</a>
+        </div>
+      </div>
+
+      <div class="concepts">
+        <span class="concept-tag">Finite Resources</span>
+        <span class="concept-tag">Renewable Resources</span>
+        <span class="concept-tag">Aquifers</span>
+        <span class="concept-tag">97 · 2 · 1</span>
+        <span class="concept-tag">Virtual Water</span>
+        <span class="concept-tag">Population Growth</span>
+        <span class="concept-tag">AI Data Centres</span>
+        <span class="concept-tag">Causation</span>
+      </div>
+
+      <div class="think">A company wants to build a new AI data centre next to a town whose water comes from one small river. You are on the town council. Write down three questions you would ask the company before saying yes or no. (Hint: think about how much water, where it comes from, what happens in a drought, and whether it could use recycled water instead.)</div>
+
+      <div class="fun-fact">A cup of tea takes about <strong>30 litres</strong> of hidden water to produce. A cup of coffee takes about <strong>140 litres</strong> — mostly to grow the coffee beans. The water you can see in the cup is the smallest part.</div>
+    </div>
+  </div>
+
+  <!-- ================================================================ -->
+  <div class="module-label"><b>MODULE 4</b> · SCIENCE THAT PROTECTS FRESH WATER — AND YOUR PART <span>15 MIN</span></div>
+
+  <div class="section-card" onclick="toggleCard(this)">
+    <div class="section-header">
+      <span class="section-num">4</span>
+      <span class="section-title">🔬 Water Inventors, Water Detectives — and You</span>
+      <span class="section-time">15 min</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="inquiry">How are scientists protecting fresh water around the world, and how can we contribute?</div>
+      <p class="section-intro">You have already seen how Singapore recycles and desalinates water. Around the world, scientists are attacking the problem from completely different directions. Here are six of the most exciting.<br><br><strong>☁️ Catching fog.</strong> In some of the driest places on Earth — Chile&#39;s Atacama Desert and the mountains of southern Morocco — it almost never rains, but thick fog rolls in from the sea. Giant mesh <strong>fog nets</strong> catch the tiny droplets, which join together, trickle down and are collected in pipes. In Morocco, fog nets supply drinking water to whole villages.<br><strong>🏜️ Pulling water out of desert air.</strong> Chemist <strong>Omar Yaghi</strong> designs crystals called <strong>metal–organic frameworks (MOFs)</strong> that are full of tiny holes, like a sponge built atom by atom. At night they soak up water vapour from even very dry air; when the Sun warms them, they release it as liquid water. His team has harvested drinking water from the desert air of Arizona, and in <strong>2025 he shared the Nobel Prize in Chemistry</strong> for inventing MOFs.<br><strong>🛰️ Weighing water from space.</strong> NASA&#39;s <strong>GRACE</strong> satellites (launched 2002) and their successors <strong>GRACE-FO</strong> (2018) measure tiny changes in Earth&#39;s gravity as they fly over it. Water is heavy, so when an underground aquifer is pumped out, the pull of gravity there gets very slightly weaker — and the satellites notice. For the first time, scientists can see where hidden groundwater is shrinking.<br><strong>💧 Farming drop by drop.</strong> Since farms use about 70% of fresh water, saving water on farms matters most. <strong>Drip irrigation</strong>, developed in Israel in the 1960s, uses thin pipes with tiny holes to drip water straight onto each plant&#39;s roots instead of spraying whole fields, so far less is lost to evaporation and run-off. Soil sensors now tell farmers exactly when plants are thirsty.<br><strong>🧽 Sponge cities.</strong> Since 2015, China has been rebuilding parts of its cities to act like sponges: <strong>roads and pavements that let water soak through</strong>, rooftop gardens, rain gardens and new wetlands that soak up storm water, clean it and store it underground instead of letting it rush away into drains. (Sound familiar? It is the same idea as Singapore&#39;s ABC Waters, scaled up.)<br><strong>🦫 Nature&#39;s engineers.</strong> In the UK and elsewhere, scientists have brought back <strong>beavers</strong>. Beaver dams slow rivers down, store water in ponds through dry summers, trap silt, and reduce flooding downstream. Sometimes the best technology is an animal that has been doing the job for millions of years.<br><br><strong>And you do not have to be a grown-up.</strong> When she was 11, <strong>Gitanjali Rao</strong> heard about a city in the USA whose tap water had become contaminated with lead. She invented <strong>Tethys</strong>, a small device that uses tiny carbon tubes and a phone app to test water for lead quickly and cheaply — and won America&#39;s Top Young Scientist award. In 2020 TIME magazine named her its first-ever <strong>Kid of the Year</strong>. Scientific understanding really does inform the preservation of Earth&#39;s resources — and it can start at your kitchen table.</p>
+
+      <div class="tryit" onclick="event.stopPropagation()">
+        <div class="tryit-title">◈ TRY IT — MATCH THE SOLUTION TO THE PROBLEM</div>
+        <p class="tryit-desc">Each of these projects solves a different water problem. Match them up.</p>
+        <div class="match-grid" id="solGrid"></div>
+        <button class="tryit-btn" id="solBtn">Check my answers</button>
+        <div class="tryit-out" id="solResult">Pick a solution for every problem.</div>
+      </div>
+
+      <div class="tryit" onclick="event.stopPropagation()">
+        <div class="tryit-title">◈ TRY IT — MY WATER DAY</div>
+        <p class="tryit-desc">How much water do <em>you</em> use in a day at home? Move the sliders to match a normal day, and watch the total. Then try changing one habit and see how much you save. <em>(Typical amounts — your shower and toilet may use more or less.)</em></p>
+        <div class="calc-row"><span>🚿 Minutes in the shower</span><input type="range" id="cShower" min="0" max="20" step="1" value="8"><span class="calc-val" id="cShowerV">8 min</span></div>
+        <div class="calc-row"><span>🪥 Tap while brushing teeth (twice a day)</span><select id="cBrush"><option value="24">Left running</option><option value="1">Turned off / use a cup</option></select><span class="calc-val" id="cBrushV">24 L</span></div>
+        <div class="calc-row"><span>🚽 Toilet flushes</span><input type="range" id="cFlush" min="0" max="10" step="1" value="5"><span class="calc-val" id="cFlushV">5</span></div>
+        <div class="calc-row"><span>🧼 Hand washes</span><input type="range" id="cHands" min="0" max="15" step="1" value="6"><span class="calc-val" id="cHandsV">6</span></div>
+        <div class="calc-row"><span>🛁 Bath instead of shower today?</span><select id="cBath"><option value="0">No</option><option value="80">Yes</option></select><span class="calc-val" id="cBathV">0 L</span></div>
+        <div class="calc-total" id="cTotal">0 L <small>a day</small></div>
+        <div class="meter"><div class="meter-in" id="cMeter"></div></div>
+        <div class="tryit-out" id="cOut"></div>
+      </div>
+
+      <div class="activity" onclick="event.stopPropagation()">
+        <h4>HANDS-ON · BE A WATER DETECTIVE: THE SILENT LEAK TEST (5 min + 15 min waiting)</h4>
+        <div class="kit"><b>You need:</b> a grown-up, a toilet with a tank (cistern) you can lift the lid off, and a few drops of food colouring.</div>
+        <ol>
+          <li>Ask a grown-up to lift the lid off the toilet tank. Add 5–10 drops of food colouring to the water <em>in the tank</em> (not the bowl).</li>
+          <li><b>Do not flush</b> for 15 minutes. Go and do something else.</li>
+          <li>Come back and look in the toilet <em>bowl</em>. If coloured water has appeared there, water is leaking from the tank all day long without anyone noticing. Then flush to clear the colour.</li>
+          <li>Bonus mission: with your grown-up, check every tap in the house for drips. Put a cup under any dripping tap for 10 minutes, measure what you collect, and multiply by 144 to find how much it wastes in a day.</li>
+        </ol>
+        <div class="why"><b>What is going on:</b> a worn rubber seal at the bottom of the tank can let water trickle into the bowl silently, day and night. A badly leaking toilet can waste hundreds of litres a day — more in one day than a whole family drinks in a month. Finding it is real detective work: a hypothesis, a test, an observation and a conclusion. If you find a leak, you have just done the most useful water-saving job in your house.</div>
+      </div>
+
+      <div class="tryit" onclick="event.stopPropagation()">
+        <div class="tryit-title">◈ TAKE ACTION — MY WATER PLEDGE</div>
+        <p class="tryit-desc">The PYP asks: now that you understand, what will you <strong>do</strong>? Tick the actions you promise to try this week. Pick at least three. Then tell someone at home.</p>
+        <div class="pledges" id="pledgeList">
+          <label><input type="checkbox"> Turn the tap off while I brush my teeth</label>
+          <label><input type="checkbox"> Keep my shower to 5 minutes (use a song as a timer)</label>
+          <label><input type="checkbox"> Do the leak test and the dripping-tap check at home</label>
+          <label><input type="checkbox"> Put my leftover drinking water on a plant instead of down the sink</label>
+          <label><input type="checkbox"> Never put litter, oil or paint down a drain</label>
+          <label><input type="checkbox"> Choose a meal with less hidden water one day this week</label>
+          <label><input type="checkbox"> Collect rainwater in a bucket for the garden</label>
+          <label><input type="checkbox"> Teach someone the 97–2–1 jug experiment</label>
+        </div>
+        <div class="tryit-out" id="pledgeOut">0 actions chosen.</div>
+      </div>
+
+      <div class="resource-grid">
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">FRANCE 24: Moroccan Scientists Turn Fog Into Drinking Water</div>
+          <div class="resource-desc">Visit the mountains of Morocco where fog nets catch drinking water for villages that used to walk for hours to fetch it.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=k9cJe6HQeFI" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">TEDx: Gitanjali Rao — A 12-Year-Old Inventor&#39;s Device for Detecting Lead in Water</div>
+          <div class="resource-desc">Gitanjali explains how she went from hearing about a water crisis on the news to building her own testing device. Proof that kids can do real science.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=gVgaJN3GI6U" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-video">▶ VIDEO</span>
+          <div class="resource-name">Crash Course Kids: A Fresh Future</div>
+          <div class="resource-desc">How engineers and ordinary people are finding ways to make fresh water go further.</div>
+          <a class="resource-link" href="https://www.youtube.com/watch?v=N9DhJB25Efc" target="_blank" rel="noopener">▶ Watch on YouTube →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-read">📖 READ</span>
+          <div class="resource-name">The Nobel Prize: Chemistry 2025 — Popular Information</div>
+          <div class="resource-desc">The Nobel committee&#39;s own easy explanation of metal–organic frameworks, the &quot;rooms for chemistry&quot; that can pull water out of desert air.</div>
+          <a class="resource-link" href="https://www.nobelprize.org/prizes/chemistry/2025/popular-information/" target="_blank" rel="noopener">Read it →</a>
+        </div>
+        <div class="resource-card">
+          <span class="resource-type type-read">📖 READ</span>
+          <div class="resource-name">NASA GRACE: Weighing Water From Space</div>
+          <div class="resource-desc">The home page of the twin satellites that measure Earth&#39;s gravity to track groundwater, ice and sea level. Look for the maps of where water is disappearing.</div>
+          <a class="resource-link" href="https://grace.jpl.nasa.gov/" target="_blank" rel="noopener">Explore →</a>
+        </div>
+      </div>
+
+      <div class="concepts">
+        <span class="concept-tag">Fog Harvesting</span>
+        <span class="concept-tag">MOFs</span>
+        <span class="concept-tag">Satellites</span>
+        <span class="concept-tag">Drip Irrigation</span>
+        <span class="concept-tag">Sponge Cities</span>
+        <span class="concept-tag">Nature-Based Solutions</span>
+        <span class="concept-tag">Young Inventors</span>
+        <span class="concept-tag">Action</span>
+      </div>
+
+      <div class="takeaway">
+        <h3>◆ THE THREE THINGS TO REMEMBER</h3>
+        <b>1. Fresh water is renewable, but limited.</b> Only about 1 cup in every 100 of Earth&#39;s water is fresh water we can reach, and the water cycle refills it only as fast as it rains. Use it faster than that and it runs out.<br>
+        <b>2. Water connects everything.</b> It flows through all four Earth systems, shapes the land through erosion, and carries soil with it — so protecting soil, forests and rivers is protecting water.<br>
+        <b>3. Science plus responsibility works.</b> Singapore turned rain, used water and seawater into a reliable supply for over 6 million people. Scientists are catching fog, pulling water out of desert air and weighing it from space. And every tap you turn off is part of the same story.
+      </div>
+
+      <div class="fun-fact">Gitanjali Rao was 11 when she started building her lead-detecting device — about your age. Her advice to other kids: find a problem you care about, research it, and don&#39;t be afraid to fail on the way. What water problem would <em>you</em> invent a solution for?</div>
+    </div>
+  </div>
+
+  <!-- ===== FACT WALL ===== -->
+  <div class="factwall-section">
+    <div class="factwall-head">
+      <div class="factwall-icon">🤯</div>
+      <div>
+        <div class="factwall-title">Eight Facts To Amaze Everyone At Dinner</div>
+        <div class="factwall-sub">Checked against PUB (Singapore&#39;s national water agency), Singapore&#39;s Ministry of Sustainability and the Environment, the Meteorological Service Singapore, the USGS, the UN FAO, WHO/UNICEF and the Nobel Foundation.</div>
+      </div>
+    </div>
+    <div class="factwall">
+      <div class="factcard"><span class="factnum">2 billion litres</span>The water Singapore uses every day — about 800 Olympic swimming pools — from an island with no big rivers.</div>
+      <div class="factcard"><span class="factnum">2 / 3</span>The share of Singapore&#39;s land that is water catchment. Rain on roofs and roads flows through drains into 17 reservoirs.</div>
+      <div class="factcard"><span class="factnum">1868</span>The year MacRitchie, Singapore&#39;s oldest reservoir, was built. Its newest city reservoir, behind the Marina Barrage, opened in 2008.</div>
+      <div class="factcard"><span class="factnum">206 km</span>The length of Singapore&#39;s Deep Tunnel Sewerage System, which carries used water underground to be turned into NEWater.</div>
+      <div class="factcard"><span class="factnum">1 in 100</span>If all Earth&#39;s water were 100 cups, only about 1 cup would be fresh water people can reach. 97 are salty and 2 are frozen.</div>
+      <div class="factcard"><span class="factnum">1,000 years</span>How long it can take nature to make just 1 cm of soil. A single storm can wash it off bare ground in an afternoon.</div>
+      <div class="factcard"><span class="factnum">15,500 L</span>The hidden water it takes to produce 1 kg of beef — mostly to grow the animals&#39; food.</div>
+      <div class="factcard"><span class="factnum">2025</span>The year Omar Yaghi shared the Nobel Prize in Chemistry for crystals that can pull drinking water out of desert air.</div>
+    </div>
+  </div>
+
+  <!-- ===== QUIZ ===== -->
+  <div class="quiz-section">
+    <div class="quiz-header">
+      <div class="quiz-icon">💧</div>
+      <div>
+        <div class="quiz-title">Knowledge Check</div>
+        <div class="quiz-subtitle">10 questions · See how much you&#39;ve learned!</div>
+      </div>
+    </div>
+
+    <div id="quizContainer"></div>
+
+    <button class="submit-btn" id="submitBtn" onclick="submitQuiz()" disabled>Submit Answers</button>
+
+    <div class="score-wrap" id="scoreWrap">
+      <div class="score-display" id="scoreDisplay"></div>
+      <div class="score-label">correct answers</div>
+      <div class="score-bar-outer"><div class="score-bar-inner" id="scoreBar"></div></div>
+      <div class="score-message" id="scoreMsg"></div>
+    </div>
+  </div>
+
+  <!-- ===== DATED NUMBERS ===== -->
+  <div class="dated">
+    <h3>◷ LATEST NUMBERS — CHECKED NOVEMBER 2026</h3>
+    Water systems change, so the numbers most likely to go out of date live in this box.<br><br>
+    <b>Singapore&#39;s water use:</b> about 440 million gallons (around 2 billion litres) a day, roughly 60% by industry and businesses and 40% by homes; expected to almost double by 2065 (PUB).<br>
+    <b>NEWater:</b> can meet up to 40% of current demand, planned to rise to more than half by 2060. The first NEWater factory, at Bedok, closed in 2024 after reaching the end of its life; new factories at Changi and Tuas are being added.<br>
+    <b>Desalination:</b> five plants (SingSpring 2005, Tuas South 2013, Tuas 2018, Keppel Marina East 2020, Jurong Island 2022), using about 3.5 kWh of energy per 1,000 litres.<br>
+    <b>Household use:</b> about 141 litres per person per day in Singapore homes in 2023; the national target is 130 litres by 2030.<br>
+    <b>Safe drinking water:</b> about 1 in 4 people worldwide (around 2.1 billion) still lack safely managed drinking water at home (WHO/UNICEF, August 2025).<br>
+    <b>AI data centres:</b> a large data centre can use up to about 19 million litres (5 million US gallons) of water a day for cooling (EESI, 2025). Estimates for AI are changing fast as new centres are built and new cooling methods arrive.
+  </div>
+
+  <footer>
+    Curriculum designed for curious minds · All linked resources are free and educational<br>
+    Videos: PUB Singapore (sgPUB) / gov.sg / TED-Ed / Crash Course Kids / FRANCE 24 / TEDx Talks · Interactives &amp; reading: Water Footprint Calculator (GRACE Communications) · USGS Water Science School · NASA GRACE · The Nobel Prize · World Health Organization · Environmental and Energy Study Institute · PUB · Ministry of Sustainability and the Environment, Singapore<br>
+    Figures checked November 2026 against PUB, Singapore&#39;s Ministry of Sustainability and the Environment, the Meteorological Service Singapore, the USGS, the UN Food and Agriculture Organization, the United Nations, WHO/UNICEF, the Water Footprint Network and the Nobel Foundation.<br>
+    <a href="https://curious-minds-science-lab.org/">← Back to all curricula</a>
+  </footer>
+
+</div>
+
+<script>
+const questions = [
+  {
+    q: "Which of these is NOT one of Singapore's Four National Taps?",
+    options: ["Imported water from Johor", "NEWater", "Melting glaciers", "Desalinated seawater"],
+    answer: 2,
+    explanation: "Singapore has no glaciers! The Four National Taps are imported water, local catchments (rain collected in reservoirs), NEWater (used water made ultra-clean) and desalinated seawater. Running four taps as one system means no single source can let the country down."
+  },
+  {
+    q: "What makes Singapore's Local Catchment tap so unusual?",
+    options: ["It only collects rain from mountains far away", "About two-thirds of the island — including the city — is catchment, with drains carrying rain to 17 reservoirs", "It collects rain in buckets on every roof", "It pumps rain into underground caves"],
+    answer: 1,
+    explanation: "In Singapore the city itself is the catchment. Rain on roofs, roads and playgrounds flows through drains, canals and rivers into 17 reservoirs — including Marina Reservoir in the middle of the city, created by the Marina Barrage in 2008."
+  },
+  {
+    q: "Why must building sites in Singapore use Earth Control Measures such as silt fences and covering bare soil?",
+    options: ["To keep the builders cool", "To stop rain washing soil into drains and reservoirs, where silt causes floods and muddy water", "To make the buildings stronger", "To stop birds landing on the site"],
+    answer: 1,
+    explanation: "Rain on bare soil causes erosion. The silt washes into drains (clogging them, so they flood) and into reservoirs (making the water cloudy, harder to clean, and slowly filling the reservoir up). Stopping erosion at the source keeps the whole catchment clean."
+  },
+  {
+    q: "In a NEWater factory, what is the job of the ultraviolet (UV) light at the end?",
+    options: ["To warm the water up", "To make the water glow so it can be seen in the pipes", "To scramble the DNA of any microbe that slipped through, so it cannot make anyone ill", "To remove salt"],
+    answer: 2,
+    explanation: "Microfiltration and reverse osmosis do the heavy filtering. UV is the final safety step: it damages the DNA of any bacterium or virus that somehow got through, so it cannot reproduce or cause illness."
+  },
+  {
+    q: "Why is desalination the most expensive of Singapore's four taps?",
+    options: ["Seawater is hard to find", "Pushing seawater through membranes at very high pressure uses a lot of electricity", "The salt has to be sold", "It only works at night"],
+    answer: 1,
+    explanation: "Reverse osmosis needs huge pressure — more than twenty-five times the pressure in a car tyre — to force water molecules through the membrane and leave the salt behind. That takes about 3.5 kWh for every 1,000 litres, far more than cleaning rainwater."
+  },
+  {
+    q: "A glacier is part of which of Earth's four systems?",
+    options: ["The geosphere", "The atmosphere", "The biosphere", "The hydrosphere"],
+    answer: 3,
+    explanation: "The hydrosphere is all of Earth's water — including frozen water in glaciers and ice caps. The geosphere is rock and soil, the atmosphere is air, and the biosphere is living things."
+  },
+  {
+    q: "Which of these best describes EROSION?",
+    options: ["Rock and soil being carried away by water, wind or ice", "Rock melting deep underground", "Plants growing on bare soil", "Water turning into vapour"],
+    answer: 0,
+    explanation: "Weathering breaks rock into pieces; erosion carries the pieces away; deposition drops them somewhere new. Plants growing on soil actually slow erosion down, because their roots hold the soil in place."
+  },
+  {
+    q: "If all of Earth's water were shared out into 100 cups, about how many cups would be fresh water people can reach?",
+    options: ["About 1", "About 10", "About 30", "About 50"],
+    answer: 0,
+    explanation: "About 97 cups are salty ocean and about 2 are frozen in glaciers and ice caps. Only about 1 cup is fresh water people, farms and wildlife can reach — and most of that is underground."
+  },
+  {
+    q: "Why are many AI data centres a new strain on fresh water?",
+    options: ["Computers drink water to work", "They use water to cool hot computer chips, and much of it evaporates", "They store water for emergencies", "They make rain clouds"],
+    answer: 1,
+    explanation: "Chips running AI get very hot. Many data centres cool them with water in cooling towers, where most of it evaporates. A large one can use as much water a day as a town of 10,000–50,000 people — which is why engineers are working on closed-loop and recycled-water cooling."
+  },
+  {
+    q: "In Chile's Atacama Desert and the mountains of Morocco, how do fog nets help people?",
+    options: ["They catch fish from the sea", "They block the fog so the Sun can shine", "They catch tiny fog droplets that drip down and are collected as drinking water", "They stop sand blowing into villages"],
+    answer: 2,
+    explanation: "In places where it almost never rains but fog rolls in from the sea, mesh nets catch the tiny droplets. They join into bigger drops, trickle down, and are piped away — clean water from thin air, with no electricity needed."
+  }
+];
+
+let answered = {};
+
+function buildQuiz() {
+  const container = document.getElementById('quizContainer');
+  questions.forEach((q, qi) => {
+    const block = document.createElement('div');
+    block.className = 'question-block';
+    block.id = 'q' + qi;
+    let optionsHtml = q.options.map((opt, oi) =>
+      '<button class="option-btn" id="q' + qi + 'o' + oi + '" onclick="selectOption(' + qi + ', ' + oi + ')">' + opt + '</button>'
+    ).join('');
+    block.innerHTML =
+      '<div class="question-num">QUESTION ' + (qi + 1) + ' OF ' + questions.length + '</div>' +
+      '<div class="question-text">' + q.q + '</div>' +
+      '<div class="options">' + optionsHtml + '</div>' +
+      '<div class="feedback" id="fb' + qi + '"></div>';
+    container.appendChild(block);
+  });
+}
+
+function selectOption(qi, oi) {
+  if (answered[qi] !== undefined) return;
+  answered[qi] = oi;
+  const correct = questions[qi].answer;
+  const block = document.getElementById('q' + qi);
+  const fb = document.getElementById('fb' + qi);
+  questions[qi].options.forEach(function (_, i) {
+    document.getElementById('q' + qi + 'o' + i).disabled = true;
+  });
+  if (oi === correct) {
+    document.getElementById('q' + qi + 'o' + oi).classList.add('selected-correct');
+    block.classList.add('correct');
+    fb.className = 'feedback show ok';
+    fb.textContent = '✓ ' + questions[qi].explanation;
+  } else {
+    document.getElementById('q' + qi + 'o' + oi).classList.add('selected-wrong');
+    document.getElementById('q' + qi + 'o' + correct).classList.add('reveal-correct');
+    block.classList.add('wrong');
+    fb.className = 'feedback show bad';
+    fb.textContent = '✗ Not quite. ' + questions[qi].explanation;
+  }
+  updateSubmitBtn();
+}
+
+var TOTAL_MIN = 120;
+
+function updateSubmitBtn() {
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = Object.keys(answered).length < questions.length;
+  const pct = Math.round((Object.keys(answered).length / questions.length) * 30 + 70);
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressTime').textContent = '~' + Math.round(pct * TOTAL_MIN / 100) + ' / ' + TOTAL_MIN + ' min';
+}
+
+function submitQuiz() {
+  const score = Object.entries(answered).filter(function (e) { return questions[e[0]].answer === e[1]; }).length;
+  const total = questions.length;
+  const pct = Math.round((score / total) * 100);
+  document.getElementById('scoreDisplay').textContent = score + ' / ' + total;
+  document.getElementById('scoreWrap').classList.add('show');
+  setTimeout(function () { document.getElementById('scoreBar').style.width = pct + '%'; }, 100);
+  let msg;
+  if (pct === 100) msg = "🏆 Perfect score! You could give a tour of Singapore's water system. Go and teach someone at home the 97–2–1 jug experiment.";
+  else if (pct >= 80) msg = "⭐ Excellent work! Four taps, four spheres, finite and renewable — you have the whole picture. Look again at the ones you missed and you are a water expert.";
+  else if (pct >= 60) msg = "👍 Good effort! The big ideas are in. The trickiest bits are usually the NEWater steps and the four spheres — reopen Module 1 · C and Module 2 and play the activities again.";
+  else msg = "💧 Keep exploring! There is a lot in this unit, and it is fine to take two sessions. Reopen the modules, run the Rain-to-Reservoir Simulator and the 100 Cups activity, then try the quiz once more.";
+  document.getElementById('scoreMsg').textContent = msg;
+  document.getElementById('submitBtn').disabled = true;
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('progressTime').textContent = TOTAL_MIN + ' / ' + TOTAL_MIN + ' min ✓';
+}
+
+function toggleCard(card) {
+  card.classList.toggle('open');
+  updateProgress();
+}
+
+function updateProgress() {
+  const open = document.querySelectorAll('.section-card.open').length;
+  const total = document.querySelectorAll('.section-card').length;
+  const pct = Math.min(70, Math.round((open / total) * 70));
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressTime').textContent = '~' + Math.round(pct * TOTAL_MIN / 100) + ' / ' + TOTAL_MIN + ' min';
+}
+
+/* ===== Shared helpers ===== */
+function shuffleArr(a) {
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+
+function fmtInt(n) {
+  if (n !== 0 && Math.abs(n) < 1) return n.toLocaleString('en-US', { maximumFractionDigits: 2 });
+  return Math.round(n).toLocaleString('en-US', { maximumFractionDigits: 0 });
+}
+
+/* Generic two-way sorter */
+function buildSorter(cfg) {
+  var card = document.getElementById(cfg.cardId);
+  var aBtn = document.getElementById(cfg.aBtnId);
+  var bBtn = document.getElementById(cfg.bBtnId);
+  var startBtn = document.getElementById(cfg.startId);
+  var out = document.getElementById(cfg.outId);
+  if (!card || !aBtn || !bBtn || !startBtn || !out) return;
+
+  var deck = [], idx = 0, right = 0;
+
+  function render() {
+    if (idx >= deck.length) {
+      card.textContent = 'Round complete.';
+      aBtn.disabled = true; bBtn.disabled = true;
+      startBtn.disabled = false;
+      startBtn.textContent = 'Shuffle & Play Again';
+      var verdict;
+      if (right === deck.length) verdict = cfg.winMsg;
+      else if (right >= Math.ceil(deck.length * 0.7)) verdict = 'Solid. Read the ones you missed again and go round once more.';
+      else verdict = 'Worth another go — reread the part above first, then shuffle and try again.';
+      out.innerHTML = '<b>' + right + ' / ' + deck.length + '</b> — ' + verdict;
+      return;
+    }
+    card.textContent = deck[idx].text;
+    aBtn.disabled = false; bBtn.disabled = false;
+    out.innerHTML = 'Item <b>' + (idx + 1) + '</b> of ' + deck.length + ' · score so far: <b>' + right + '</b>';
+  }
+
+  function answer(choice) {
+    if (idx >= deck.length) return;
+    var item = deck[idx];
+    var ok = (choice === item.ans);
+    if (ok) right++;
+    idx++;
+    out.innerHTML = (ok ? '✅ Correct. ' : '❌ Not this time — it is <b>' + (item.ans === 'a' ? cfg.aName : cfg.bName) + '</b>. ') + item.why;
+    aBtn.disabled = true; bBtn.disabled = true;
+    setTimeout(render, 1600);
+  }
+
+  startBtn.addEventListener('click', function () {
+    deck = shuffleArr(cfg.items.slice());
+    idx = 0; right = 0;
+    startBtn.disabled = true;
+    render();
+  });
+  aBtn.addEventListener('click', function () { answer('a'); });
+  bBtn.addEventListener('click', function () { answer('b'); });
+}
+
+/* Generic ordering relay */
+function buildRelay(cfg) {
+  var grid = document.getElementById(cfg.gridId);
+  var track = document.getElementById(cfg.trackId);
+  var reset = document.getElementById(cfg.resetId);
+  if (!grid || !track || !reset) return;
+  var next = 0;
+
+  function draw() {
+    next = 0;
+    grid.innerHTML = '';
+    track.innerHTML = cfg.startMsg;
+    shuffleArr(cfg.steps.map(function (s, i) { return { text: s, order: i }; })).forEach(function (s) {
+      var b = document.createElement('button');
+      b.className = 'relay-step';
+      b.type = 'button';
+      b.textContent = s.text;
+      b.addEventListener('click', function () {
+        if (b.classList.contains('done')) return;
+        if (s.order === next) {
+          b.classList.remove('bad');
+          b.classList.add('done');
+          next++;
+          if (next === cfg.steps.length) {
+            track.innerHTML = '<b>All ' + cfg.steps.length + ' in the right order!</b> ' + cfg.doneMsg;
+          } else {
+            track.innerHTML = 'Step <b>' + next + '</b> of ' + cfg.steps.length + ' — keep going.' + (cfg.stepNotes && cfg.stepNotes[next - 1] ? ' ' + cfg.stepNotes[next - 1] : '');
+          }
+        } else {
+          b.classList.add('bad');
+          track.innerHTML = 'Not yet. ' + cfg.hint;
+          setTimeout(function () { b.classList.remove('bad'); }, 900);
+        }
+      });
+      grid.appendChild(b);
+    });
+  }
+
+  reset.addEventListener('click', draw);
+  draw();
+}
+
+/* Generic dropdown matcher */
+function buildMatcher(cfg) {
+  var grid = document.getElementById(cfg.gridId);
+  var btn = document.getElementById(cfg.btnId);
+  var out = document.getElementById(cfg.outId);
+  if (!grid || !btn || !out) return;
+
+  var answers = [];
+  cfg.pairs.forEach(function (p) { if (answers.indexOf(p.job) === -1) answers.push(p.job); });
+  answers.sort();
+
+  cfg.pairs.forEach(function (p) {
+    var row = document.createElement('div');
+    row.className = 'match-row';
+    row.dataset.answer = p.job;
+    var label = document.createElement('div');
+    label.className = 'match-part';
+    label.textContent = p.part;
+    var sel = document.createElement('select');
+    sel.innerHTML = '<option value="">' + cfg.placeholder + '</option>' +
+      answers.map(function (j) { return '<option>' + j + '</option>'; }).join('');
+    row.appendChild(label);
+    row.appendChild(sel);
+    grid.appendChild(row);
+  });
+
+  btn.addEventListener('click', function () {
+    var rows = grid.querySelectorAll('.match-row');
+    var right = 0, blank = 0;
+    rows.forEach(function (r) {
+      var sel = r.querySelector('select');
+      r.classList.remove('correct', 'wrong');
+      if (!sel.value) { blank++; return; }
+      if (sel.value === r.dataset.answer) { r.classList.add('correct'); right++; }
+      else { r.classList.add('wrong'); }
+    });
+    if (blank === rows.length) {
+      out.innerHTML = 'Have a go at all ' + rows.length + ' first!';
+    } else if (right === rows.length) {
+      out.innerHTML = '<b>' + right + ' / ' + rows.length + '</b> — ' + cfg.winMsg;
+    } else {
+      out.innerHTML = '<b>' + right + ' / ' + rows.length + '</b> correct. Green rows are right, red ones need another try.' +
+        (blank ? ' (' + blank + ' still empty.)' : '');
+    }
+  });
+}
+
+/* ===== 1A · Which tap is it? ===== */
+buildMatcher({
+  gridId: 'tapGrid', btnId: 'tapBtn', outId: 'tapResult',
+  placeholder: '— choose a tap —',
+  winMsg: 'Perfect. You know all Four National Taps — and the strengths of each one.',
+  pairs: [
+    { part: 'Pipelines carry it across the Causeway from Johor', job: 'Tap 1 · Imported water' },
+    { part: 'A 1962 agreement allows up to 250 million gallons a day until 2061', job: 'Tap 1 · Imported water' },
+    { part: 'Rain on roofs and roads flows through drains into 17 reservoirs', job: 'Tap 2 · Local catchments' },
+    { part: 'A barrage turned a bay of seawater into a freshwater lake', job: 'Tap 2 · Local catchments' },
+    { part: 'Used water is cleaned with membranes and ultraviolet light', job: 'Tap 3 · NEWater' },
+    { part: 'Computer-chip factories love it because it is so pure', job: 'Tap 3 · NEWater' },
+    { part: 'Seawater is forced through membranes at very high pressure', job: 'Tap 4 · Desalination' },
+    { part: 'Never runs dry in a drought, but uses the most energy', job: 'Tap 4 · Desalination' }
+  ]
+});
+
+/* ===== 1B · Raindrop relay ===== */
+buildRelay({
+  gridId: 'dropSteps', trackId: 'dropTrack', resetId: 'dropReset',
+  steps: [
+    'Rain lands on the roof of a block of flats',
+    'Gutters and a downpipe',
+    'A roadside drain',
+    'A big canal or river',
+    'A reservoir',
+    'A waterworks (cleaned and tested)',
+    'Pipes under the street',
+    'Your kitchen tap'
+  ],
+  stepNotes: [
+    'The roof is part of the catchment — that is why it must be kept clean.',
+    'Every downpipe in the city is the start of a journey to a reservoir.',
+    'This is why you should never drop litter or pour anything into a drain.',
+    'Some canals have been turned back into natural rivers by ABC Waters — plants slow the water and filter it.',
+    'The reservoir stores the rain until it is needed. Silt here means less storage and harder cleaning.',
+    'Here the water is filtered and disinfected, and tested before it leaves.',
+    'Almost there…'
+  ],
+  startMsg: 'Where does the raindrop go first?',
+  hint: 'Think about which way water flows: from high up, down through smaller channels into bigger ones.',
+  doneMsg: 'From roof to tap — and the drain, the canal and the reservoir were all part of the journey. In Singapore the whole city is a water collector.'
+});
+
+/* ===== 1B · Rain-to-reservoir simulator ===== */
+(function () {
+  var rain = document.getElementById('rainSlider');
+  var catchS = document.getElementById('catchSlider');
+  var ecm = document.getElementById('ecmBox');
+  var plant = document.getElementById('plantBox');
+  var rainVal = document.getElementById('rainVal');
+  var catchVal = document.getElementById('catchVal');
+  var water = document.getElementById('resWater');
+  var label = document.getElementById('resLabel');
+  var stats = document.getElementById('simStats');
+  var out = document.getElementById('simOut');
+  if (!rain || !catchS || !stats) return;
+
+  var ISLAND_KM2 = 735;          // Singapore land area
+  var REACHES_RESERVOIR = 0.5;   // simple model: about half the rain on the catchment reaches a reservoir
+  var DAILY_M3 = 2000000;        // ~440 million gallons a day ≈ 2 million cubic metres
+  var POOL_M3 = 2500;            // one Olympic pool
+
+  function mix(a, b, t) {
+    return 'rgb(' + [0, 1, 2].map(function (i) { return Math.round(a[i] + (b[i] - a[i]) * t); }).join(',') + ')';
+  }
+
+  function render() {
+    var mm = parseInt(rain.value, 10);
+    var pct = parseInt(catchS.value, 10);
+    rainVal.textContent = mm + ' mm';
+    catchVal.textContent = pct + '%';
+
+    var m3 = (mm / 1000) * ISLAND_KM2 * 1e6 * (pct / 100) * REACHES_RESERVOIR;
+    var litres = m3 * 1000;
+    var days = m3 / DAILY_M3;
+    var pools = m3 / POOL_M3;
+
+    // silt: heavier rain on bare ground washes off more soil
+    var silt = (mm / 120);
+    if (!ecm.checked) silt *= 1; else silt *= 0.25;
+    if (!plant.checked) silt *= 1; else silt *= 0.5;
+    silt = Math.min(1, silt * (pct / 67));
+    var clarity;
+    if (silt < 0.12) clarity = 'Crystal clear';
+    else if (silt < 0.3) clarity = 'Slightly cloudy';
+    else if (silt < 0.6) clarity = 'Cloudy';
+    else clarity = 'Muddy brown';
+
+    water.style.height = Math.min(95, 15 + days * 8) + '%';
+    water.style.background = mix([31, 163, 196], [140, 98, 52], silt);
+    label.textContent = 'RESERVOIR · ' + clarity.toUpperCase();
+
+    var litresText = litres >= 1e9 ? fmtInt(litres / 1e9) + ' billion litres' : fmtInt(litres / 1e6) + ' million litres';
+    var daysText = days < 1 ? fmtInt(days * 24) + ' hours' : (Math.round(days * 10) / 10) + ' days';
+
+    stats.innerHTML =
+      'Water reaching reservoirs: <b>' + litresText + '</b><br>' +
+      'That is about <b>' + fmtInt(pools) + '</b> Olympic pools<br>' +
+      'Enough for Singapore for: <b>' + daysText + '</b><br>' +
+      'Water clarity: <b>' + clarity + '</b>' +
+      '<div class="meter"><div class="meter-in silt" style="width:' + Math.round(silt * 100) + '%"></div></div>';
+
+    var msg;
+    if (!ecm.checked && !plant.checked && mm >= 40) msg = '<b>Uh-oh.</b> Bare building sites and bare slopes in a big storm: soil pours into the drains. Expect blocked drains, flash floods, and a reservoir that is much harder and more expensive to clean. Tick the boxes and watch the difference.';
+    else if (!ecm.checked) msg = 'Without Earth Control Measures, building sites are the biggest source of mud. That is exactly why Singapore makes them compulsory.';
+    else if (!plant.checked) msg = 'Bare slopes are losing soil. Plant roots act like a net — try ticking the box.';
+    else if (pct < 40) msg = 'Less catchment means less water collected from the same storm. Singapore pushed its catchment up to two-thirds of the island for exactly this reason.';
+    else msg = 'Good management: lots of water collected, and clean enough to treat easily. Notice how one storm only lasts the country a few days — reservoirs can only hold so much, which is one reason Singapore needs four taps.';
+    out.innerHTML = msg;
+  }
+
+  [rain, catchS].forEach(function (el) { el.addEventListener('input', render); });
+  [ecm, plant].forEach(function (el) { el.addEventListener('change', render); });
+  render();
+})();
+
+/* ===== Predict-first buttons (1B, 1D) ===== */
+(function () {
+  var answersText = {
+    pErode: [
+      'Spot on. Bare soil has nothing to protect it: raindrops knock particles loose and the running water carries them straight into the cup. That brown water is what a building site without Earth Control Measures sends into a drain.',
+      'Leaves and bark help a lot — they soften the raindrops like an umbrella — but without roots holding the soil, some still washes away. The bare-soil cup will be the muddiest.',
+      'Grass with roots should give the clearest water of all — roots grip the soil like a net. The muddiest cup will be the bare soil, with nothing to protect it.'
+    ],
+    pSolar: [
+      'Surprisingly, no — the salt cannot evaporate. Only water molecules float up as vapour, so the water that drips into the cup has left the salt behind.',
+      'It will not be a bit salty — it should not be salty at all. Salt is far too heavy to evaporate, so only pure water makes the journey to the cup.',
+      'Correct! Only the water evaporates; the salt stays in the bowl. The drops that condense on the cling film and fall into the cup are fresh. You have desalinated water with sunshine.'
+    ],
+    pEnergy: [
+      'Rainwater from a reservoir is the cheapest to clean — it is already fresh and fairly clean, especially if erosion has been kept under control. The energy hog is desalination.',
+      'NEWater does need energy for its membranes and pumps, but much less than desalination, because used water contains far less salt than seawater.',
+      'Correct. Forcing seawater through membranes against all that salt takes about 3.5 kWh for every 1,000 litres — several times more than NEWater, and far more than reservoir water.'
+    ]
+  };
+  var correct = { pErode: 0, pSolar: 2, pEnergy: 2 };
+  var suffix = { pErode: ' <b style="color:var(--rain)">Now go and test it.</b>', pSolar: ' <b style="color:var(--rain)">Now go and test it.</b>', pEnergy: '' };
+
+  document.querySelectorAll('.predict-btns').forEach(function (group) {
+    var pid = group.dataset.pid;
+    var outEl = document.getElementById(pid + '_out');
+    var btns = group.querySelectorAll('button');
+    btns.forEach(function (b) {
+      b.addEventListener('click', function (ev) {
+        ev.stopPropagation();
+        var pick = parseInt(b.dataset.ans, 10);
+        btns.forEach(function (x) { x.disabled = true; });
+        b.classList.add(pick === correct[pid] ? 'picked-right' : 'picked-wrong');
+        outEl.innerHTML = (pick === correct[pid] ? '✅ ' : '🤔 ') + answersText[pid][pick] + suffix[pid];
+        outEl.classList.add('show');
+        if (pid === 'pEnergy') {
+          var bars = document.getElementById('energyBars');
+          bars.style.display = 'flex';
+          setTimeout(function () {
+            bars.querySelectorAll('.bar-fill').forEach(function (f) { f.style.width = f.dataset.w + '%'; });
+          }, 50);
+        }
+      });
+    });
+  });
+})();
+
+/* ===== 1C · Where does it get stopped? ===== */
+buildMatcher({
+  gridId: 'newGrid', btnId: 'newBtn', outId: 'newResult',
+  placeholder: '— choose a step —',
+  winMsg: 'Perfect. Big things are caught first, tiny things later, UV is the safety net — and only water makes it all the way through.',
+  pairs: [
+    { part: 'Bits of food and toilet paper', job: 'Water reclamation plant (screens & bacteria)' },
+    { part: 'A grain of grit', job: 'Water reclamation plant (screens & bacteria)' },
+    { part: 'A bacterium (about 1,000 nm)', job: 'Step 1 · Microfiltration' },
+    { part: 'Dissolved salt', job: 'Step 2 · Reverse osmosis' },
+    { part: 'A virus (about 100 nm)', job: 'Step 2 · Reverse osmosis' },
+    { part: 'A trace of medicine from used water', job: 'Step 2 · Reverse osmosis' },
+    { part: 'A rare microbe that somehow slipped through', job: 'Step 3 · UV light' },
+    { part: 'A water molecule (0.3 nm)', job: 'Gets through every step!' }
+  ]
+});
+
+/* ===== 2 · Which sphere? ===== */
+buildMatcher({
+  gridId: 'sphereGrid', btnId: 'sphereBtn', outId: 'sphereResult',
+  placeholder: '— choose a sphere —',
+  winMsg: 'Perfect. Water, rock, air and life — the four systems that make up our planet.',
+  pairs: [
+    { part: 'The air you breathe', job: '☁️ Atmosphere' },
+    { part: 'Wind', job: '☁️ Atmosphere' },
+    { part: 'A mountain', job: '⛰️ Geosphere' },
+    { part: 'Sand on a beach', job: '⛰️ Geosphere' },
+    { part: 'A glacier', job: '🌊 Hydrosphere' },
+    { part: 'Water deep underground', job: '🌊 Hydrosphere' },
+    { part: 'An earthworm', job: '🌿 Biosphere' },
+    { part: 'A mangrove tree', job: '🌿 Biosphere' }
+  ]
+});
+
+/* ===== 2 · Follow one water molecule ===== */
+(function () {
+  var stepEl = document.getElementById('jStep');
+  var mainEl = document.getElementById('jMain');
+  var sphEl = document.getElementById('jSpheres');
+  var btn = document.getElementById('jBtn');
+  var reset = document.getElementById('jReset');
+  if (!stepEl || !btn) return;
+  var stops = [
+    { t: '☀️ The tropical Sun warms the sea. You get so much energy that you break free and float up as invisible water vapour. <b>Evaporation!</b>', s: 'hydrosphere → atmosphere' },
+    { t: '☁️ High up, the air is cold. You slow down and cling to a speck of dust with millions of other molecules. You are now part of a cloud. <b>Condensation.</b>', s: 'stays in the atmosphere' },
+    { t: '🌧️ The cloud gets heavy and you fall as a raindrop in a thunderstorm — onto a forest in Singapore&#39;s Central Catchment. <b>Precipitation.</b>', s: 'atmosphere → biosphere' },
+    { t: '🌳 You drip off a leaf and soak into the soil. The soil filters you as you sink between the grains. <b>Infiltration.</b>', s: 'biosphere → geosphere' },
+    { t: '🌱 A tree&#39;s roots suck you up. You travel up the trunk to a leaf, then escape through a tiny pore back into the air. <b>Transpiration.</b>', s: 'geosphere → biosphere → atmosphere' },
+    { t: '⛈️ Another cloud, another storm. This time you land on a road in the city and rush into a drain with a few grains of silt from a building site. <b>Runoff and erosion.</b>', s: 'atmosphere → hydrosphere, carrying a bit of geosphere' },
+    { t: '🏞️ The drain takes you into a canal and then into Marina Reservoir. The silt settles to the bottom. <b>Deposition.</b>', s: 'hydrosphere (and some geosphere settles out)' },
+    { t: '🚰 You are pumped to a waterworks, cleaned, and flow out of a kitchen tap into a glass. A ten-year-old drinks you.', s: 'hydrosphere → biosphere' },
+    { t: '♻️ A few hours later you are flushed away, travel through the Deep Tunnel, and become NEWater — or end up back in the sea to start again. The cycle never ends.', s: 'biosphere → hydrosphere' }
+  ];
+  var i = 0;
+  function show() {
+    if (i === 0) {
+      stepEl.textContent = 'STOP 0 OF ' + stops.length;
+      mainEl.innerHTML = 'You are a water molecule floating in the warm sea near Singapore. Press the button to begin your journey.';
+      sphEl.innerHTML = '';
+      btn.disabled = false;
+      return;
+    }
+    var st = stops[i - 1];
+    stepEl.textContent = 'STOP ' + i + ' OF ' + stops.length;
+    mainEl.innerHTML = st.t;
+    sphEl.innerHTML = 'Systems: <b>' + st.s + '</b>';
+    btn.disabled = (i === stops.length);
+  }
+  btn.addEventListener('click', function () { if (i < stops.length) { i++; show(); } });
+  reset.addEventListener('click', function () { i = 0; show(); });
+  show();
+})();
+
+/* ===== 2 · Speeds up or slows down erosion? ===== */
+buildSorter({
+  cardId: 'erCard', aBtnId: 'erFast', bBtnId: 'erSlow',
+  startId: 'erStart', outId: 'erOut',
+  aName: 'speeds it up', bName: 'slows it down',
+  winMsg: 'Perfect. You can see cause and effect in the soil — that is exactly how engineers decide what to do.',
+  items: [
+    { text: 'Cutting down a forest on a hillside', ans: 'a', why: 'With no roots and no leaf cover, rain hits bare soil and washes it downhill.' },
+    { text: 'Planting grass on a steep bank', ans: 'b', why: 'Grass roots knit the soil together like a net.' },
+    { text: 'A heavy storm on a bare building site', ans: 'a', why: 'Loose, bare earth plus heavy rain is the recipe for muddy drains — hence Earth Control Measures.' },
+    { text: 'Mangrove trees along a coast', ans: 'b', why: 'Their tangled roots trap mud and calm the waves, so the coast holds on to its soil.' },
+    { text: 'Too many animals grazing the same field', ans: 'a', why: 'Overgrazing strips the plants and hooves loosen the ground, leaving soil exposed.' },
+    { text: 'Covering a garden bed with a thick layer of leaves or bark', ans: 'b', why: 'The covering (mulch) cushions each raindrop so it cannot knock the soil loose.' },
+    { text: 'Ploughing straight up and down a hill', ans: 'a', why: 'The furrows become little channels that rain races down, carrying soil with it. Ploughing across the slope is far better.' },
+    { text: 'Building flat terraces on a hillside', ans: 'b', why: 'Terraces turn one steep slope into lots of flat steps, so water slows down and soaks in.' },
+    { text: 'Covering bare soil at a building site with plastic sheets', ans: 'b', why: 'One of Singapore&#39;s Earth Control Measures — no exposed soil, no mud.' },
+    { text: 'A wildfire burning away the ground plants', ans: 'a', why: 'After a fire the soil is bare and crusty, so the next rains can wash huge amounts away.' }
+  ]
+});
+
+/* ===== 3 · 100 cups ===== */
+(function () {
+  var grid = document.getElementById('cupGrid');
+  var guess = document.getElementById('cupGuess');
+  var guessVal = document.getElementById('cupGuessVal');
+  var btn = document.getElementById('cupBtn');
+  var out = document.getElementById('cupOut');
+  if (!grid || !guess) return;
+  var cells = [];
+  for (var i = 0; i < 100; i++) {
+    var c = document.createElement('div');
+    c.className = 'cup';
+    grid.appendChild(c);
+    cells.push(c);
+  }
+  var revealed = false;
+  function drawGuess() {
+    var g = parseInt(guess.value, 10);
+    guessVal.textContent = g + (g === 1 ? ' cup' : ' cups');
+    if (revealed) return;
+    cells.forEach(function (c, i) { c.className = 'cup' + (i >= 100 - g ? ' fresh' : ''); });
+  }
+  guess.addEventListener('input', drawGuess);
+  btn.addEventListener('click', function () {
+    if (revealed) {
+      revealed = false;
+      btn.textContent = 'Reveal';
+      out.innerHTML = 'Move the slider to make your guess — the cups show it in teal.';
+      drawGuess();
+      return;
+    }
+    revealed = true;
+    btn.textContent = 'Try again';
+    var g = parseInt(guess.value, 10);
+    cells.forEach(function (c) { c.className = 'cup'; });
+    var k = 0;
+    var timer = setInterval(function () {
+      if (k >= 100) {
+        clearInterval(timer);
+        var verdict = g <= 2 ? '<b>Brilliant guess!</b> ' : (g <= 10 ? 'Close — but even smaller. ' : 'Most people guess far too high. ');
+        out.innerHTML = verdict + 'You guessed <b>' + g + '</b>. The real answer is about <b>1 cup</b>. <b>97</b> are salty ocean and <b>2</b> are frozen in glaciers and ice caps. And of that one fresh cup, most is underground — all the world&#39;s lakes and rivers together would be just a few spoonfuls.';
+        return;
+      }
+      cells[k].className = 'cup ' + (k < 97 ? 'salt' : (k < 99 ? 'ice' : 'fresh'));
+      k++;
+    }, 18);
+  });
+  drawGuess();
+})();
+
+/* ===== 3 · Finite or infinite? ===== */
+buildSorter({
+  cardId: 'fiCard', aBtnId: 'fiInf', bBtnId: 'fiFin',
+  startId: 'fiStart', outId: 'fiOut',
+  aName: 'renewable', bName: 'finite',
+  winMsg: 'Perfect. And you spotted the tricky ones: some water is renewable, some behaves as if it is finite.',
+  items: [
+    { text: 'Sunlight', ans: 'a', why: 'The Sun will keep shining for billions of years, however much we use.' },
+    { text: 'Wind', ans: 'a', why: 'Wind is driven by the Sun heating the air unevenly — it keeps coming.' },
+    { text: 'Coal', ans: 'b', why: 'Coal formed from ancient plants over millions of years. Once burned, it is gone.' },
+    { text: 'Oil', ans: 'b', why: 'Oil took millions of years to form underground. There is a fixed amount.' },
+    { text: 'Gold', ans: 'b', why: 'Metals are only in the ground once. We can recycle them, but we cannot make more.' },
+    { text: 'The tides', ans: 'a', why: 'The Moon&#39;s pull makes the tides rise and fall twice a day, every day.' },
+    { text: 'Rain filling a reservoir', ans: 'a', why: 'The water cycle refills it — as long as we do not take more than the rain brings, and keep it clean.' },
+    { text: 'Ancient water in a deep aquifer that took 10,000 years to fill', ans: 'b', why: 'Tricky one! It is water, but it refills so slowly that if we pump it out in a few decades, it is gone for our lifetimes. It behaves like a finite resource.' },
+    { text: 'Trees in a well-managed forest', ans: 'a', why: 'Trees regrow — if we plant as many as we cut and give them time.' },
+    { text: 'Sand for making concrete', ans: 'b', why: 'Tricky one! The world uses building sand far faster than rivers can make it (desert sand is too round and smooth to use). It is becoming a finite resource.' }
+  ]
+});
+
+/* ===== 3 · Hidden water detective ===== */
+buildMatcher({
+  gridId: 'hidGrid', btnId: 'hidBtn', outId: 'hidResult',
+  placeholder: '— how much water? —',
+  winMsg: 'Perfect, detective. Did the coffee surprise you? Most hidden water goes into growing food.',
+  pairs: [
+    { part: '☕ A cup of tea', job: 'about 30 litres' },
+    { part: '☕ A cup of coffee', job: 'about 140 litres' },
+    { part: '🍔 A hamburger', job: 'about 2,400 litres' },
+    { part: '🍚 1 kg of rice', job: 'about 3,400 litres' },
+    { part: '🥩 1 kg of beef', job: 'about 15,500 litres' }
+  ]
+});
+
+/* ===== 3 · Population bars ===== */
+(function () {
+  var btn = document.getElementById('popBtn');
+  var box = document.getElementById('popBars');
+  var out = document.getElementById('popOut');
+  if (!btn || !box) return;
+  btn.addEventListener('click', function () {
+    box.querySelectorAll('.bar-fill').forEach(function (f) { f.style.width = '0%'; });
+    setTimeout(function () {
+      box.querySelectorAll('.bar-fill').forEach(function (f) { f.style.width = f.dataset.w + '%'; });
+    }, 80);
+    out.innerHTML = 'Nearly <b>four times</b> as many people by 2050 as in 1950 — all sharing the <b>same</b> 1 cup of reachable fresh water. Population figures: United Nations.';
+  });
+})();
+
+/* ===== 4 · Match the solution ===== */
+buildMatcher({
+  gridId: 'solGrid', btnId: 'solBtn', outId: 'solResult',
+  placeholder: '— choose a solution —',
+  winMsg: 'Perfect. Every one of those solutions started with someone understanding the science of the problem.',
+  pairs: [
+    { part: 'A desert village where it never rains, but fog rolls in', job: 'Fog nets' },
+    { part: 'Very dry air with no rivers or fog at all', job: 'MOF crystals that pull water from air' },
+    { part: 'Nobody can see whether underground water is running out', job: 'GRACE satellites that weigh water' },
+    { part: 'Farms spraying water that evaporates before plants can drink it', job: 'Drip irrigation' },
+    { part: 'Storm water rushing off concrete and flooding the streets', job: 'Sponge city pavements and rain gardens' },
+    { part: 'A river that floods in winter and dries up in summer', job: 'Beaver dams' },
+    { part: 'A town that is not sure if its tap water contains lead', job: 'A cheap lead-testing device like Tethys' }
+  ]
+});
+
+/* ===== 4 · My water day ===== */
+(function () {
+  var shower = document.getElementById('cShower');
+  var brush = document.getElementById('cBrush');
+  var flush = document.getElementById('cFlush');
+  var hands = document.getElementById('cHands');
+  var bath = document.getElementById('cBath');
+  var total = document.getElementById('cTotal');
+  var meter = document.getElementById('cMeter');
+  var out = document.getElementById('cOut');
+  if (!shower || !total) return;
+
+  var SHOWER_L_PER_MIN = 9;
+  var FLUSH_L = 4.5;
+  var HAND_L = 2;
+  var DRINK_COOK_L = 6;
+  var first = null;
+
+  function render() {
+    var s = parseInt(shower.value, 10);
+    var b = parseInt(brush.value, 10);
+    var f = parseInt(flush.value, 10);
+    var h = parseInt(hands.value, 10);
+    var bt = parseInt(bath.value, 10);
+    document.getElementById('cShowerV').textContent = s + ' min';
+    document.getElementById('cBrushV').textContent = b + ' L';
+    document.getElementById('cFlushV').textContent = f;
+    document.getElementById('cHandsV').textContent = h;
+    document.getElementById('cBathV').textContent = bt + ' L';
+    var showerL = bt > 0 ? 0 : s * SHOWER_L_PER_MIN;
+    var sum = showerL + bt + b + f * FLUSH_L + h * HAND_L + DRINK_COOK_L;
+    sum = Math.round(sum);
+    if (first === null) first = sum;
+    total.innerHTML = sum + ' L <small>a day, just for you</small>';
+    meter.style.width = Math.min(100, Math.round(sum / 200 * 100)) + '%';
+    var tips = [];
+    if (b > 1) tips.push('turning the tap off while you brush saves about <b>23 litres</b> a day');
+    if (s > 5 && bt === 0) tips.push('cutting your shower to 5 minutes saves <b>' + ((s - 5) * SHOWER_L_PER_MIN) + ' litres</b> a day');
+    if (bt > 0) tips.push('a 5-minute shower instead of a bath saves about <b>35 litres</b>');
+    var saved = first - sum;
+    var msg = 'That includes about ' + DRINK_COOK_L + ' L for drinking and your share of cooking. ';
+    if (saved > 0) msg += '<b>You have saved ' + saved + ' litres a day</b> compared with where you started — that is about <b>' + fmtInt(saved * 365) + ' litres a year</b>. ';
+    if (tips.length) msg += 'Ideas: ' + tips.join('; ') + '.';
+    else msg += 'You are already a water saver. Singapore&#39;s target for homes is <b>130 litres per person per day</b> by 2030, and that includes laundry, cleaning and cooking for the whole family.';
+    out.innerHTML = msg;
+  }
+  [shower, flush, hands].forEach(function (el) { el.addEventListener('input', render); });
+  [brush, bath].forEach(function (el) { el.addEventListener('change', render); });
+  render();
+})();
+
+/* ===== 4 · Pledges ===== */
+(function () {
+  var list = document.getElementById('pledgeList');
+  var out = document.getElementById('pledgeOut');
+  if (!list) return;
+  function count() {
+    var n = 0;
+    list.querySelectorAll('label').forEach(function (l) {
+      var on = l.querySelector('input').checked;
+      l.classList.toggle('on', on);
+      if (on) n++;
+    });
+    if (n === 0) out.innerHTML = '0 actions chosen.';
+    else if (n < 3) out.innerHTML = '<b>' + n + '</b> chosen — pick at least three.';
+    else out.innerHTML = '<b>' + n + ' actions chosen.</b> That is your water plan for the week. Write them on a sticky note and put it by the bathroom tap — and check back on Sunday.';
+  }
+  list.addEventListener('change', count);
+  list.addEventListener('click', function (e) { e.stopPropagation(); });
+})();
+
+buildQuiz();
+</script>
+
+</body>
+</html>
